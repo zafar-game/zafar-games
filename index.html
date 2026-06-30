@@ -216,6 +216,7 @@
             border-top: 4px solid var(--neon-green);
         }
 
+        /* Fixed Neon Blue Player */
         .cartoon-hero {
             position: absolute;
             bottom: 26px;
@@ -510,7 +511,7 @@
 
         /* --- MOBILE TOUCH CONTROLS PANEL --- */
         .touch-controls {
-            display: none; /* Only visible on touch mobile screens */
+            display: none;
             width: 100%;
             max-width: 200px;
             margin-top: 15px;
@@ -760,7 +761,7 @@
                     <h3>Snake Game V1</h3>
                     <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and record the highest score log instantly.</p>
                 </div>
-                <!-- Updated Button to trigger modal window -->
+                <!-- Fixed Button to trigger clean modal window -->
                 <button onclick="openGame('https://armansnakecobra.itch.io/snake-game')" class="action-btn">PLAY NOW</button>
             </div>
 
@@ -886,20 +887,18 @@
         function openGame(url) {
             document.getElementById('gameFrame').src = url;
             document.getElementById('gameModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Stop page scrolling background
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeGame() {
             document.getElementById('gameFrame').src = '';
             document.getElementById('gameModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto'; 
         }
 
-        // Bridge function to simulate Keyboard events for itch.io iframe on mobile touch click
         function triggerKey(keyCode) {
             const iframe = document.getElementById('gameFrame');
             if(iframe && iframe.contentWindow) {
-                // Post messages or dispatch codes natively to window focus
                 iframe.focus();
                 const eventConfig = { bubbles: true, cancelable: true, keyCode: keyCode, which: keyCode };
                 iframe.contentWindow.dispatchEvent(new KeyboardEvent('keydown', eventConfig));
