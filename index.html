@@ -2,265 +2,754 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Ultimate Mobile Arcade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafar Games | Ultimate Browser Gaming Hub</title>
     <style>
+        /* CSS Core Framework */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             scroll-behavior: smooth;
         }
 
         :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
+            --bg-dark: #040407;
+            --card-bg: #09090d;
             --neon-green: #00ff99;
-            --neon-blue: #00e5ff;
-            --neon-pink: #ff0055;
-            --neon-yellow: #ffe600;
+            --neon-glow: rgba(0, 255, 153, 0.25);
+            --neon-pulse: rgba(0, 255, 153, 0.5);
+            --insta-color: #e1306c;
+            --insta-glow: rgba(225, 48, 108, 0.2);
             --text-white: #ffffff;
-            --text-gray: #c5c6c7;
+            --text-gray: #828288;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
             color: var(--text-white);
             overflow-x: hidden;
-            background: radial-gradient(circle at center, #1f2833 0%, #0b0c10 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- KEYFRAME ANIMATIONS --- */
+        @keyframes neonPulse {
+            0%, 100% { text-shadow: 0 0 10px var(--neon-glow); }
+            50% { text-shadow: 0 0 20px var(--neon-pulse); }
         }
 
-        /* NAVBAR SETUP */
-        nav {
+        @keyframes cardGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.02); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 153, 0.15); }
+        }
+
+        @keyframes scrollTicker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Cartoon Dynamic Video Simulation Animations */
+        @keyframes characterJump {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-25px) scaleY(0.9); }
+        }
+
+        @keyframes enemyPatrol {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+        }
+
+        @keyframes cloudScroll {
+            0% { transform: translateX(220px); }
+            100% { transform: translateX(-40px); }
+        }
+
+        /* Navigation Header */
+        header {
+            background: rgba(9, 9, 13, 0.85);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .nav-box {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
-            background: rgba(31, 40, 51, 0.95);
-            border-bottom: 2px solid var(--neon-green);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+            padding: 16px 24px;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--neon-green);
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 1.5px;
+            animation: neonPulse 3s infinite ease-in-out;
         }
 
-        /* HERO ZONE */
-        .hero {
-            min-height: 25vh;
+        .logo span {
+            color: var(--neon-green);
+        }
+
+        nav ul {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            list-style: none;
+            gap: 35px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 5px; text-shadow: 0 0 15px var(--neon-blue); }
-        .hero h1 span { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
+        nav ul li a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
 
-        .container { padding: 30px 5%; }
-        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; color: var(--neon-blue); }
+        nav ul li a:hover {
+            color: var(--neon-green);
+        }
 
-        /* GAMES ARCHITECTURE GRID */
-        .games-grid {
+        /* Hero Split Screen Interface */
+        .hero-split {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 160px 24px 80px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        /* LEFT SIDE: Cartoon Simulated Video Player Frame */
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #12121a;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Inner Cartoon Engine Viewport */
+        .cartoon-screen {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 50px;
+            background: linear-gradient(to bottom, #3a7bd5, #3a6073);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        /* Player Controls UI overlay */
+        .player-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #0d0d14;
+        }
+
+        .play-icon {
+            color: var(--neon-green);
+            font-size: 1.1rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff3366;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ff3366;
+        }
+
+        .progress-line {
+            flex-grow: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 75%;
+            background: var(--neon-green);
+            border-radius: 2px;
+        }
+
+        /* Cartoon Stage Props */
+        .cloud {
+            position: absolute;
+            background: rgba(255,255,255,0.3);
+            width: 50px;
+            height: 18px;
+            border-radius: 10px;
+            top: 25px;
+            animation: cloudScroll 8s infinite linear;
+        }
+
+        .ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: #27ae60;
+            border-top: 4px solid #2ecc71;
+        }
+
+        /* Main Hero Character (Snake/Monster mix) */
+        .cartoon-hero {
+            position: absolute;
+            bottom: 26px;
+            left: 50px;
+            width: 32px;
+            height: 32px;
+            background: #ffcc00;
+            border-radius: 8px 8px 0 0;
+            border: 3px solid #000;
+            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.15);
+            animation: characterJump 1.2s infinite ease-in-out;
+        }
+
+        /* Eyes for character */
+        .cartoon-hero::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            background: #000;
+            border-radius: 50%;
+        }
+
+        /* Enemy Block */
+        .cartoon-enemy {
+            position: absolute;
+            bottom: 26px;
+            right: 60px;
+            width: 24px;
+            height: 24px;
+            background: #e74c3c;
+            border-radius: 4px;
+            border: 3px solid #000;
+            animation: enemyPatrol 3s infinite linear;
+        }
+
+        /* RIGHT SIDE: Core Content Static Block */
+        .hero-text-side {
+            text-align: left;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 255, 153, 0.05);
+            border: 1px solid rgba(0, 255, 153, 0.15);
+            color: var(--neon-green);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+            text-transform: uppercase;
+        }
+
+        .hero-text-side h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .hero-text-side h1 span {
+            color: var(--neon-green);
+        }
+
+        .hero-text-side p {
+            font-size: 1.15rem;
+            color: var(--text-gray);
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        /* Live Ticker Board */
+        .ticker-wrap {
+            width: 100%;
+            background: rgba(9, 9, 13, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 12px 0;
+            overflow: hidden;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scrollTicker 22s linear infinite;
+            color: var(--text-gray);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .ticker span {
+            color: var(--neon-green);
+            margin-right: 60px;
+        }
+
+        /* Container Standard Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header span {
+            color: var(--neon-green);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1rem;
+            margin-bottom: 50px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cards Grid Layout */
+        .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
-            margin: 0 auto;
+            gap: 30px;
         }
 
-        .play-zone {
-            background: rgba(31, 40, 51, 0.7);
-            backdrop-filter: blur(10px);
+        .card {
+            background-color: var(--card-bg);
             border-radius: 20px;
-            padding: 25px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
-        }
-        
-        .play-zone:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
-        }
-
-        .play-zone.snake-card { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 153, 0.1); }
-        .play-zone.snake-card:hover { box-shadow: 0 0 25px rgba(0, 255, 153, 0.4); }
-        .play-zone.ludo-card { border-color: var(--neon-yellow); opacity: 0.6; }
-        .play-zone.chess-card { border-color: #ffffff; opacity: 0.6; }
-        .play-zone.racing-card { border-color: var(--neon-pink); opacity: 0.6; }
-
-        .game-icon { font-size: 50px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-        .snake-card .game-icon { filter: drop-shadow(0 0 12px var(--neon-green)); }
-
-        .play-now-btn {
-            display: inline-block;
-            background: var(--neon-green);
-            color: #000;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            margin-top: 15px;
-            box-shadow: 0 0 10px rgba(0, 255, 153, 0.4);
-            transition: all 0.2s;
-        }
-        .play-now-btn:hover { transform: scale(1.05); }
-        .coming-soon-tag { display: inline-block; background: #333; color: #aaa; padding: 8px 20px; border-radius: 25px; font-size: 14px; margin-top: 15px; font-weight: bold; text-transform: uppercase; }
-
-        /* LANDING SECTIONS UPGRADES */
-        .about-section {
-            max-width: 800px;
-            margin: 40px auto 0 auto;
-            text-align: center;
-            padding: 25px;
-            background: rgba(31, 40, 51, 0.4);
-            border-radius: 15px;
-            border: 1px solid rgba(0, 229, 255, 0.1);
-        }
-        .about-section h2 { color: var(--neon-green); margin-bottom: 12px; font-size: 1.5rem; text-transform: uppercase; }
-        .about-section p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
-
-        .contact-box {
-            background: rgba(31, 40, 51, 0.8);
-            max-width: 550px;
-            margin: 40px auto 0 auto;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-        }
-        .contact-box h3 { color: var(--neon-blue); font-size: 18px; margin-bottom: 5px; text-transform: uppercase; }
-        .contact-row { display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
-        .compact-link { color: var(--text-white); text-decoration: none; font-size: 15px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
-        .compact-link:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
-        
-        footer { text-align: center; padding: 25px; color: #666; font-size: 13px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); }
-        footer a { color: var(--neon-green); text-decoration: none; font-weight: bold; transition: all 0.2s; }
-        footer a:hover { text-shadow: 0 0 5px var(--neon-green); }
-
-        /* --- ARCADE GAME ENGINE LAYOUT --- */
-        .game-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #050508;
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 5px;
-        }
-
-        .game-header {
-            width: 100%;
-            max-width: 440px;
-            padding: 10px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.01);
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .back-btn {
-            background: #1f2833;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
-
-        #canvas-container {
             position: relative;
-            width: 95vw;
-            max-width: 400px;
-            height: 400px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        #gameCanvas {
-            background: #0b0c10;
-            display: block;
-            border-radius: 15px;
-            border: 3px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
-            width: 100%; height: 100%;
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-green);
+            box-shadow: 0 12px 40px rgba(0, 255, 153, 0.12);
         }
 
-        /* ORIGINAL COMPATIBLE KEYPAD SYSTEM */
-        .mobile-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 90vw;
-            max-width: 240px;
+        .card-active {
+            animation: cardGlow 4s infinite ease-in-out;
+            border-color: rgba(0, 255, 153, 0.1);
+        }
+
+        .rating-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 195, 0, 0.08);
+            color: #ffc300;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .game-icon {
+            font-size: 44px;
             margin-bottom: 20px;
         }
 
-        .control-btn {
-            background: #1f2833;
-            border: 2px solid var(--neon-blue);
-            color: var(--neon-blue);
-            font-size: 26px;
-            padding: 12px 0;
-            border-radius: 50%;
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-            display: flex; align-items: center; justify-content: center;
-            height: 65px; width: 65px; margin: 0 auto;
+        .card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+            font-weight: 700;
         }
-        .control-btn:active { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
-        .control-btn.up { grid-column: 2; }
-        .control-btn.left { grid-column: 1; }
-        .control-btn.right { grid-column: 3; }
-        .control-btn.down { grid-column: 2; }
 
-        .settings-bar { display: flex; gap: 15px; margin-bottom: 5px; }
-        .settings-btn { background: #1f2833; border: 1px solid var(--text-gray); color: var(--text-white); padding: 5px 15px; border-radius: 5px; font-size: 13px; cursor: pointer; }
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Action Controls Buttons */
+        .action-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--neon-green);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--neon-glow);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn:hover {
+            background-color: #00e688;
+            box-shadow: 0 6px 22px rgba(0, 255, 153, 0.4);
+            transform: scale(1.01);
+        }
+
+        .btn-locked {
+            background-color: #111115;
+            color: #3e3e44;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Analytics Stats Unit */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: #06060a;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.005);
+        }
+
+        .stat-box h4 {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .stat-box p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Core Framework Specs Panel */
+        .features-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .feature-item h4 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Studio About Deck Panel */
+        .bio-panel {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.01);
+        }
+
+        .bio-panel p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Contact Deck Anchor Modules */
+        .connect-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            background: #06060a;
+            padding: 14px 28px;
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.08);
+        }
+
+        /* Micro sized Instagram Button Style Setup */
+        .social-btn.insta-btn {
+            border-color: rgba(225, 48, 108, 0.15);
+        }
+
+        .social-btn.insta-btn .insta-icon {
+            font-size: 13px;
+        }
+
+        .social-btn.insta-btn:hover {
+            border-color: var(--insta-color);
+            color: #fff;
+            box-shadow: 0 0 15px var(--insta-glow);
+        }
+
+        /* Footer Frame */
+        footer {
+            background-color: #020204;
+            text-align: center;
+            padding: 35px 24px;
+            color: #3e3e44;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.005);
+            margin-top: 60px;
+        }
+
+        /* Responsive UI viewports code */
+        @media (max-width: 992px) {
+            .hero-split { grid-template-columns: 1fr; gap: 40px; padding-top: 140px; text-align: center; }
+            .hero-text-side { text-align: center; }
+            .hero-text-side h1 { font-size: 2.8rem; }
+            nav ul { display: none; }
+            .nav-box { justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HOME INTERFACE MODULE -->
-    <div class="main-site" id="mainSite">
-        <nav>
-            <div class="logo-container">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://w3.org" style="filter: drop-shadow(0 0 8px #00ff99);">
-                    <path d="M8 24L16 16L24 24M8 14L16 6L24 14" stroke="#00ff99" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div class="logo-text">Zafar Games</div>
+    <!-- Fixed Core Navigation Header -->
+    <header>
+        <div class="nav-box">
+            <a href="#" class="logo">⚡ Zafar <span>Games</span> ⚡</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- NEW SPLIT GRID HERO WITH CARTOON SIMULATOR PLAYER -->
+    <section class="hero-split">
+        
+        <!-- Left Column: The Interactive Cartoon Video Simulator -->
+        <div class="video-container">
+            <div class="cartoon-screen">
+                <div class="cloud"></div>
+                <div class="cartoon-hero"></div>
+                <div class="cartoon-enemy"></div>
+                <div class="ground"></div>
             </div>
-        </nav>
+            <div class="player-bar">
+                <div class="play-icon">▶</div>
+                <div class="live-dot"></div>
+                <div class="progress-line"><div class="progress-fill"></div></div>
+                <div style="font-size:0.75rem; color:var(--text-gray); font-weight:700;">LIVE DEMO</div>
+            </div>
+        </div>
+
+        <!-- Right Column: Solid Text Deck & Call to Actions -->
+        <div class="hero-text-side">
+            <div class="hero-badge">Next-Gen Arcade Console</div>
+            <h1>Play Premium Indie <span>Games Instantly</span></h1>
+            <p>No deployment lag, no terminal setups required. High-grade web experiences built seamlessly via Godot Engine and launched directly on secure clouds.</p>
+            <a href="#games" class="action-btn" style="max-width: 240px;">LAUNCH HUB</a>
+        </div>
+
+    </section>
+
+    <!-- Studio Rolling Notice Board -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>🐍 Snake Engine updated with high-performance modern vectors!</span> <span>🚗 Racing Arena phase-1 vector tracks deployment started!</span> <span>🥊 Cyber Fighting dynamic combat system designs upcoming!</span> <span>🔥 Drop game reviews on our social channel below!</span>
+        </div>
+    </div>
+
+    <!-- Arcade Showcase Modules Selection Grid -->
+    <section id="games" class="container">
+        <h2 class="section-header">Featured <span>Games</span></h2>
+        <p class="section-subtitle">Experience lightning-response lightweight grid modules engineered directly for modern setups.</p>
+        
+        <div class="grid-layout">
+            
+            <!-- Game 1: Snake Module -->
+            <div class="card card-active">
+                <span class="rating-badge">★ 5.0 Rating</span>
+                <div>
+                    <div class="game-icon">🐍</div>
+                    <h3>Snake Game V1</h3>
+                    <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and record the highest score log instantly.</p>
+                </div>
+                <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="action-btn">PLAY NOW</a>
+            </div>
+
+            <!-- Game 2: Racing Module -->
+            <div class="card">
+                <div>
+                    <div class="game-icon">🚗</div>
+                    <h3>Racing Arena</h3>
+                    <p>Top-down hyper drifting track physics, modular supercars, and timed checkpoint tracks configured on acceleration parameters.</p>
+                </div>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+            <!-- Game 3: Fighting Cyber Arena -->
+            <div class="card">
+                <div>
+                    <div class="game-icon">🥊</div>
+                    <h3>Cyber Fight</h3>
+                    <p>High-action futuristic 2D combat module featuring complex attack sequences, special inputs, and fluid response mechanics.</p>
+                </div>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+            <!-- Game 4: Horror Project -->
+            <div class="card">
+                <div>
+                    <div class="game-icon">👻</div>
+                    <h3>Silent Echo</h3>
+                    <p>Dark isometric puzzle space. Track escape routes using peripheral flashlight patterns before systems exhaust.</p>
+                </div>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Console Engine Analytics Dashboard -->
+    <section class="container" style="padding-top: 10px; padding-bottom: 40px;">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h4>1+</h4>
+                <p>Active Instances</p>
+            </div>
+            <div class="stat-box">
+                <h4>60 FPS</h4>
+                <p>Engine Stability</p>
+            </div>
+            <div class="stat-box">
+                <h4>Zero</h4>
+                <p>Friction Downloads</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities / Tech Framework Specifications -->
+    <section id="features" class="container">
+        <h2 class="section-header">Engine <span>Capabilities</span></h2>
+        <p class="section-subtitle">Compiled precisely through lightweight web environments to maximize refresh ratios.</p>
+        <div class="features-box">
+            <div class="feature-item">
+                <h4>⚡ Godot Web Compiler</h4>
+                <p>All core systems are compiled directly via Godot Engine, processing true vector physics grids instantly inside browsers.</p>
+            </div>
+            <div class="feature-item">
+                <h4>📱 Universal Cross-Play</h4>
+                <p>Engineered seamlessly to adapt across modern screen dimensions, whether on professional desktop displays or standard mobile views.</p>
+            </div>
+            <div class="feature-item">
+                <h4>🛡️ Secured Sandbox</h4>
+                <p>No installations, no background analytics logs. Stream entirely safe sandbox game instances directly over GitHub deployment pages.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Module Box -->
+    <section id="about" class="container">
+        <h2 class="section-header">About <span>The Studio</span></h2>
+        <div class="bio-panel">
+            <p>Welcome to Zafar Games! I am an independent gaming pipeline operator focusing on deploying cross-platform browser instances built using advanced HTML5 web parameters. This deck acts as a clean, centralized node for players looking to explore and trigger games seamlessly without friction or platform load delays.</p>
+        </div>
+    </section>
+
+    <!-- Clean Contact Node -->
+    <section id="contact" class="container">
+        <h2 class="section-header">Secure <span>Console Deck</span></h2>
+        <p class="section-subtitle">Reach out for feedback or system logging improvements.</p>
+        <div class="connect-box">
+            <a href="mailto:zafargames.contact@gmail.com" class="social-btn">📧 zafargames.contact@gmail.com</a>
+            <a href="https://instagram.com/skarman.exe" target="_blank" class="social-btn insta-btn">
+                <span class="insta-icon">📸</span> skarman.exe
+            </a>
+        </div>
+    </section>
+
+    <!-- Global Footer -->
+    <footer>
+        <p>&copy; 2026 Zafar Games. Streamed globally over secure CDN pipelines.</p>
+    </footer>
+
+</body>
+</html>
