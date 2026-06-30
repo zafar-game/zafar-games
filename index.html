@@ -28,6 +28,11 @@
             overflow-x: hidden;
         }
 
+        /* HOME SCREEN LAYOUT */
+        .main-site {
+            display: block;
+        }
+
         nav {
             display: flex;
             justify-content: space-between;
@@ -37,7 +42,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0, 255, 153, 0.1);
         }
 
@@ -47,25 +51,6 @@
             color: var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: var(--text-gray);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--neon-green);
         }
 
         .hero {
@@ -80,86 +65,134 @@
             padding: 40px 20px;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; }
+        .hero h1 span { color: var(--neon-green); }
+        .hero p { font-size: 1.1rem; color: var(--text-gray); }
 
-        .hero h1 span {
-            color: var(--neon-green);
-            text-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
-        }
+        .container { padding: 40px 5%; }
+        .section-title { text-align: center; font-size: 2rem; margin-bottom: 30px; text-transform: uppercase; }
 
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--text-gray);
-            max-width: 600px;
-        }
-
-        .container {
-            padding: 40px 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- NATIVE GAME ENGINE BOX --- */
-        .game-wrapper {
-            max-width: 500px;
+        .play-zone {
+            max-width: 450px;
             margin: 0 auto;
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 30px;
             border: 2px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.15);
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.1);
+        }
+
+        .game-icon { font-size: 50px; margin-bottom: 15px; }
+
+        .play-now-btn {
+            display: inline-block;
+            background: var(--neon-green);
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px 35px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .play-now-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 153, 0.7);
+        }
+
+        .contact-box {
+            background: var(--card-bg);
+            max-width: 450px;
+            margin: 40px auto 0 auto;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 229, 255, 0.2);
             text-align: center;
         }
 
-        .score-board {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--neon-blue);
+        .contact-row { display: flex; justify-content: space-around; margin-top: 10px; }
+        .compact-link { color: var(--text-white); text-decoration: none; font-size: 14px; font-weight: 600; }
+        .compact-link:hover { color: var(--neon-blue); }
+
+        footer { text-align: center; padding: 20px; color: #555; font-size: 13px; margin-top: 40px; }
+
+        /* --- FULLSCREEN GAME PAGE LAYOUT (HIDDEN BY DEFAULT) --- */
+        .game-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b0c10;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
         }
 
+        .game-header {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            background: #1f2833;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .score-board {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--neon-green);
+        }
+
+        /* BADA RESOLUTION CANVAS FOR CLEAR VISION */
         #gameCanvas {
             background: #000;
             display: block;
-            margin: 0 auto;
-            border-radius: 10px;
-            max-width: 100%;
-            height: auto;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.25);
+            max-width: 95vw;
+            max-height: 55vh;
         }
 
-        /* MOBILE CONTROLS (ARROWS) */
         .mobile-controls {
             margin-top: 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 180px;
-            margin-left: auto;
-            margin-right: auto;
+            gap: 12px;
+            width: 210px;
         }
 
         .control-btn {
             background: #111;
             border: 2px solid var(--neon-blue);
             color: var(--neon-blue);
-            font-size: 20px;
-            padding: 15px;
-            border-radius: 10px;
+            font-size: 26px;
+            padding: 12px;
+            border-radius: 12px;
             cursor: pointer;
             user-select: none;
-            transition: 0.2s;
         }
 
         .control-btn:active {
@@ -171,153 +204,131 @@
         .control-btn.left { grid-column: 1; }
         .control-btn.right { grid-column: 3; }
         .control-btn.down { grid-column: 2; }
-
-        /* CONTACT SECTION */
-        .contact-box {
-            background: var(--card-bg);
-            max-width: 500px;
-            margin: 40px auto 0 auto;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            text-align: center;
-        }
-
-        .contact-row {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .compact-link {
-            color: var(--text-white);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            background: rgba(11, 12, 16, 0.6);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-
-        .compact-link:hover {
-            border-color: var(--neon-blue);
-            color: var(--neon-blue);
-        }
-
-        footer {
-            background: #050608;
-            text-align: center;
-            padding: 20px;
-            color: #555;
-            font-size: 13px;
-            margin-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.02);
-        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">⚡ Zafar Games ⚡</div>
-        <ul class="nav-links">
-            <li><a href="#home" class="active">Home</a></li>
-            <li><a href="#play">Play Game</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <!-- SECTION 1: MAIN WEBSITE HOME -->
+    <div class="main-site" id="mainSite">
+        <nav>
+            <div class="logo">⚡ Zafar Games ⚡</div>
+        </nav>
 
-    <section class="hero" id="home">
-        <h1>Welcome to <span>Zafar Games</span></h1>
-        <p>Play upgraded, mobile-friendly native web games directly in your browser.</p>
-    </section>
+        <section class="hero">
+            <h1>Welcome to <span>Zafar Games</span></h1>
+            <p>Premium Arcade Platform — Native & Smooth.</p>
+        </section>
 
-    <!-- NATIVE GAME ENGINE AREA -->
-    <section class="container" id="play">
-        <h2 class="section-title">Snake Game V2</h2>
-        <div class="game-wrapper">
-            <div class="score-board">
-                <div>Score: <span id="score">0</span></div>
-                <div>High Score: <span id="highScore">0</span></div>
+        <section class="container">
+            <h2 class="section-title">Select Arcade</h2>
+            <div class="play-zone">
+                <div class="game-icon">🐍</div>
+                <h3 style="font-size: 22px; margin-bottom: 10px;">Snake Game V2</h3>
+                <p style="color: var(--text-gray); font-size: 14px;">Upgraded fullscreen view with optimized speed, touch gesture & arrow controls support.</p>
+                
+                <!-- Trigger Button to start fullscreen game -->
+                <button class="play-now-btn" onclick="openGame()">▶ Play Game</button>
             </div>
-            
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
+        </section>
 
-            <p style="font-size: 12px; color: var(--text-gray); margin-top: 10px;">PC: Use Arrow Keys | Mobile: Swipe or Use Buttons below</p>
-
-            <!-- ON SCREEN ARROWS FOR MOBILE -->
-            <div class="mobile-controls">
-                <button class="control-btn up" id="btnUp">▲</button>
-                <button class="control-btn left" id="btnLeft">◀</button>
-                <button class="control-btn right" id="btnRight">▶</button>
-                <button class="control-btn down" id="btnDown">▼</button>
+        <section class="container">
+            <div class="contact-box">
+                <h3 style="font-size: 16px; color: var(--neon-blue);">CONNECT</h3>
+                <div class="contact-row">
+                    <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">📸 @skarman.exe</a>
+                    <a href="mailto:info@zafargames.com" class="compact-link">📩 Send Email</a>
+                </div>
             </div>
+        </section>
+
+        <footer>ZAFAR GAMES ARCADE | &copy; 2026</footer>
+    </div>
+
+
+    <!-- SECTION 2: BIG SCREEN GAME MODE (HIDDEN ON START) -->
+    <div class="game-screen" id="gameScreen">
+        <div class="game-header">
+            <button class="back-btn" onclick="closeGame()">⬅ Home</button>
+            <div class="score-board">Score: <span id="score">0</span></div>
         </div>
-    </section>
+        
+        <!-- Big Sized Canvas Grid -->
+        <canvas id="gameCanvas" width="500" height="500"></canvas>
 
-    <!-- COMPACT CONTACT SECTION -->
-    <section class="container" id="contact">
-        <div class="contact-box">
-            <h3 style="font-size: 18px; color: var(--neon-blue); text-transform: uppercase;">Connect With Me</h3>
-            <div class="contact-row">
-                <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">📸 @skarman.exe</a>
-                <a href="mailto:info@zafargames.com" class="compact-link">📩 Send Email</a>
-            </div>
+        <!-- Touch UI Controls -->
+        <div class="mobile-controls">
+            <button class="control-btn up" id="btnUp">▲</button>
+            <button class="control-btn left" id="btnLeft">◀</button>
+            <button class="control-btn right" id="btnRight">▶</button>
+            <button class="control-btn down" id="btnDown">▼</button>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        ZAFAR GAMES ARCADE | OFFICIAL CHANNELS | &copy; 2026
-    </footer>
 
-    <!-- GAME ENGINE CODE -->
+    <!-- GAME INTERNALS CODE -->
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-
-        const grid = 20;
+        const grid = 25; // Bigger snake cells
         let count = 0;
+        let gameActive = false;
         
         let snake = {
-            x: 160,
-            y: 160,
-            dx: grid,
-            dy: 0,
-            cells: [{x: 160, y: 160}, {x: 140, y: 160}],
+            x: 250, y: 250,
+            dx: grid, dy: 0,
+            cells: [{x: 250, y: 250}, {x: 225, y: 250}],
             maxCells: 4
         };
 
-        let apple = { x: 320, y: 320 };
+        let apple = { x: 375, y: 375 };
         let score = 0;
-        let highScore = localStorage.getItem("snakeHighScore") || 0;
-        document.getElementById("highScore").innerText = highScore;
 
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
         }
 
-        // Main Game Loop
+        // Logic to toggle views
+        function openGame() {
+            document.getElementById("mainSite").style.display = "none";
+            document.getElementById("gameScreen").style.display = "flex";
+            gameActive = true;
+            resetGame();
+        }
+
+        function closeGame() {
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("mainSite").style.display = "block";
+            gameActive = false;
+        }
+
+        function resetGame() {
+            snake.x = 250;
+            snake.y = 250;
+            snake.cells = [{x: 250, y: 250}, {x: 225, y: 250}];
+            snake.maxCells = 4;
+            snake.dx = grid;
+            snake.dy = 0;
+            score = 0;
+            document.getElementById("score").innerText = score;
+            apple.x = getRandomInt(0, 19) * grid;
+            apple.y = getRandomInt(0, 19) * grid;
+        }
+
         function loop() {
             requestAnimationFrame(loop);
 
-            // Slow game loop down to 15 fps instead of 60
-            if (++count < 6) { return; }
+            if (!gameActive) return;
+
+            // --- SPEED CONTROL ---
+            // Is value ko badhane se game aur SLOW ho jayega (8 standard smooth slow speed hai)
+            if (++count < 8) { return; }
             count = 0;
 
             ctx.clearRect(0,0,canvas.width,canvas.height);
 
-            // Move Snake
             snake.x += snake.dx;
             snake.y += snake.dy;
 
-            // Wall Collision wrapping
             if (snake.x < 0) snake.x = canvas.width - grid;
             else if (snake.x >= canvas.width) snake.x = 0;
             
@@ -339,84 +350,55 @@
             snake.cells.forEach(function(cell, index) {
                 ctx.fillRect(cell.x, cell.y, grid-1, grid-1);  
 
-                // Snake eats apple
                 if (cell.x === apple.x && cell.y === apple.y) {
                     snake.maxCells++;
                     score += 10;
                     document.getElementById("score").innerText = score;
-                    if(score > highScore) {
-                        highScore = score;
-                        localStorage.setItem("snakeHighScore", highScore);
-                        document.getElementById("highScore").innerText = highScore;
-                    }
-                    apple.x = getRandomInt(0, 20) * grid;
-                    apple.y = getRandomInt(0, 20) * grid;
+                    apple.x = getRandomInt(0, 19) * grid;
+                    apple.y = getRandomInt(0, 19) * grid;
                 }
 
-                // Collision with self Check
                 for (let i = index + 1; i < snake.cells.length; i++) {
                     if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                        // Reset Game
-                        snake.x = 160;
-                        snake.y = 160;
-                        snake.cells = [{x: 160, y: 160}, {x: 140, y: 160}];
-                        snake.maxCells = 4;
-                        snake.dx = grid;
-                        snake.dy = 0;
-                        score = 0;
-                        document.getElementById("score").innerText = score;
-                        apple.x = getRandomInt(0, 20) * grid;
-                        apple.y = getRandomInt(0, 20) * grid;
+                        resetGame();
                     }
                 }
             });
         }
 
-        // Keyboard Controls
+        // PC Keyboard Setup
         document.addEventListener('keydown', function(e) {
+            if (!gameActive) return;
             if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
             else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
             else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
             else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
         });
 
-        // Button Controls (Mobile)
+        // Mobile Buttons Click Setup
         document.getElementById("btnUp").addEventListener("click", () => { if(snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } });
         document.getElementById("btnDown").addEventListener("click", () => { if(snake.dy === 0) { snake.dy = grid; snake.dx = 0; } });
         document.getElementById("btnLeft").addEventListener("click", () => { if(snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } });
         document.getElementById("btnRight").addEventListener("click", () => { if(snake.dx === 0) { snake.dx = grid; snake.dy = 0; } });
 
-        // Touch Swipe Controls
-        let touchstartX = 0;
-        let touchstartY = 0;
-        let touchendX = 0;
-        let touchendY = 0;
-
-        canvas.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-            touchstartY = e.changedTouches[0].screenY;
-        }, false);
-
-        canvas.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            touchendY = e.changedTouches[0].screenY;
-            handleGesture();
-        }, false);
+        // Mobile Screen Swipe Setup
+        let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
+        canvas.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, false);
+        canvas.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleGesture(); }, false);
 
         function handleGesture() {
             let xDiff = touchendX - touchstartX;
             let yDiff = touchendY - touchstartY;
-
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                if (xDiff > 0 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; } // Swipe Right
-                else if (xDiff < 0 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } // Swipe Left
+                if (xDiff > 0 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+                else if (xDiff < 0 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
             } else {
-                if (yDiff > 0 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; } // Swipe Down
-                else if (yDiff < 0 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } // Swipe Up
+                if (yDiff > 0 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+                else if (yDiff < 0 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
             }
         }
 
-        // Start Game
+        // Start Loop
         requestAnimationFrame(loop);
     </script>
 </body>
