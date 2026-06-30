@@ -2,75 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zafar Pro Gaming Engine</title>
-    <!-- Dependencies for professional Chess Rules -->
+    <!-- Chess Rules Engine -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <style>
-        body { background: #1a202c; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
-        .game-box { background: #2d3748; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-top: 20px; }
-        canvas { background: #fff; cursor: crosshair; }
-        .controls { margin-top: 20px; display: flex; gap: 10px; }
-        button { padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        body { background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; font-family: sans-serif; margin: 0; }
+        .header { margin: 20px 0; font-size: 28px; font-weight: bold; color: #60a5fa; }
+        .btn-group { margin-bottom: 20px; }
+        button { padding: 15px 30px; cursor: pointer; background: #334155; color: white; border: 1px solid #60a5fa; border-radius: 8px; font-size: 16px; margin: 0 10px; }
+        button:hover { background: #60a5fa; }
+        #gameCanvas { background: #fff; border: 5px solid #334155; cursor: crosshair; }
     </style>
 </head>
 <body>
 
-    <h1>Zafar Pro Gaming Engine</h1>
-    
-    <div class="game-box">
-        <canvas id="gameCanvas" width="600" height="600"></canvas>
-    </div>
-
-    <div class="controls">
+    <div class="header">Zafar Games | All-in-One</div>
+    <div class="btn-group">
         <button onclick="startGame('LUDO')">Play Ludo</button>
         <button onclick="startGame('CHESS')">Play Chess</button>
     </div>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
 
-<script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    let currentGame = null;
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-    // --- GAME ENGINE: LOGIC & AI ---
-    function startGame(type) {
-        currentGame = type;
-        if(type === 'CHESS') {
-            const chess = new Chess();
-            renderChess(chess);
-        } else {
-            renderLudo();
-        }
-    }
-
-    // --- CHESS ENGINE (Pro Rules) ---
-    function renderChess(game) {
-        ctx.clearRect(0,0,600,600);
-        const sq = 75;
-        for(let i=0; i<8; i++) {
-            for(let j=0; j<8; j++) {
-                ctx.fillStyle = (i+j)%2===0 ? "#eed9b3" : "#b58863";
-                ctx.fillRect(i*sq, j*sq, sq, sq);
+        function startGame(mode) {
+            ctx.clearRect(0, 0, 600, 600);
+            if(mode === 'LUDO') {
+                drawLudoBoard();
+            } else {
+                drawChessBoard();
             }
         }
-        // AI Logic: Adaptive Randomization
-        if(game.history().length % 2 !== 0) {
-            let moves = game.moves();
-            // Random move from legal moves so user can't predict
-            let move = moves[Math.floor(Math.random() * moves.length)];
-            game.move(move);
-        }
-    }
 
-    // --- LUDO ENGINE (Pro Graphics) ---
-    function renderLudo() {
-        ctx.fillStyle = "white"; ctx.fillRect(0,0,600,600);
-        // Drawing Board
-        ctx.fillStyle = "#e53e3e"; ctx.fillRect(0,0,240,240); // Red
-        ctx.fillStyle = "#38a169"; ctx.fillRect(360,0,240,240); // Green
-        // Add Tokens...
-        ctx.beginPath(); ctx.arc(120, 120, 30, 0, Math.PI*2); ctx.fillStyle="red"; ctx.fill();
-        ctx.fillStyle = "black"; ctx.font = "20px Arial"; ctx.fillText("AI Monster Active", 220, 300);
-    }
-</script>
+        function drawLudoBoard() {
+            // Professional Ludo Grid Structure
+            ctx.fillStyle = "#e53e3e"; ctx.fillRect(0,0,240,240); // Red
+            ctx.fillStyle = "#38a169"; ctx.fillRect(360,0,240,240); // Green
+            ctx.fillStyle = "#ecc94b"; ctx.fillRect(0,360,240,240); // Yellow
+            ctx.fillStyle = "#3182ce"; ctx.fillRect(360,360,240,240); // Blue
+            ctx.strokeStyle = "#000"; ctx.strokeRect(0,0,600,600);
+        }
+
+        function drawChessBoard() {
+            const size = 75;
+            for(let row=0; row<8; row++) {
+                for(let col=0; col<8; col++) {
+                    ctx.fillStyle = (row+col)%2===0 ? "#f0d9b5" : "#b58863";
+                    ctx.fillRect(col*size, row*size, size, size);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
