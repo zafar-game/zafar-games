@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zafar Games | Premium Browser Gaming Hub</title>
+    <title>Zafar Games | Ultimate Browser Gaming Hub</title>
     <style>
-        /* CSS Reset & Core System */
+        /* CSS Core Framework */
         * {
             margin: 0;
             padding: 0;
@@ -15,44 +15,66 @@
         }
 
         :root {
-            --bg-dark: #050508;
-            --card-bg: #0c0c11;
+            --bg-dark: #040407;
+            --card-bg: #09090d;
             --neon-green: #00ff99;
-            --neon-glow: rgba(0, 255, 153, 0.3);
-            --neon-pulse: rgba(0, 255, 153, 0.6);
+            --neon-glow: rgba(0, 255, 153, 0.25);
+            --neon-pulse: rgba(0, 255, 153, 0.5);
             --insta-color: #e1306c;
-            --insta-glow: rgba(225, 48, 108, 0.25);
+            --insta-glow: rgba(225, 48, 108, 0.2);
             --text-white: #ffffff;
-            --text-gray: #8e8e93;
+            --text-gray: #828288;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-white);
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* High-End Keyframe Animations */
+        /* --- ADVANCED GAMING ANIMATIONS FRAMEWORKS --- */
         @keyframes neonPulse {
-            0% { text-shadow: 0 0 8px var(--neon-glow), 0 0 15px rgba(0, 255, 153, 0.15); }
-            50% { text-shadow: 0 0 18px var(--neon-pulse), 0 0 30px rgba(0, 255, 153, 0.35); }
-            100% { text-shadow: 0 0 8px var(--neon-glow), 0 0 15px rgba(0, 255, 153, 0.15); }
+            0%, 100% { text-shadow: 0 0 10px var(--neon-glow); }
+            50% { text-shadow: 0 0 20px var(--neon-pulse); }
         }
 
         @keyframes cardGlow {
-            0% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.03); }
+            0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.02); }
             50% { box-shadow: 0 0 25px rgba(0, 255, 153, 0.15); }
-            100% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.03); }
         }
 
-        @keyframes scrollText {
+        @keyframes scrollTicker {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
 
-        /* Premium Fixed Navigation */
+        /* Racing Highway Line Animation */
+        @keyframes racingTrack {
+            0% { transform: translateY(-100%) scaleX(1); opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(100%) scaleX(1.5); opacity: 0; }
+        }
+
+        /* Snake Crawl Animation Simulation */
+        @keyframes snakeMove {
+            0% { left: -20px; top: 10px; }
+            25% { left: 40%; top: 10px; }
+            40% { left: 40%; top: 60px; }
+            75% { left: 85%; top: 60px; }
+            90% { left: 85%; top: 20px; }
+            100% { left: 105%; top: 20px; }
+        }
+
+        /* Fighting Combo Multiplier Pulse */
+        @keyframes fightCombo {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #ff3366); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 12px #ff3366); }
+        }
+
+        /* Navigation Header */
         header {
-            background: rgba(12, 12, 17, 0.8);
+            background: rgba(9, 9, 13, 0.85);
             backdrop-filter: blur(15px);
             position: fixed;
             width: 100%;
@@ -87,8 +109,8 @@
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
-            background: rgba(0, 0, 0, 0.5);
+            gap: 35px;
+            background: rgba(0, 0, 0, 0.4);
             padding: 8px 24px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -106,11 +128,55 @@
             color: var(--neon-green);
         }
 
-        /* Hero Station */
+        /* Hero Canvas & Stage Layout */
         .hero {
-            padding: 180px 24px 80px 24px;
+            padding: 190px 24px 90px 24px;
             text-align: center;
-            background: radial-gradient(circle at top, rgba(0, 255, 153, 0.08) 0%, rgba(5, 5, 8, 0) 65%);
+            position: relative;
+            background: radial-gradient(circle at top, rgba(0, 255, 153, 0.07) 0%, rgba(4, 4, 7, 0) 65%);
+            overflow: hidden;
+        }
+
+        /* Live Visual Arcade Background Elements */
+        .arcade-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Racing Element Line inside Hero */
+        .racing-vector {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, var(--neon-green));
+            left: 15%;
+            animation: racingTrack 2.5s infinite linear;
+        }
+        .racing-vector.right {
+            left: 85%;
+            animation-delay: 1.25s;
+        }
+
+        /* Animated Snake Inside Hero Frame */
+        .hero-snake-simulation {
+            position: absolute;
+            width: 35px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--neon-green);
+            bottom: 15%;
+            animation: snakeMove 14s infinite linear;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
         }
 
         .hero-badge {
@@ -128,7 +194,7 @@
         }
 
         .hero h1 {
-            font-size: 3.8rem;
+            font-size: 4rem;
             font-weight: 900;
             margin-bottom: 20px;
             letter-spacing: -1px;
@@ -150,7 +216,7 @@
         /* Live Broadcast Ticker */
         .ticker-wrap {
             width: 100%;
-            background: rgba(12, 12, 17, 0.9);
+            background: rgba(9, 9, 13, 0.9);
             border-top: 1px solid rgba(255, 255, 255, 0.02);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
             padding: 12px 0;
@@ -161,7 +227,7 @@
             display: inline-block;
             white-space: nowrap;
             padding-left: 100%;
-            animation: scrollText 22s linear infinite;
+            animation: scrollTicker 22s linear infinite;
             color: var(--text-gray);
             font-weight: 600;
             font-size: 0.95rem;
@@ -172,7 +238,7 @@
             margin-right: 60px;
         }
 
-        /* Framework Containers */
+        /* Container Framework */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -202,10 +268,10 @@
             margin-right: auto;
         }
 
-        /* Showcase Cards Grid Layout */
+        /* Showcase Cards Framework */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
         }
 
@@ -219,6 +285,7 @@
             justify-content: space-between;
             position: relative;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
         }
 
         .card:hover {
@@ -247,12 +314,29 @@
         .game-icon {
             font-size: 44px;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Fighting Module Combo Trigger Indicator */
+        .fight-combo-badge {
+            position: absolute;
+            bottom: 90px;
+            right: 25px;
+            color: #ff3366;
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            animation: fightCombo 1.5s infinite ease-in-out;
+            text-transform: uppercase;
         }
 
         .card h3 {
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             margin-bottom: 12px;
             font-weight: 700;
+            position: relative;
+            z-index: 2;
         }
 
         .card p {
@@ -260,9 +344,11 @@
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Professional Buttons */
+        /* Professional Action Triggers */
         .action-btn {
             display: block;
             width: 100%;
@@ -279,6 +365,8 @@
             border: none;
             cursor: pointer;
             letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
         }
 
         .action-btn:hover {
@@ -288,19 +376,13 @@
         }
 
         .btn-locked {
-            background-color: #111116;
-            color: #44444a;
+            background-color: #111115;
+            color: #3e3e44;
             box-shadow: none;
             cursor: not-allowed;
         }
 
-        .btn-locked:hover {
-            background-color: #111116;
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* NEW ADDITION: Analytics/Stats Station */
+        /* System Stat Dash */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -310,10 +392,10 @@
         }
 
         .stat-box {
-            background: #09090d;
+            background: #06060a;
             padding: 25px;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.005);
         }
 
         .stat-box h4 {
@@ -330,7 +412,7 @@
             letter-spacing: 1px;
         }
 
-        /* NEW ADDITION: Core Features Info Panel */
+        /* Core Framework Technical Capabilities Panel */
         .features-box {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -356,7 +438,7 @@
             line-height: 1.5;
         }
 
-        /* About Studio Display Panel */
+        /* About Studio Module Panel */
         .bio-panel {
             background-color: var(--card-bg);
             border-radius: 20px;
@@ -373,7 +455,7 @@
             line-height: 1.8;
         }
 
-        /* Contact Section with Resized Minimalist Insta */
+        /* Clean Contact Deck Setup */
         .connect-box {
             display: flex;
             justify-content: center;
@@ -382,14 +464,14 @@
         }
 
         .social-btn {
-            background: #09090d;
+            background: #06060a;
             padding: 14px 28px;
             border-radius: 12px;
             color: #fff;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.02);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
@@ -402,13 +484,13 @@
             box-shadow: 0 0 15px rgba(0, 255, 153, 0.08);
         }
 
-        /* Minimal Instagram Modification Requested */
+        /* Precision Scaled Micro Instagram Anchor */
         .social-btn.insta-btn {
-            border-color: rgba(225, 48, 108, 0.2);
+            border-color: rgba(225, 48, 108, 0.15);
         }
 
         .social-btn.insta-btn .insta-icon {
-            font-size: 14px; /* Icon size optimized small */
+            font-size: 13px; /* Micro adjusted directly */
         }
 
         .social-btn.insta-btn:hover {
@@ -417,28 +499,29 @@
             box-shadow: 0 0 15px var(--insta-glow);
         }
 
-        /* Global Footer */
+        /* Fixed Global Footer */
         footer {
-            background-color: #030305;
+            background-color: #020204;
             text-align: center;
             padding: 35px 24px;
-            color: #44444a;
+            color: #3e3e44;
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            border-top: 1px solid rgba(255, 255, 255, 0.005);
             margin-top: 60px;
         }
 
-        /* Responsive Breakpoints */
+        /* Mobile View Response Layouts */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             nav ul { display: none; }
             .nav-box { justify-content: center; }
+            .racing-vector { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Premium Navigation Header -->
+    <!-- Fixed Core Header -->
     <header>
         <div class="nav-box">
             <a href="#" class="logo">⚡ Zafar <span>Games</span> ⚡</a>
@@ -454,65 +537,75 @@
         </div>
     </header>
 
-    <!-- Interactive Main Hero Deck -->
+    <!-- Interactive Interactive Hero Console Space -->
     <section class="hero">
-        <div class="hero-badge">Next-Gen Arcade Node</div>
-        <h1>Play Premium Indie <span>Games Instantly</span></h1>
-        <p>No deployment lag, no installations required. High-grade lightweight interactive setups built seamlessly via Godot Engine and powered straight on the cloud.</p>
-        <a href="#games" class="action-btn" style="max-width: 240px; margin: 0 auto;">LAUNCH CONSOLE</a>
+        <!-- Live Tracking Graphic System Embedded Background Layers -->
+        <div class="arcade-layer">
+            <div class="racing-vector"></div>
+            <div class="racing-vector right"></div>
+            <div class="hero-snake-simulation"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">Next-Gen Arcade Console</div>
+            <h1>Play Premium Indie <span>Games Instantly</span></h1>
+            <p>No deployment lag, no terminal setups required. High-grade web experiences built seamlessly via Godot Engine and launched directly on secure clouds.</p>
+            <a href="#games" class="action-btn" style="max-width: 240px; margin: 0 auto;">LAUNCH HUB</a>
+        </div>
     </section>
 
-    <!-- Live Studio Broadcast Banner -->
+    <!-- Studio Rolling Notice Board -->
     <div class="ticker-wrap">
         <div class="ticker">
-            <span>🐍 New optimized layouts applied to Snake Engine!</span> <span>🚗 Racing Arena phase-1 compilation started!</span> <span>🐦 Flappy Bird Neo dynamic grids arriving soon!</span> <span>🔥 Drop game reviews on our social channel!</span>
+            <span>🐍 Snake Engine updated with high-performance modern vectors!</span> <span>🚗 Racing Arena phase-1 vector tracks deployment started!</span> <span>🥊 Cyber Fighting dynamic combat system designs upcoming!</span> <span>🔥 Drop game reviews on our social channel below!</span>
         </div>
     </div>
 
-    <!-- Arcade Showcase Module -->
+    <!-- Arcade Showcase Modules Selection Grid -->
     <section id="games" class="container">
         <h2 class="section-header">Featured <span>Games</span></h2>
-        <p class="section-subtitle">Experience high-response browser gaming engineered directly for modern gaming setups.</p>
+        <p class="section-subtitle">Experience lightning-response lightweight grid modules engineered directly for modern setups.</p>
         
         <div class="grid-layout">
             
-            <!-- Game 1: Snake Game -->
+            <!-- Game 1: Snake Module -->
             <div class="card card-active">
                 <span class="rating-badge">★ 5.0 Rating</span>
                 <div>
                     <div class="game-icon">🐍</div>
                     <h3>Snake Game V1</h3>
-                    <p>The timeless retro classic re-engineered. Command the modern grid vectors, ingest meat particles, and break the global highscore logs.</p>
+                    <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and record the highest score log instantly.</p>
                 </div>
                 <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="action-btn">PLAY NOW</a>
             </div>
 
-            <!-- Game 2: Racing Game -->
+            <!-- Game 2: Racing Module -->
             <div class="card">
                 <div>
                     <div class="game-icon">🚗</div>
                     <h3>Racing Arena</h3>
-                    <p>Top-down hyper drifting track physics, modular retro cars, and timed checkpoint missions built on real velocity calculation rules.</p>
+                    <p>Top-down hyper drifting track physics, modular supercars, and timed checkpoint tracks configured on acceleration parameters.</p>
                 </div>
                 <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
 
-            <!-- Game 3: Horror Game -->
+            <!-- Game 3: Fighting Cyber Arena -->
+            <div class="card">
+                <span class="fight-combo-badge">Combo x99</span>
+                <div>
+                    <div class="game-icon">🥊</div>
+                    <h3>Cyber Fight</h3>
+                    <p>High-action futuristic 2D combat module featuring complex attack sequences, special inputs, and fluid response mechanics.</p>
+                </div>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+            <!-- Game 4: Horror Project -->
             <div class="card">
                 <div>
                     <div class="game-icon">👻</div>
                     <h3>Silent Echo</h3>
-                    <p>Dark puzzle rooms. Solve spatial geometric equations using limited peripheral lighting arrays to safely bypass terminal rooms.</p>
-                </div>
-                <button class="action-btn btn-locked" disabled>COMING SOON</button>
-            </div>
-
-            <!-- Game 4: Flappy Bird Neo -->
-            <div class="card">
-                <div>
-                    <div class="game-icon">🐦</div>
-                    <h3>Flappy Bird Neo</h3>
-                    <p>High-frequency tapping physics with shifting gravity gates and clean retro synth styling modules.</p>
+                    <p>Dark isometric puzzle space. Track escape routes using peripheral flashlight patterns before systems exhaust.</p>
                 </div>
                 <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
@@ -520,45 +613,45 @@
         </div>
     </section>
 
-    <!-- NEW SECTION: Live Station Analytics -->
-    <section class="container" style="padding-top: 20px; padding-bottom: 40px;">
+    <!-- Console Engine Analytics Dashboard -->
+    <section class="container" style="padding-top: 10px; padding-bottom: 40px;">
         <div class="stats-grid">
             <div class="stat-box">
                 <h4>1+</h4>
-                <p>Active Games</p>
+                <p>Active Instances</p>
             </div>
             <div class="stat-box">
                 <h4>60 FPS</h4>
-                <p>Optimized Frame Rate</p>
+                <p>Engine Stability</p>
             </div>
             <div class="stat-box">
                 <h4>Zero</h4>
-                <p>Installation Required</p>
+                <p>Friction Downloads</p>
             </div>
         </div>
     </section>
 
-    <!-- NEW SECTION: Features / Why Choose Us -->
+    <!-- Capabilities / Tech Framework Specifications -->
     <section id="features" class="container">
         <h2 class="section-header">Engine <span>Capabilities</span></h2>
-        <p class="section-subtitle">Built with modern technology frameworks to deliver absolute speed directly to your device.</p>
+        <p class="section-subtitle">Compiled precisely through lightweight web environments to maximize refresh ratios.</p>
         <div class="features-box">
             <div class="feature-item">
-                <h4>⚡ Pure Godot Integration</h4>
-                <p>All game architectures are compiled via Godot Engine, rendering highly accurate mechanics and lag-free inputs.</p>
+                <h4>⚡ Godot Web Compiler</h4>
+                <p>All core systems are compiled directly via Godot Engine, processing true vector physics grids instantly inside browsers.</p>
             </div>
             <div class="feature-item">
                 <h4>📱 Universal Cross-Play</h4>
                 <p>Engineered seamlessly to adapt across modern screen dimensions, whether on professional desktop displays or standard mobile views.</p>
             </div>
             <div class="feature-item">
-                <h4>🛡️ Secure Framework</h4>
-                <p>Zero tracking logs. Directly stream verified and clean sandbox instances securely deployed through GitHub servers.</p>
+                <h4>🛡️ Secured Sandbox</h4>
+                <p>No installations, no background analytics logs. Stream entirely safe sandbox game instances directly over GitHub deployment pages.</p>
             </div>
         </div>
     </section>
 
-    <!-- Studio Profile Module -->
+    <!-- Profile Module Box -->
     <section id="about" class="container">
         <h2 class="section-header">About <span>The Studio</span></h2>
         <div class="bio-panel">
@@ -566,20 +659,22 @@
         </div>
     </section>
 
-    <!-- Secure Contact Station -->
+    <!-- Clean Contact Node -->
     <section id="contact" class="container">
         <h2 class="section-header">Secure <span>Console Deck</span></h2>
-        <p class="section-subtitle">Reach out for collaborations, system logging feedback, or custom game suggestions.</p>
+        <p class="section-subtitle">Reach out for feedback or system logging improvements.</p>
         <div class="connect-box">
-            <!-- Email and Small Insta button with Name -->
+            <!-- Email Anchor -->
             <a href="mailto:zafargames.contact@gmail.com" class="social-btn">📧 zafargames.contact@gmail.com</a>
+            
+            <!-- Scaled Down Instagram Option -->
             <a href="https://instagram.com/skarman.exe" target="_blank" class="social-btn insta-btn">
                 <span class="insta-icon">📸</span> skarman.exe
             </a>
         </div>
     </section>
 
-    <!-- Corporate Fixed Footer -->
+    <!-- Global Footer -->
     <footer>
         <p>&copy; 2026 Zafar Games. Streamed globally over secure CDN pipelines.</p>
     </footer>
