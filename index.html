@@ -3,299 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Poki Style Arcade</title>
+    <title>Zafar Games | Classic Arcade</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         :root {
-            --bg-main: #f0f4f8;
-            --panel-bg: #ffffff;
-            --primary-accent: #4a90e2;
-            --wood-dark: #8b5a2b;
-            --wood-light: #cdaf95;
-            --ludo-red: #d9534f;
-            --ludo-green: #5cb85c;
-            --ludo-blue: #0275d8;
-            --ludo-yellow: #f0ad4e;
-            --text-dark: #2c3e50;
+            --bg-color: #1a1a24;
+            --card-bg: #2d2d3a;
+            --classic-green: #27ae60;
+            --classic-blue: #2980b9;
+            --classic-red: #c0392b;
+            --classic-yellow: #f1c40f;
+            --text-white: #ffffff;
+            --text-gray: #bdc3c7;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-dark);
+            background-color: var(--bg-color);
+            color: var(--text-white);
             overflow-x: hidden;
         }
 
-        /* Poki Style Top Navigation Bar */
+        .main-site { display: block; }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 6%;
-            background: var(--panel-bg);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 15px 5%;
+            background: #2c3e50;
+            border-bottom: 3px solid var(--classic-yellow);
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
-            color: #2b6cb0;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .hero {
+            min-height: 20vh;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-        }
-
-        .logo span {
-            background: #ededff;
-            padding: 4px 10px;
-            border-radius: 8px;
-            color: #4c51bf;
-        }
-
-        /* Poki Styled Hero Layout */
-        .hero-banner {
-            padding: 30px 6% 10px 6%;
             text-align: center;
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(26, 26, 36, 0.95)), 
+                        url('https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?q=80&w=1000') no-repeat center center/cover;
+            padding: 20px;
         }
 
-        .hero-banner h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: #1a202c;
-        }
+        .hero h1 { font-size: 2.2rem; }
+        .hero h1 span { color: var(--classic-yellow); }
 
-        /* Poki Grid System - Dynamic & Clean Cards */
-        .games-container {
-            padding: 20px 6%;
-            max-width: 1200px;
+        .container { padding: 25px 5%; }
+        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 20px; text-transform: uppercase; }
+
+        /* GAMES GRID */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        /* Poki Style Real & Interactive Cards */
-        .game-card {
-            background: var(--panel-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.15);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 16px 32px rgba(149, 157, 165, 0.25);
-        }
-
-        .card-preview {
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 55px;
-            position: relative;
-        }
-
-        .ludo-preview { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
-        .chess-preview { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-
-        .card-details {
+        .play-zone {
+            background: var(--card-bg);
+            border-radius: 15px;
             padding: 20px;
-            text-align: left;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            border: 3px solid #7f8c8d;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
+        .play-zone.ludo-card { border-color: var(--classic-yellow); }
+        .play-zone.chess-card { border-color: #d5dbdb; }
 
-        .card-details h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 6px;
-        }
+        .game-icon { font-size: 45px; margin-bottom: 10px; }
 
-        .card-details p {
-            font-size: 13px;
-            color: #718096;
-            line-height: 1.4;
-            margin-bottom: 15px;
-        }
-
-        .play-tag {
-            align-self: flex-start;
-            background: #48bb78;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
+        .play-now-btn {
+            display: inline-block;
+            background: #e67e22;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 10px 25px;
+            border-radius: 25px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            cursor: pointer;
+            border: none;
+            margin-top: 10px;
+            box-shadow: 0 4px 0 #d35400;
         }
+        .play-now-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        /* FULLSCREEN GAME WINDOW */
+        .ludo-card .play-now-btn { background: var(--classic-yellow); color: #000; box-shadow: 0 4px 0 #f39c12; }
+        .chess-card .play-now-btn { background: #f4f6f6; color: #000; box-shadow: 0 4px 0 #bdc3c7; }
+
+        footer { text-align: center; padding: 15px; color: #7f8c8d; font-size: 12px; margin-top: 30px; }
+
+        /* --- FULLSCREEN NATURAL GAME VIEW --- */
         .game-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #1a202c;
+            background-color: #2c3e50;
             z-index: 9999;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 10px;
+            padding: 10px 5px;
         }
 
-        .game-navbar {
+        .game-header {
             width: 100%;
-            max-width: 1000px;
+            padding: 5px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 10px;
         }
 
-        .close-btn {
-            background: #e53e3e;
-            color: white;
+        .back-btn {
+            background: #c0392b;
+            color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 3px 0 #962d22;
         }
 
-        .status-pill {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 15px;
-            font-weight: 600;
-        }
+        .score-board { font-size: 18px; font-weight: bold; color: #fff; background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 20px; }
 
         #gameCanvas {
-            background: #f7fafc;
+            background: #eed9b3; /* Rich natural wood/paper base tint */
             display: block;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-radius: 10px;
+            border: 6px solid #8e44ad;
             width: 95vw;
-            max-width: 500px;
-            height: 55vh;
-            max-height: 500px;
+            height: 48vh; 
         }
 
-        .game-hints {
-            color: #a0aec0;
-            font-size: 14px;
-            text-align: center;
-            font-weight: 500;
-        }
+        .runner-tips { font-size: 14px; color: #fff; text-align: center; margin: 5px 0; font-weight: 500; }
 
-        .action-container {
-            display: none;
-            width: 100%;
-            max-width: 500px;
-            padding: 0 10px;
+        /* CONTROLS */
+        .mobile-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 90vw;
+            max-width: 280px;
             margin-bottom: 10px;
         }
 
-        .roll-btn {
-            width: 100%;
-            background: #3182ce;
-            color: white;
+        .control-btn {
+            background: #34495e;
             border: none;
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 6px 18px rgba(49, 130, 206, 0.4);
-            cursor: pointer;
+            color: #fff;
+            font-size: 26px;
+            padding: 12px 0;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #2c3e50;
         }
-        .roll-btn:active { transform: translateY(2px); }
+        .control-btn:active { transform: translateY(4px); box-shadow: none; }
 
-        footer { text-align: center; padding: 40px 0; color: #a0aec0; font-size: 13px; }
+        .action-bar {
+            display: none;
+            width: 90vw;
+            max-width: 320px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .action-btn {
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 0 #1e8449;
+            text-transform: uppercase;
+        }
+        .action-btn:active { transform: translateY(4px); box-shadow: none; }
     </style>
 </head>
 <body>
 
-    <!-- POKI STYLE MAIN PORTAL -->
-    <div id="portalView">
+    <!-- HOME SCREEN -->
+    <div class="main-site" id="mainSite">
         <nav>
-            <div class="logo">🎮 Zafar<span>Poki</span></div>
+            <div class="logo">🎲 Zafar Classic Hub</div>
         </nav>
 
-        <div class="hero-banner">
-            <h1>Free Online Natural Games</h1>
-        </div>
+        <section class="hero">
+            <h1>Zafar <span>Board Games</span></h1>
+            <p>Traditional & Natural Gaming Hub</p>
+        </section>
 
-        <div class="games-container">
-            <div class="grid-layout">
+        <section class="container">
+            <h2 class="section-title">Choose Game</h2>
+            <div class="games-grid">
                 
-                <!-- CARD 1: LUDO -->
-                <div class="game-card" onclick="launchLudo()">
-                    <div class="card-preview ludo-preview">🎲</div>
-                    <div class="card-details">
-                        <div>
-                            <h3>Classic Ludo Club</h3>
-                            <p>Real organic colors. Play turn-by-turn steps against local smart computer bot engine.</p>
-                        </div>
-                        <div class="play-tag">Play Now</div>
-                    </div>
+                <!-- GAME 1: NATURAL LUDO -->
+                <div class="play-zone ludo-card">
+                    <div class="game-icon">🎲</div>
+                    <h3>Classic Ludo</h3>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Traditional design board. Play vs Smart Bot or Pass & Play.</p>
+                    <button class="play-now-btn" onclick="startLudo()">▶ Play Ludo</button>
                 </div>
 
-                <!-- CARD 2: CHESS -->
-                <div class="game-card" onclick="launchChess()">
-                    <div class="card-preview chess-preview">👑</div>
-                    <div class="card-details">
-                        <div>
-                            <h3>Royal Wood Chess</h3>
-                            <p>Hand-crafted wooden style tiles and traditional pieces. Test strategy against AI.</p>
-                        </div>
-                        <div class="play-tag">Play Now</div>
-                    </div>
+                <!-- GAME 2: ROYAL CHESS -->
+                <div class="play-zone chess-card">
+                    <div class="game-icon">👑</div>
+                    <h3>Royal Wood Chess</h3>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Classic wooden design with real chess figures vs Computer.</p>
+                    <button class="play-now-btn" onclick="startChess()">▶ Play Chess</button>
                 </div>
 
             </div>
-        </div>
+        </section>
 
-        <footer>ZAFAR ARCADE • COPIED WITH LOVE FOR POKI LOOKS • 2026</footer>
+        <footer>ZAFAR ARCADE | &copy; 2026</footer>
     </div>
 
 
-    <!-- FULLSCREEN DYNAMIC CANVAS APPLICATION -->
-    <div class="game-screen" id="appScreen">
-        <div class="game-navbar">
-            <button class="close-btn" onclick="terminateGame()">✕ Leave</button>
-            <div class="status-pill" id="statusDisplay">Turn: -</div>
+    <!-- FULLSCREEN GAME VIEW -->
+    <div class="game-screen" id="gameScreen">
+        <div class="game-header">
+            <button class="back-btn" onclick="exitGame()">⬅ Leave</button>
+            <div class="score-board" id="scoreWrapper">Turn: <span id="scoreText">-</span></div>
         </div>
         
         <canvas id="gameCanvas"></canvas>
 
-        <div class="game-hints" id="hintDisplay">Loading match dynamics...</div>
+        <div class="runner-tips" id="gameTips">Loading...</div>
 
-        <div class="action-container" id="rollActionBox">
-            <button class="roll-btn" onclick="triggerDiceRoll()">🎲 Roll Natural Dice</button>
+        <!-- Touch Controls Pad (Hidden for board games, kept safe) -->
+        <div class="mobile-controls" id="controlPad" style="display:none;">
+            <button class="control-btn up" id="btnUp">▲</button>
+            <button class="control-btn left" id="btnLeft">◀</button>
+            <button class="control-btn right" id="btnRight">▶</button>
+            <button class="control-btn down" id="btnDown">▼</button>
+        </div>
+
+        <!-- Action Bar for Ludo Dice Roll -->
+        <div class="action-bar" id="actionBar">
+            <button class="action-btn" id="mainActionBtn" onclick="handleActionClick()">🎲 Roll Dice</button>
         </div>
     </div>
 
@@ -304,22 +269,25 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         
-        let activeEngine = "";
-        let ludoTurn = 0; 
-        let userSteps = 0, botSteps = 0;
+        let currentImgMode = ""; 
+        let ludoTurn = 0; // 0: Player, 1: Bot
+        let diceValue = 1;
+        
+        let pRed = { pos: 0, color: "#e74c3c" };   // Real Classic Crimson Red
+        let pBot = { pos: 0, color: "#2ecc71" };   // Real Classic Grass Green
 
-        // Path structure for realistic board track layout
-        const traditionalPath = [
+        // Pure traditional layout path matrix for mini-board
+        const ludoPath = [
             {cx:1, cy:2}, {cx:2, cy:2}, {cx:3, cy:2}, {cx:4, cy:2}, {cx:4, cy:1}, {cx:4, cy:0},
             {cx:5, cy:0}, {cx:5, cy:1}, {cx:5, cy:2}, {cx:6, cy:2}, {cx:7, cy:2}, {cx:7, cy:3},
             {cx:7, cy:4}, {cx:6, cy:4}, {cx:5, cy:4}, {cx:5, cy:5}, {cx:5, cy:6}, {cx:4, cy:6},
             {cx:4, cy:5}, {cx:4, cy:4}, {cx:3, cy:4}, {cx:2, cy:4}, {cx:1, cy:4}, {cx:1, cy:3}
         ];
 
-        // Traditional real pieces map grid
-        let selectedCoordinates = null;
-        let activeChessTurn = "player";
-        let chessBoardGrid = [
+        // Traditional Chess pieces setup using standard Unicode icons
+        let selectedPiece = null;
+        let chessTurn = "player";
+        let chessBoard = [
             ['♜','♞','♝','♛','♚','♝','♞','♜'],
             ['♟','♟','♟','♟','♟','♟','♟','♟'],
             ['','','','','','','',''],
@@ -330,228 +298,250 @@
             ['♖','♘','♗','♕','♔','♗','♘','♖']
         ];
 
-        function resizeAppCanvas() {
+        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
+
+        function resizeCanvas() {
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
         }
 
-        function launchLudo() {
-            activeEngine = "ludo";
-            document.getElementById("portalView").style.display = "none";
-            document.getElementById("appScreen").style.display = "flex";
-            document.getElementById("rollActionBox").style.display = "block";
-            document.getElementById("statusDisplay").innerText = "Your Turn";
-            document.getElementById("statusDisplay").style.color = "#5cb85c";
-            document.getElementById("hintDisplay").innerText = "Tap the dice button below to make a natural move.";
-            userSteps = 0; botSteps = 0; ludoTurn = 0;
-            resizeAppCanvas();
-            renderLudoGraphics();
+        function showScreen() {
+            document.getElementById("mainSite").style.display = "none";
+            document.getElementById("gameScreen").style.display = "flex";
+            resizeCanvas();
         }
 
-        function triggerDiceRoll() {
-            if (activeEngine === "ludo" && ludoTurn === 0) {
-                let rolledVal = Math.floor(Math.random() * 6) + 1;
-                userSteps += rolledVal;
-                document.getElementById("hintDisplay").innerText = `You rolled a solid ${rolledVal}!`;
+        function exitGame() {
+            currentImgMode = "";
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("mainSite").style.display = "block";
+        }
+
+        // --- LUDO SETUP ---
+        function startLudo() {
+            currentImgMode = "ludo";
+            canvas.style.borderColor = "#f1c40f"; // Wood/Gold border
+            document.getElementById("scoreWrapper").innerHTML = `Turn: <span id="scoreText" style="color:#e74c3c">Your Turn</span>`;
+            document.getElementById("gameTips").innerText = "Click 'Roll Dice' to roll and step forward.";
+            document.getElementById("actionBar").style.display = "flex";
+            pRed.pos = 0; pBot.pos = 0; ludoTurn = 0;
+            showScreen();
+            drawLudoBoard();
+        }
+
+        function handleActionClick() {
+            if (currentImgMode === "ludo" && ludoTurn === 0) {
+                diceValue = getRandomInt(1, 7);
+                document.getElementById("gameTips").innerText = `You rolled a beautiful ${diceValue}!`;
+                pRed.pos += diceValue;
                 
-                if (userSteps >= traditionalPath.length) {
-                    alert("🏆 Splendid! You conquered the board!");
-                    terminateGame();
-                    return;
+                if (pRed.pos >= ludoPath.length) {
+                    alert("🏆 Mubarak ho! Aapne computer bot ko hara diya!");
+                    pRed.pos = 0; pBot.pos = 0;
                 }
                 
                 ludoTurn = 1;
-                document.getElementById("statusDisplay").innerText = "Bot Thinking...";
-                document.getElementById("statusDisplay").style.color = "#d9534f";
-                renderLudoGraphics();
+                document.getElementById("scoreText").innerText = "Bot's Turn...";
+                document.getElementById("scoreText").style.color = "#2ecc71";
+                drawLudoBoard();
 
+                // Natural delay for computer turn
                 setTimeout(() => {
-                    let botRolled = Math.floor(Math.random() * 6) + 1;
-                    botSteps += botRolled;
-                    document.getElementById("hintDisplay").innerText = `Bot calculated a move of ${botRolled}.`;
+                    let botDice = getRandomInt(1, 7);
+                    pBot.pos += botDice;
+                    document.getElementById("gameTips").innerText = `Bot rolled a ${botDice}!`;
                     
-                    if (botSteps >= traditionalPath.length) {
-                        alert("🤖 Match Finished! Bot took the win.");
-                        terminateGame();
-                        return;
+                    if (pBot.pos >= ludoPath.length) {
+                        alert("🤖 Oh! Computer Jeet Gaya. Agli baar pakka harana!");
+                        pRed.pos = 0; pBot.pos = 0;
                     }
                     
                     ludoTurn = 0;
-                    document.getElementById("statusDisplay").innerText = "Your Turn";
-                    document.getElementById("statusDisplay").style.color = "#5cb85c";
-                    renderLudoGraphics();
-                }, 1100);
+                    document.getElementById("scoreText").innerText = "Your Turn";
+                    document.getElementById("scoreText").style.color = "#e74c3c";
+                    drawLudoBoard();
+                }, 1000);
             }
         }
 
-        function renderLudoGraphics() {
+        function drawLudoBoard() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            let unit = Math.min(canvas.width, canvas.height) / 9;
-            let offsetCol = (canvas.width - unit * 9) / 2;
-            let offsetRow = (canvas.height - unit * 7) / 2;
+            canvas.style.background = "#f4f6f6"; // Light premium board paper tint
 
-            // Paint clean natural grid fields
-            traditionalPath.forEach((tile, idx) => {
-                ctx.strokeStyle = "#cbd5e0";
-                ctx.lineWidth = 1;
-                
-                if(idx < 4) ctx.fillStyle = "#fed7d7"; 
-                else if(idx >= 6 && idx < 10) ctx.fillStyle = "#c6f6d5";
-                else if(idx === traditionalPath.length - 1) ctx.fillStyle = "#feebc8";
+            let size = Math.min(canvas.width, canvas.height) / 9;
+            let startX = (canvas.width - size * 9) / 2;
+            let startY = (canvas.height - size * 7) / 2;
+
+            // Draw clean traditional colorful blocks
+            ludoPath.forEach((cell, index) => {
+                ctx.strokeStyle = "#7f8c8d";
+                ctx.lineWidth = 1.5;
+
+                // Color themes based on path locations
+                if(index < 4) ctx.fillStyle = "#fadbd8"; // soft red path
+                else if(index >= 6 && index < 10) ctx.fillStyle = "#d4efdf"; // soft green path
+                else if(index === ludoPath.length - 1) ctx.fillStyle = "#fdebd0"; // Yellow Goal box
                 else ctx.fillStyle = "#ffffff";
 
-                ctx.fillRect(offsetCol + tile.cx*unit, offsetRow + tile.cy*unit, unit, unit);
-                ctx.strokeRect(offsetCol + tile.cx*unit, offsetRow + tile.cy*unit, unit, unit);
+                let cx = startX + cell.cx * size;
+                let cy = startY + cell.cy * size;
+                ctx.fillRect(cx, cy, size, size);
+                ctx.strokeRect(cx, cy, size, size);
             });
 
-            // Realistic tokens rendering (Solid Organic tokens)
-            let userLoc = traditionalPath[userSteps % traditionalPath.length];
-            let botLoc = traditionalPath[botSteps % traditionalPath.length];
+            // Gootiyan design (Traditional Solid Circles with borders)
+            let redCell = ludoPath[pRed.pos % ludoPath.length];
+            let botCell = ludoPath[pBot.pos % ludoPath.length];
 
-            // User Token
-            ctx.fillStyle = "#e53e3e";
-            ctx.beginPath();
-            ctx.arc(offsetCol + userLoc.cx*unit + unit/2, offsetRow + userLoc.cy*unit + unit/2, unit/3, 0, Math.PI*2);
-            ctx.fill();
+            // Player Token
+            let rx = startX + redCell.cx*size + size/2;
+            let ry = startY + redCell.cy*size + size/2;
+            ctx.fillStyle = pRed.color;
+            ctx.beginPath(); ctx.arc(rx, ry, size/3, 0, Math.PI*2); ctx.fill();
             ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
 
             // Bot Token
-            ctx.fillStyle = "#38a169";
-            ctx.beginPath();
-            ctx.arc(offsetCol + botLoc.cx*unit + unit/2, offsetRow + botLoc.cy*unit + unit/2, unit/3, 0, Math.PI*2);
-            ctx.fill();
+            let bx = startX + botCell.cx*size + size/2;
+            let by = startY + botCell.cy*size + size/2;
+            ctx.fillStyle = pBot.color;
+            ctx.beginPath(); ctx.arc(bx, by, size/3, 0, Math.PI*2); ctx.fill();
             ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
         }
 
-        function launchChess() {
-            activeEngine = "chess";
-            document.getElementById("portalView").style.display = "none";
-            document.getElementById("appScreen").style.display = "flex";
-            document.getElementById("rollActionBox").style.display = "none";
-            document.getElementById("statusDisplay").innerText = "Your Turn (White)";
-            document.getElementById("statusDisplay").style.color = "#ecc94b";
-            document.getElementById("hintDisplay").innerText = "Tap on your piece, then choose destination block.";
-            selectedCoordinates = null; activeChessTurn = "player";
-            resizeAppCanvas();
-            renderChessGraphics();
+        // --- CHESS SETUP ---
+        function startChess() {
+            currentImgMode = "chess";
+            canvas.style.borderColor = "#d5dbdb";
+            document.getElementById("scoreWrapper").innerHTML = `Turn: <span id="scoreText" style="color:#f39c12">Your Turn (White)</span>`;
+            document.getElementById("gameTips").innerText = "Tap your white piece, then tap an empty tile to move.";
+            document.getElementById("actionBar").style.display = "none";
+            selectedPiece = null; chessTurn = "player";
+            showScreen();
+            drawChessBoard();
 
-            // Direct tap actions handler
-            canvas.onclick = function(event) {
-                if (activeEngine !== "chess" || activeChessTurn !== "player") return;
-                let bRect = canvas.getBoundingClientRect();
-                let clickedX = event.clientX - bRect.left;
-                let clickedY = event.clientY - bRect.top;
+            // Handling pure natural tap clicks for moving figures
+            canvas.onclick = function(e) {
+                if (currentImgMode !== "chess" || chessTurn !== "player") return;
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
                 
-                let viewWidth = Math.min(canvas.width, canvas.height);
-                let tileBlock = viewWidth / 8;
-                let gridX = (canvas.width - viewWidth) / 2;
-                let gridY = (canvas.height - viewWidth) / 2;
+                let boardSize = Math.min(canvas.width, canvas.height);
+                let cellSize = boardSize / 8;
+                let startX = (canvas.width - boardSize) / 2;
+                let startY = (canvas.height - boardSize) / 2;
 
-                let selectedCol = Math.floor((clickedX - gridX) / tileBlock);
-                let selectedRow = Math.floor((clickedY - gridY) / tileBlock);
+                let col = Math.floor((x - startX) / cellSize);
+                let row = Math.floor((y - startY) / cellSize);
 
-                if (selectedCol >= 0 && selectedCol < 8 && selectedRow >= 0 && selectedRow < 8) {
-                    let targetUnit = chessBoardGrid[selectedRow][selectedCol];
+                if (col >= 0 && col < 8 && row >= 0 && row < 8) {
+                    let piece = chessBoard[row][col];
                     
-                    if (selectedCoordinates) {
-                        chessBoardGrid[selectedCoordinates.r][selectedCoordinates.c] = '';
-                        chessBoardGrid[selectedRow][selectedCol] = selectedCoordinates.symbol;
-                        selectedCoordinates = null;
-                        activeChessTurn = "bot";
-                        document.getElementById("statusDisplay").innerText = "Bot Engine calculating...";
-                        renderChessGraphics();
+                    if (selectedPiece) {
+                        // Move piece execution
+                        chessBoard[selectedPiece.row][selectedPiece.col] = '';
+                        chessBoard[row][col] = selectedPiece.type;
+                        selectedPiece = null;
+                        chessTurn = "bot";
+                        document.getElementById("scoreText").innerText = "Computer thinking...";
+                        document.getElementById("scoreText").style.color = "#c0392b";
+                        drawChessBoard();
 
+                        // Automated computer move
                         setTimeout(() => {
-                            executeBotChessCalculation();
-                            activeChessTurn = "player";
-                            document.getElementById("statusDisplay").innerText = "Your Turn (White)";
-                            renderChessGraphics();
-                        }, 900);
+                            makeBotChessMove();
+                            chessTurn = "player";
+                            document.getElementById("scoreText").innerText = "Your Turn (White)";
+                            document.getElementById("scoreText").style.color = "#f39c12";
+                            drawChessBoard();
+                        }, 800);
                     } else {
-                        if (targetUnit !== '' && ['♙','♖','♘','♗','♕','♔'].includes(targetUnit)) {
-                            selectedCoordinates = { r: selectedRow, c: selectedCol, symbol: targetUnit };
-                            renderChessGraphics();
+                        // Select White pieces (unicode representations for white are full blocks)
+                        if (piece !== '' && ['♙','♖','♘','♗','♕','♔'].includes(piece)) {
+                            selectedPiece = { row: row, col: col, type: piece };
+                            drawChessBoard();
                         }
                     }
                 }
             };
         }
 
-        function executeBotChessCalculation() {
-            let activeBotUnits = [];
+        function makeBotChessMove() {
+            // Finding black pieces targets
+            let botPieces = [];
+            const blackSet = ['♟','♜','♞','♝','♛','♚'];
             for(let r=0; r<8; r++) {
                 for(let c=0; c<8; c++) {
-                    if (chessBoardGrid[r][c] !== '' && ['♟','♜','♞','♝','♛','♚'].includes(chessBoardGrid[r][c])) {
-                        activeBotUnits.push({r: r, c: c, symbol: chessBoardGrid[r][c]});
+                    if (chessBoard[r][c] !== '' && blackSet.includes(chessBoard[r][c])) {
+                        botPieces.push({row: r, col: c, type: chessBoard[r][c]});
                     }
                 }
             }
-            if (activeBotUnits.length > 0) {
-                let randomUnit = activeBotUnits[Math.floor(Math.random() * activeBotUnits.length)];
-                let nextTargetRow = randomUnit.r + 1;
-                if (nextTargetRow < 8 && chessBoardGrid[nextTargetRow][randomUnit.c] === '') {
-                    chessBoardGrid[randomUnit.r][randomUnit.c] = '';
-                    chessBoardGrid[nextTargetRow][randomUnit.c] = randomUnit.symbol;
+            if (botPieces.length > 0) {
+                let pick = botPieces[getRandomInt(0, botPieces.length)];
+                let nextRow = pick.row + 1;
+                if (nextRow < 8 && chessBoard[nextRow][pick.col] === '') {
+                    chessBoard[pick.row][pick.col] = '';
+                    chessBoard[nextRow][pick.col] = pick.type;
                 }
             }
         }
 
-        function renderChessGraphics() {
+        function drawChessBoard() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            let mapSize = Math.min(canvas.width, canvas.height);
-            let blockUnit = mapSize / 8;
-            let startColX = (canvas.width - mapSize) / 2;
-            let startRowY = (canvas.height - mapSize) / 2;
+            let boardSize = Math.min(canvas.width, canvas.height);
+            let cellSize = boardSize / 8;
+            let startX = (canvas.width - boardSize) / 2;
+            let startY = (canvas.height - boardSize) / 2;
 
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    // Real Maple wood vs Walnut wood color tone combination
-                    ctx.fillStyle = (r + c) % 2 === 0 ? "#eed9b3" : "#b58863";
+                    // Premium Classic Wooden Tiles Color Combo
+                    ctx.fillStyle = (r + c) % 2 === 0 ? "#f0d9b5" : "#b58863"; 
                     
-                    if (selectedCoordinates && selectedCoordinates.r === r && selectedCoordinates.c === c) {
-                        ctx.fillStyle = "#90cdf4";
+                    // Highlight selected piece tile softly
+                    if (selectedPiece && selectedPiece.row === r && selectedPiece.col === c) {
+                        ctx.fillStyle = "#3498db";
                     }
 
-                    ctx.fillRect(startColX + c*blockUnit, startRowY + r*blockUnit, blockUnit, blockUnit);
+                    ctx.fillRect(startX + c * cellSize, startY + r * cellSize, cellSize, cellSize);
                     
-                    let activeFig = chessBoardGrid[r][c];
-                    if (activeFig !== '') {
-                        ctx.fillStyle = ['♙','♖','♘','♗','♕','♔'].includes(activeFig) ? "#ffffff" : "#2d3748";
+                    let piece = chessBoard[r][c];
+                    if (piece !== '') {
+                        // Drawing real solid aesthetic colors for chess figures
+                        ctx.fillStyle = ['♙','♖','♘','♗','♕','♔'].includes(piece) ? "#ffffff" : "#2c3e50";
                         
+                        // Traditional sharp black outline for white pieces so they pop on light tiles
                         if(ctx.fillStyle === "#ffffff") {
                             ctx.strokeStyle = "#000000";
-                            ctx.lineWidth = 1;
+                            ctx.lineWidth = 1.5;
                         }
                         
-                        ctx.font = `${blockUnit * 0.65}px sans-serif`;
+                        ctx.font = `${cellSize * 0.65}px sans-serif`;
                         ctx.textAlign = "center";
                         ctx.textBaseline = "middle";
                         
-                        let posX = startColX + c*blockUnit + blockUnit/2;
-                        let posY = startRowY + r*blockUnit + blockUnit/2;
+                        let px = startX + c * cellSize + cellSize/2;
+                        let py = startY + r * cellSize + cellSize/2;
                         
-                        ctx.fillText(activeFig, posX, posY);
-                        if(['♙','♖','♘','♗','♕','♔'].includes(activeFig)) {
-                            ctx.strokeText(activeFig, posX, posY);
+                        ctx.fillText(piece, px, py);
+                        if(piece && ['♙','♖','♘','♗','♕','♔'].includes(piece)) {
+                            ctx.strokeText(piece, px, py);
                         }
                     }
                 }
             }
         }
 
-        function terminateGame() {
-            activeEngine = "";
-            document.getElementById("appScreen").style.display = "none";
-            document.getElementById("portalView").style.display = "block";
-        }
-
-        function frameLoop() {
-            requestAnimationFrame(frameLoop);
-            if (activeEngine === "ludo") {
-                renderLudoGraphics();
+        // MASTER ENGINE TRIGGER LOOP
+        function masterLoop() {
+            requestAnimationFrame(masterLoop);
+            if (currentImgMode === "ludo") {
+                drawLudoBoard();
             }
         }
-        requestAnimationFrame(frameLoop);
+
+        requestAnimationFrame(masterLoop);
     </script>
 </body>
 </html>
