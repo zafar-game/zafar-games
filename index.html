@@ -1,10 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Zafar Games</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zafar Games</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#111;
+color:white;
+text-align:center;
+}
+
+header{
+background:#1f1f1f;
+padding:25px;
+box-shadow:0 0 15px rgba(0,0,0,.5);
+}
+
+header h1{
+font-size:42px;
+color:#00ff99;
+}
+
+header p{
+margin-top:10px;
+color:#ccc;
+}
+
+.games{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+padding:40px;
+}
+
+.card{
+background:#222;
+width:300px;
+padding:20px;
+border-radius:15px;
+transition:.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card h2{
+margin-bottom:15px;
+}
+
+button{
+padding:12px 25px;
+border:none;
+background:#00ff99;
+color:black;
+font-size:18px;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00cc77;
+}
+</style>
+
 </head>
+
 <body>
-    <h1>🎮 Welcome to Zafar Games</h1>
-    <p>My first gaming website is live!</p>
+
+<header>
+<h1>🎮 Zafar Games</h1>
+<p>Play Free Browser Games</p>
+</header>
+
+<div class="games">
+
+<div class="card">
+<h2>🐍 Snake Game</h2>
+<p>Eat food and become the biggest snake.</p>
+<br>
+<button>Play Now</button>
+</div>
+
+<div class="card">
+<h2>🚗 Racing Game</h2>
+<p>Coming Soon</p>
+<br>
+<button>Coming Soon</button>
+</div>
+
+<div class="card">
+<h2>👻 Horror Game</h2>
+<p>Coming Soon</p>
+<br>
+<button>Coming Soon</button>
+</div>
+
+</div>
+
 </body>
 </html>
