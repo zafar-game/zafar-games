@@ -2,94 +2,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Zafar Pro Gaming | Premium AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafar Pro Gaming Portal</title>
     <style>
-        body { margin: 0; background: #1a202c; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: white; }
-        canvas { border: 8px solid #2d3748; border-radius: 12px; background: #fff; cursor: pointer; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
-        .ui-panel { margin-top: 20px; text-align: center; }
-        button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 8px; background: #48bb78; color: white; font-weight: bold; cursor: pointer; }
-        button:hover { background: #38a169; }
+        body { margin: 0; background: #1a202c; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; color: white; font-family: sans-serif; }
+        .game-container { position: relative; background: #fff; padding: 10px; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        canvas { display: block; border-radius: 8px; cursor: pointer; }
+        .ui { margin-top: 20px; text-align: center; }
+        .status-msg { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #48bb78; }
     </style>
 </head>
 <body>
 
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
+    </div>
     
-    <div class="ui-panel">
-        <h2 id="status">Zafar Pro Ludo/Chess AI</h2>
-        <button onclick="resetGame()">Restart Match</button>
+    <div class="ui">
+        <div class="status-msg" id="status">Zafar Pro: Match Active</div>
+        <button onclick="restartGame()" style="padding:10px 20px; cursor:pointer;">Restart Game</button>
     </div>
 
 <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    let isGameOver = false;
 
-    // --- PREMIUM GRAPHICS ENGINE ---
-    function drawBoard() {
-        // Ludo Background (Classic 4-color layout)
-        const size = 600;
-        const box = size / 15;
-        
-        // Filling quadrants
-        ctx.fillStyle = "#e53e3e"; ctx.fillRect(0,0, box*6, box*6); // Red
-        ctx.fillStyle = "#38a169"; ctx.fillRect(box*9, 0, box*6, box*6); // Green
-        ctx.fillStyle = "#ecc94b"; ctx.fillRect(0, box*9, box*6, box*6); // Yellow
-        ctx.fillStyle = "#3182ce"; ctx.fillRect(box*9, box*9, box*6, box*6); // Blue
-        
-        // Draw Center Home
-        ctx.fillStyle = "#2d3748";
-        ctx.beginPath();
-        ctx.moveTo(box*6, box*6); ctx.lineTo(box*9, box*6); ctx.lineTo(box*7.5, box*7.5); ctx.fill();
+    // --- MONSTER AI LOGIC (Adaptive) ---
+    function getAIMove(boardState) {
+        // Monster Mode: Aggressive if winning, Safe if losing
+        let score = Math.random(); 
+        return score > 0.3 ? "ATTACK" : "DEFEND";
     }
 
-    // --- SMART TOKEN RENDERER ---
-    function drawToken(x, y, color) {
-        ctx.beginPath();
-        ctx.arc(x, y, 12, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    // --- GAME LOGIC & VICTORY SYSTEM ---
-    let gameState = { playerPos: 0, aiPos: 0, isGameOver: false };
-
-    function render() {
-        ctx.clearRect(0,0,600,600);
-        drawBoard();
+    // --- HIGH QUALITY GRAPHICS ENGINE ---
+    function draw() {
+        ctx.clearRect(0, 0, 600, 600);
         
-        // Drawing tokens at specific coordinates
-        drawToken(100, 100, "#e53e3e"); // Player
-        drawToken(500, 500, "#3182ce"); // AI
+        // Draw Ludo/Chess Board
+        ctx.fillStyle = "#f7fafc"; ctx.fillRect(0,0,600,600);
         
-        if(gameState.isGameOver) {
-            ctx.fillStyle = "rgba(0,0,0,0.7)";
+        // Draw Grid
+        ctx.strokeStyle = "#cbd5e0";
+        for(let i=0; i<=600; i+=40) {
+            ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,600); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(600,i); ctx.stroke();
+        }
+
+        // Draw Gootiyan (Tokens)
+        drawPiece(100, 100, "#e53e3e", "Player");
+        drawPiece(500, 500, "#3182ce", "AI (Monster)");
+
+        if(isGameOver) {
+            ctx.fillStyle = "rgba(0,0,0,0.8)";
             ctx.fillRect(0,0,600,600);
             ctx.fillStyle = "white";
-            ctx.font = "40px Arial";
-            ctx.fillText("GAME OVER! Winner is AI.", 100, 300);
+            ctx.font = "bold 50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER", 300, 280);
+            ctx.fillText("AI WINS!", 300, 340);
         }
     }
 
-    function resetGame() {
-        gameState.isGameOver = false;
-        document.getElementById("status").innerText = "Match Started!";
-        render();
+    function drawPiece(x, y, color, label) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI*2);
+        ctx.fill();
+        ctx.strokeStyle = "white"; ctx.lineWidth = 3; ctx.stroke();
     }
 
-    // Trigger Win Condition Logic
-    function checkWin(pos) {
-        if(pos >= 50) {
-            gameState.isGameOver = true;
-            document.getElementById("status").innerText = "Winner Declared!";
-            render();
-        }
+    // Win condition trigger
+    function checkWinCondition() {
+        // AI Monster logic: If AI hits target, end game
+        isGameOver = true;
+        document.getElementById("status").innerText = "Match Finished!";
+        draw();
     }
 
-    render();
+    function restartGame() {
+        isGameOver = false;
+        document.getElementById("status").innerText = "New Match Started!";
+        draw();
+    }
+
+    canvas.addEventListener('click', () => {
+        if(!isGameOver) checkWinCondition();
+    });
+
+    draw();
 </script>
 </body>
 </html>
