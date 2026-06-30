@@ -1,1 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
+    <title>Zafar Games | Ultimate Mobile Arcade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --neon-green: #00ff99;
+            --neon-blue: #00e5ff;
+            --neon-pink: #ff0055;
+            --neon-yellow: #ffe600;
+            --text-white: #ffffff;
+            --text-gray: #c5c6c7;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1f2833 0%, #0b0c10 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(31, 40, 51, 0.95);
+            border-bottom: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .hero {
+            min-height: 25vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+        }
+
+        .hero h1 { font-size: 2.5rem; margin-bottom: 5px; text-shadow: 0 0 15px var(--neon-blue); }
+        .hero h1 span { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
+
+        .container { padding: 30px 5%; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; color: var(--neon-blue); }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .play-zone {
+            background: rgba(31, 40, 51, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid var(--neon-blue);
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+        }
+        
+        .play-zone:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+        }
+
+        .play-zone.snake-card { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 153, 0.1); }
+        .play-zone.snake-card:hover { box-shadow: 0 0 25px rgba(0, 255, 153, 0.4); }
+        .play-zone.ludo-card { border-color: var(--neon-yellow); opacity: 0.6; }
+        .play-zone.chess-card { border-color: #ffffff; opacity: 0.6; }
+        .play-zone.racing-card { border-color: var(--neon-pink); opacity: 0.6; }
+
+        .game-icon { font-size: 50px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+        .snake-card .game-icon { filter: drop-shadow(0 0 12px var(--neon-green)); }
+
+        .play-now-btn {
+            display: inline-block;
+            background: var(--neon-green);
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.4);
+            transition: all 0.2s;
+        }
+        .play-now-btn:hover { transform: scale(1.05); }
+        .coming-soon-tag { display: inline-block; background: #333; color: #aaa; padding: 8px 20px; border-radius: 25px; font-size: 14px; margin-top: 15px; font-weight: bold; text-transform: uppercase; }
+
+        .about-section {
+            max-width: 800px;
+            margin: 40px auto 0 auto;
+            text-align: center;
+            padding: 25px;
+            background: rgba(31, 40, 51, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 229, 255, 0.1);
+        }
+        .about-section h2 { color: var(--neon-green); margin-bottom: 12px; font-size: 1.5rem; text-transform: uppercase; }
+        .about-section p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
+
+        .contact-box {
+            background: rgba(31, 40, 51, 0.8);
+            max-width: 550px;
+            margin: 40px auto 0 auto;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--neon-blue);
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+        .contact-box h3 { color: var(--neon-blue); font-size: 18px; margin-bottom: 5px; text-transform: uppercase; }
+        .contact-row { display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
+        .compact-link { color: var(--text-white); text-decoration: none; font-size: 15px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+        .compact-link:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        
+        footer { text-align: center; padding: 25px; color: #666; font-size: 13px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer a { color: var(--neon-green); text-decoration: none; font-weight: bold; transition: all 0.2s; }
+        footer a:hover { text-shadow: 0 0 5px var(--neon-green); }
+
+        .game-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #050508;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5px;
+        }
+
+        .game-header {
+            width: 100%;
+            max-width: 440px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: #1f2833;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+        #canvas-container {
+            position: relative;
+            width: 95vw;
+            max-width: 400px;
+            height: 400px;
+        }
+
+        #gameCanvas {
+            background: #0b0c10;
+            display: block;
+            border-radius: 15px;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
+            width: 100%; height: 100%;
+        }
+
+        .mobile-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 90vw;
+            max-width: 240px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: #1f2833;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-size: 26px;
+            padding: 12px 0;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            display: flex; align-items: center; justify-content: center;
+            height: 65px; width: 65px; margin: 0 auto;
+        }
+        .control-btn:active { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
+        .control-btn.up { grid-column: 2; }
+        .control-btn.left { grid-column: 1; }
+        .control-btn.right { grid-column: 3; }
+        .control-btn.down { grid-column: 2; }
+
+        .settings-bar { display: flex; gap: 15px; margin-bottom: 5px; }
+        .settings-btn { background: #1f2833; border: 1px solid var(--text-gray); color: var(--text-white); padding: 5px 15px; border-radius: 5px; font-size: 13px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="main-site" id="mainSite">
+        <nav>
+            <div class="logo-container">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://w3.org" style="filter: drop-shadow(0 0 8px #00ff99);">
+                    <path d="M8 24L16 16L24 24M8 14L16 6L24 14" stroke="#00ff99" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="logo-text">Zafar Games</div>
+            </div>
+        </nav>
+        <section class="hero">
+            <h1>Zafar Arcade <span>Station</span></h1>
+            <p style="color: var(--text-gray); letter-spacing: 1px; margin-top: 5px;">Premium High-Quality HTML5 Station</p>
+        </section>
+
 
