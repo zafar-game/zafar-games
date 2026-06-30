@@ -3,681 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zafar Games | Ultimate Browser Gaming Hub</title>
+    <title>Zafar Games | Play Free Browser Games</title>
     <style>
-        /* CSS Core Framework */
+        /* --- CSS RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             scroll-behavior: smooth;
         }
 
         :root {
-            --bg-dark: #040407;
-            --card-bg: #09090d;
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
             --neon-green: #00ff99;
-            --neon-glow: rgba(0, 255, 153, 0.25);
-            --neon-pulse: rgba(0, 255, 153, 0.5);
-            --insta-color: #e1306c;
-            --insta-glow: rgba(225, 48, 108, 0.2);
+            --neon-blue: #00e5ff;
             --text-white: #ffffff;
-            --text-gray: #828288;
+            --text-gray: #c5c6c7;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-color);
             color: var(--text-white);
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* --- ADVANCED GAMING ANIMATIONS FRAMEWORKS --- */
-        @keyframes neonPulse {
-            0%, 100% { text-shadow: 0 0 10px var(--neon-glow); }
-            50% { text-shadow: 0 0 20px var(--neon-pulse); }
-        }
-
-        @keyframes cardGlow {
-            0%, 100% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.02); }
-            50% { box-shadow: 0 0 25px rgba(0, 255, 153, 0.15); }
-        }
-
-        @keyframes scrollTicker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* Racing Highway Line Animation */
-        @keyframes racingTrack {
-            0% { transform: translateY(-100%) scaleX(1); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: translateY(100%) scaleX(1.5); opacity: 0; }
-        }
-
-        /* Snake Crawl Animation Simulation */
-        @keyframes snakeMove {
-            0% { left: -20px; top: 10px; }
-            25% { left: 40%; top: 10px; }
-            40% { left: 40%; top: 60px; }
-            75% { left: 85%; top: 60px; }
-            90% { left: 85%; top: 20px; }
-            100% { left: 105%; top: 20px; }
-        }
-
-        /* Fighting Combo Multiplier Pulse */
-        @keyframes fightCombo {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #ff3366); }
-            50% { transform: scale(1.15); filter: drop-shadow(0 0 12px #ff3366); }
-        }
-
-        /* Navigation Header */
-        header {
-            background: rgba(9, 9, 13, 0.85);
-            backdrop-filter: blur(15px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .nav-box {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* --- NAVBAR --- */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 24px;
+            padding: 20px 8%;
+            background: rgba(31, 40, 51, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 255, 153, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 900;
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            animation: neonPulse 3s infinite ease-in-out;
-        }
-
-        .logo span {
+            font-size: 28px;
+            font-weight: 800;
             color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
         }
 
-        nav ul {
+        .nav-links {
             display: flex;
             list-style: none;
-            gap: 35px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 8px 24px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            gap: 30px;
         }
 
-        nav ul li a {
+        .nav-links a {
             color: var(--text-gray);
             text-decoration: none;
+            font-size: 16px;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: var(--neon-green);
-        }
-
-        /* Hero Canvas & Stage Layout */
-        .hero {
-            padding: 190px 24px 90px 24px;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(circle at top, rgba(0, 255, 153, 0.07) 0%, rgba(4, 4, 7, 0) 65%);
-            overflow: hidden;
-        }
-
-        /* Live Visual Arcade Background Elements */
-        .arcade-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Racing Element Line inside Hero */
-        .racing-vector {
-            position: absolute;
-            width: 2px;
-            height: 80px;
-            background: linear-gradient(to bottom, transparent, var(--neon-green));
-            left: 15%;
-            animation: racingTrack 2.5s infinite linear;
-        }
-        .racing-vector.right {
-            left: 85%;
-            animation-delay: 1.25s;
-        }
-
-        /* Animated Snake Inside Hero Frame */
-        .hero-snake-simulation {
-            position: absolute;
-            width: 35px;
-            height: 8px;
-            background: var(--neon-green);
-            border-radius: 4px;
-            box-shadow: 0 0 10px var(--neon-green);
-            bottom: 15%;
-            animation: snakeMove 14s infinite linear;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 5;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(0, 255, 153, 0.05);
-            border: 1px solid rgba(0, 255, 153, 0.15);
-            color: var(--neon-green);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 22px;
+            transition: 0.3s;
             text-transform: uppercase;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px rgba(0, 255, 153, 0.5);
+        }
+
+        /* --- HERO BANNER --- */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(11, 12, 16, 0.7), rgba(11, 12, 16, 0.9)), 
+                        url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1920') no-repeat center center/cover;
+            padding: 0 20px;
         }
 
         .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
+            font-size: 3.5rem;
             margin-bottom: 20px;
-            letter-spacing: -1px;
-            line-height: 1.1;
+            letter-spacing: 3px;
+            animation: pulse 2s infinite alternate;
         }
 
         .hero h1 span {
             color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
         }
 
         .hero p {
             font-size: 1.2rem;
             color: var(--text-gray);
-            max-width: 650px;
-            margin: 0 auto 35px auto;
+            max-width: 600px;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
 
-        /* Live Broadcast Ticker */
-        .ticker-wrap {
-            width: 100%;
-            background: rgba(9, 9, 13, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            padding: 12px 0;
-            overflow: hidden;
-        }
-
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: scrollTicker 22s linear infinite;
-            color: var(--text-gray);
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .ticker span {
+        .cta-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: transparent;
             color: var(--neon-green);
-            margin-right: 60px;
-        }
-
-        /* Container Framework */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-
-        .section-header {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 15px;
+            border: 2px solid var(--neon-green);
+            border-radius: 50px;
+            cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
         }
 
-        .section-header span {
-            color: var(--neon-green);
+        .cta-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.6);
+            transform: translateY(-3px);
         }
 
-        .section-subtitle {
+        /* --- GAMES SECTION --- */
+        .container {
+            padding: 80px 8%;
+        }
+
+        .section-title {
             text-align: center;
-            color: var(--text-gray);
-            font-size: 1rem;
+            font-size: 2.5rem;
             margin-bottom: 50px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            position: relative;
+            text-transform: uppercase;
         }
 
-        /* Showcase Cards Framework */
-        .grid-layout {
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 2px;
+        }
+
+        .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
         }
 
-        .card {
-            background-color: var(--card-bg);
+        .game-card {
+            background: var(--card-bg);
             border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.01);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 30px rgba(0, 255, 153, 0.2);
+        }
+
+        .game-thumb {
+            height: 200px;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            position: relative;
+            border-bottom: 2px solid rgba(255,255,255,0.05);
+        }
+
+        .game-card:hover .game-thumb {
+            background: linear-gradient(45deg, #1f2833, #0b0c10);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--neon-blue);
+            color: #000;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge.live {
+            background: var(--neon-green);
+        }
+
+        .game-info {
+            padding: 25px;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--neon-green);
-            box-shadow: 0 12px 40px rgba(0, 255, 153, 0.12);
+        .game-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
         }
 
-        .card-active {
-            animation: cardGlow 4s infinite ease-in-out;
-            border-color: rgba(0, 255, 153, 0.1);
-        }
-
-        .rating-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 195, 0, 0.08);
-            color: #ffc300;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .game-icon {
-            font-size: 44px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Fighting Module Combo Trigger Indicator */
-        .fight-combo-badge {
-            position: absolute;
-            bottom: 90px;
-            right: 25px;
-            color: #ff3366;
-            font-size: 0.8rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            animation: fightCombo 1.5s infinite ease-in-out;
-            text-transform: uppercase;
-        }
-
-        .card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-            position: relative;
-            z-index: 2;
-        }
-
-        .card p {
+        .game-info p {
             color: var(--text-gray);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 2;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
 
-        /* Professional Action Triggers */
-        .action-btn {
-            display: block;
+        .play-btn {
             width: 100%;
-            background-color: var(--neon-green);
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            padding: 13px 24px;
+            padding: 12px;
+            background: #111;
+            color: var(--text-white);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
-            text-align: center;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--neon-glow);
-            border: none;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 2;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
         }
 
-        .action-btn:hover {
-            background-color: #00e688;
-            box-shadow: 0 6px 22px rgba(0, 255, 153, 0.4);
-            transform: scale(1.01);
+        .game-card:hover .play-btn {
+            background: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            font-weight: 700;
         }
 
-        .btn-locked {
-            background-color: #111115;
-            color: #3e3e44;
-            box-shadow: none;
+        .play-btn.disabled {
+            background: #111 !important;
+            color: #555 !important;
+            border-color: #222 !important;
             cursor: not-allowed;
         }
 
-        /* System Stat Dash */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        /* --- ABOUT SECTION --- */
+        .about-section {
+            background: #11141a;
             text-align: center;
-            margin-top: 20px;
         }
 
-        .stat-box {
-            background: #06060a;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.005);
-        }
-
-        .stat-box h4 {
-            font-size: 2rem;
-            color: var(--neon-green);
-            margin-bottom: 5px;
-            font-weight: 800;
-        }
-
-        .stat-box p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Core Framework Technical Capabilities Panel */
-        .features-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .feature-item {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            border-left: 3px solid var(--neon-green);
-        }
-
-        .feature-item h4 {
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-
-        .feature-item p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* About Studio Module Panel */
-        .bio-panel {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            max-width: 850px;
+        .about-content {
+            max-width: 800px;
             margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.01);
-        }
-
-        .bio-panel p {
             color: var(--text-gray);
             font-size: 1.1rem;
             line-height: 1.8;
         }
 
-        /* Clean Contact Deck Setup */
-        .connect-box {
+        /* --- CONTACT SECTION --- */
+        .contact-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 40px;
             flex-wrap: wrap;
+            margin-top: 30px;
         }
 
-        .social-btn {
-            background: #06060a;
-            padding: 14px 28px;
-            border-radius: 12px;
-            color: #fff;
+        .contact-card {
+            background: var(--card-bg);
+            padding: 20px 40px;
+            border-radius: 15px;
             text-decoration: none;
+            color: var(--text-white);
             font-weight: 600;
-            font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .social-btn:hover {
-            border-color: var(--neon-green);
-            color: var(--neon-green);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.08);
+        .contact-card:hover {
+            border-color: var(--neon-blue);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            color: var(--neon-blue);
         }
 
-        /* Precision Scaled Micro Instagram Anchor */
-        .social-btn.insta-btn {
-            border-color: rgba(225, 48, 108, 0.15);
-        }
-
-        .social-btn.insta-btn .insta-icon {
-            font-size: 13px; /* Micro adjusted directly */
-        }
-
-        .social-btn.insta-btn:hover {
-            border-color: var(--insta-color);
-            color: #fff;
-            box-shadow: 0 0 15px var(--insta-glow);
-        }
-
-        /* Fixed Global Footer */
+        /* --- FOOTER --- */
         footer {
-            background-color: #020204;
+            background: #050608;
             text-align: center;
-            padding: 35px 24px;
-            color: #3e3e44;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.005);
-            margin-top: 60px;
+            padding: 30px;
+            color: #555;
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.02);
         }
 
-        /* Mobile View Response Layouts */
+        /* --- ANIMATIONS & RESPONSIVENESS --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
-            .nav-box { justify-content: center; }
-            .racing-vector { display: none; }
+            nav { padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2.3rem; }
+            .container { padding: 60px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Core Header -->
-    <header>
-        <div class="nav-box">
-            <a href="#" class="logo">⚡ Zafar <span>Games</span> ⚡</a>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#games">Games</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">⚡ Zafar Games ⚡</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-    <!-- Interactive Interactive Hero Console Space -->
-    <section class="hero">
-        <!-- Live Tracking Graphic System Embedded Background Layers -->
-        <div class="arcade-layer">
-            <div class="racing-vector"></div>
-            <div class="racing-vector right"></div>
-            <div class="hero-snake-simulation"></div>
-        </div>
-
-        <div class="hero-content">
-            <div class="hero-badge">Next-Gen Arcade Console</div>
-            <h1>Play Premium Indie <span>Games Instantly</span></h1>
-            <p>No deployment lag, no terminal setups required. High-grade web experiences built seamlessly via Godot Engine and launched directly on secure clouds.</p>
-            <a href="#games" class="action-btn" style="max-width: 240px; margin: 0 auto;">LAUNCH HUB</a>
-        </div>
+    <!-- HERO HEADER -->
+    <section class="hero" id="home">
+        <h1>Welcome to <span>Zafar Games</span></h1>
+        <p>Experience ultra-smooth, free-to-play browser games crafted using modern game engines. No downloads, no hassle—just pure arcade action.</p>
+        <a href="#games"><button class="cta-btn">Browse Games</button></a>
     </section>
 
-    <!-- Studio Rolling Notice Board -->
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <span>🐍 Snake Engine updated with high-performance modern vectors!</span> <span>🚗 Racing Arena phase-1 vector tracks deployment started!</span> <span>🥊 Cyber Fighting dynamic combat system designs upcoming!</span> <span>🔥 Drop game reviews on our social channel below!</span>
-        </div>
-    </div>
-
-    <!-- Arcade Showcase Modules Selection Grid -->
-    <section id="games" class="container">
-        <h2 class="section-header">Featured <span>Games</span></h2>
-        <p class="section-subtitle">Experience lightning-response lightweight grid modules engineered directly for modern setups.</p>
-        
-        <div class="grid-layout">
+    <!-- GAMES SECTION -->
+    <section class="container" id="games">
+        <h2 class="section-title">Our Arcade</h2>
+        <div class="games-grid">
             
-            <!-- Game 1: Snake Module -->
-            <div class="card card-active">
-                <span class="rating-badge">★ 5.0 Rating</span>
-                <div>
-                    <div class="game-icon">🐍</div>
-                    <h3>Snake Game V1</h3>
-                    <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and record the highest score log instantly.</p>
+            <!-- Game 1: Snake -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    🐍
+                    <span class="badge live">Live</span>
                 </div>
-                <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="action-btn">PLAY NOW</a>
-            </div>
-
-            <!-- Game 2: Racing Module -->
-            <div class="card">
-                <div>
-                    <div class="game-icon">🚗</div>
-                    <h3>Racing Arena</h3>
-                    <p>Top-down hyper drifting track physics, modular supercars, and timed checkpoint tracks configured on acceleration parameters.</p>
+                <div class="game-info">
+                    <div>
+                        <h3>Snake Cobra</h3>
+                        <p>Classic arcade action! Control the snake, eat points, and grow larger without crashing into your own tail.</p>
+                    </div>
+                    <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="play-btn">▶ Play Now</a>
                 </div>
-                <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
 
-            <!-- Game 3: Fighting Cyber Arena -->
-            <div class="card">
-                <span class="fight-combo-badge">Combo x99</span>
-                <div>
-                    <div class="game-icon">🥊</div>
-                    <h3>Cyber Fight</h3>
-                    <p>High-action futuristic 2D combat module featuring complex attack sequences, special inputs, and fluid response mechanics.</p>
+            <!-- Game 2: Racing -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    🏎️
+                    <span class="badge">Soon</span>
                 </div>
-                <button class="action-btn btn-locked" disabled>COMING SOON</button>
-            </div>
-
-            <!-- Game 4: Horror Project -->
-            <div class="card">
-                <div>
-                    <div class="game-icon">👻</div>
-                    <h3>Silent Echo</h3>
-                    <p>Dark isometric puzzle space. Track escape routes using peripheral flashlight patterns before systems exhaust.</p>
+                <div class="game-info">
+                    <div>
+                        <h3>Neon Racer</h3>
+                        <p>Dodge obstacles, speed through high-tech grid systems, and beat the clock in this upcoming racing adventure.</p>
+                    </div>
+                    <button class="play-btn disabled" disabled>Coming Soon</button>
                 </div>
-                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+            <!-- Game 3: Horror -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    👻
+                    <span class="badge">Soon</span>
+                </div>
+                <div class="game-info">
+                    <div>
+                        <h3>Shadow Escape</h3>
+                        <p>A thrilling psychological top-down survival puzzle. Find keys and evade shadows lurking in the dark.</p>
+                    </div>
+                    <button class="play-btn disabled" disabled>Coming Soon</button>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <!-- Console Engine Analytics Dashboard -->
-    <section class="container" style="padding-top: 10px; padding-bottom: 40px;">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <h4>1+</h4>
-                <p>Active Instances</p>
-            </div>
-            <div class="stat-box">
-                <h4>60 FPS</h4>
-                <p>Engine Stability</p>
-            </div>
-            <div class="stat-box">
-                <h4>Zero</h4>
-                <p>Friction Downloads</p>
-            </div>
+    <!-- ABOUT SECTION -->
+    <section class="container about-section" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <p>Welcome to Zafar Games! I am an independent creator passionate about building engaging, interactive web games using the Godot Engine and HTML5 templates. My goal is to craft highly optimized experiences that everyone can enjoy instantly on both desktop and mobile platforms.</p>
         </div>
     </section>
 
-    <!-- Capabilities / Tech Framework Specifications -->
-    <section id="features" class="container">
-        <h2 class="section-header">Engine <span>Capabilities</span></h2>
-        <p class="section-subtitle">Compiled precisely through lightweight web environments to maximize refresh ratios.</p>
-        <div class="features-box">
-            <div class="feature-item">
-                <h4>⚡ Godot Web Compiler</h4>
-                <p>All core systems are compiled directly via Godot Engine, processing true vector physics grids instantly inside browsers.</p>
-            </div>
-            <div class="feature-item">
-                <h4>📱 Universal Cross-Play</h4>
-                <p>Engineered seamlessly to adapt across modern screen dimensions, whether on professional desktop displays or standard mobile views.</p>
-            </div>
-            <div class="feature-item">
-                <h4>🛡️ Secured Sandbox</h4>
-                <p>No installations, no background analytics logs. Stream entirely safe sandbox game instances directly over GitHub deployment pages.</p>
-            </div>
+    <!-- CONTACT SECTION -->
+    <section class="container" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p style="text-align: center; color: var(--text-gray); margin-bottom: 20px;">Have feedback or want to collaborate? Connect with me directly through these channels.</p>
+        <div class="contact-links">
+            <a href="https://github.com/" target="_blank" class="contact-card">GitHub Profile</a>
+            <a href="mailto:your-email@example.com" class="contact-card">Send Email</a>
         </div>
     </section>
 
-    <!-- Profile Module Box -->
-    <section id="about" class="container">
-        <h2 class="section-header">About <span>The Studio</span></h2>
-        <div class="bio-panel">
-            <p>Welcome to Zafar Games! I am an independent gaming pipeline operator focusing on deploying cross-platform browser instances built using advanced HTML5 web parameters. This deck acts as a clean, centralized node for players looking to explore and trigger games seamlessly without friction or platform load delays.</p>
-        </div>
-    </section>
-
-    <!-- Clean Contact Node -->
-    <section id="contact" class="container">
-        <h2 class="section-header">Secure <span>Console Deck</span></h2>
-        <p class="section-subtitle">Reach out for feedback or system logging improvements.</p>
-        <div class="connect-box">
-            <!-- Email Anchor -->
-            <a href="mailto:zafargames.contact@gmail.com" class="social-btn">📧 zafargames.contact@gmail.com</a>
-            
-            <!-- Scaled Down Instagram Option -->
-            <a href="https://instagram.com/skarman.exe" target="_blank" class="social-btn insta-btn">
-                <span class="insta-icon">📸</span> skarman.exe
-            </a>
-        </div>
-    </section>
-
-    <!-- Global Footer -->
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 Zafar Games. Streamed globally over secure CDN pipelines.</p>
+        &copy; 2026 Zafar Games. Powering independent web arcade experiences.
     </footer>
 
+    <script>
+        // Smooth Active Link Indicator
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
