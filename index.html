@@ -1,215 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Ultimate Mobile Arcade</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zafar Games</title>
 
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --neon-green: #00ff99;
-            --neon-blue: #00e5ff;
-            --neon-pink: #ff0055;
-            --neon-yellow: #ffe600;
-            --text-white: #ffffff;
-            --text-gray: #c5c6c7;
-        }
+<style>
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            overflow-x: hidden;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
 
-        /* HOME SCREEN LAYOUT */
-        .main-site { display: block; }
+html{
+scroll-behavior:smooth;
+}
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-            background: rgba(31, 40, 51, 0.95);
-            border-bottom: 1px solid rgba(0, 255, 153, 0.1);
-        }
+body{
+background:#0b0f19;
+color:#fff;
+overflow-x:hidden;
+}
 
-        .logo {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--neon-green);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+a{
+text-decoration:none;
+color:white;
+}
 
-        .hero {
-            min-height: 22vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(11, 12, 16, 0.85), rgba(11, 12, 16, 0.95)), 
-                        url('https://unsplash.com') no-repeat center center/cover;
-            padding: 20px;
-        }
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:75px;
+background:#111827;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 40px;
+z-index:1000;
+box-shadow:0 0 15px rgba(0,255,170,.2);
+}
 
-        .hero h1 { font-size: 2rem; margin-bottom: 5px; }
-        .hero h1 span { color: var(--neon-green); }
+.logo{
+font-size:30px;
+font-weight:bold;
+color:#00ff99;
+}
 
-        .container { padding: 25px 5%; }
-        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 20px; text-transform: uppercase; }
+nav a{
+margin-left:25px;
+font-size:18px;
+transition:.3s;
+}
 
-        /* GAMES GRID */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+nav a:hover{
+color:#00ff99;
+}
 
-        .play-zone {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
-        }
-        .play-zone.snake-card { border-color: var(--neon-green); }
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+background:linear-gradient(#0b0f19,#101827);
+}
 
-        .game-icon { font-size: 40px; margin-bottom: 10px; }
+.hero h1{
+font-size:60px;
+color:#00ff99;
+margin-bottom:20px;
+}
 
-        .play-now-btn {
-            display: inline-block;
-            background: var(--neon-blue);
-            color: #000;
-            font-size: 15px;
-            font-weight: bold;
-            padding: 10px 25px;
-            border-radius: 25px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            margin-top: 10px;
-        }
-        .snake-card .play-now-btn { background: var(--neon-green); }
+.hero p{
+font-size:22px;
+color:#ddd;
+max-width:700px;
+line-height:1.6;
+}
 
-        footer { text-align: center; padding: 15px; color: #555; font-size: 12px; margin-top: 30px; }
+.playbtn{
+margin-top:35px;
+padding:15px 40px;
+font-size:20px;
+border:none;
+border-radius:50px;
+background:#00ff99;
+cursor:pointer;
+font-weight:bold;
+transition:.3s;
+}
 
-        /* --- FULLSCREEN LIVE INSIDE CONTAINER --- */
-        .game-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #000;
-            z-index: 9999;
-            flex-direction: column;
-        }
+.playbtn:hover{
+transform:scale(1.08);
+}
 
-        .game-header {
-            width: 100%;
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1f2833;
-        }
+section{
+padding:90px 10%;
+}
 
-        .back-btn {
-            background: #111;
-            color: #00e5ff;
-            border: 1px solid #00e5ff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.section-title{
+text-align:center;
+font-size:40px;
+margin-bottom:50px;
+color:#00ff99;
+}.games{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+margin-top:40px;
+}
 
-        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); }
+.card{
+background:#1b2433;
+border:2px solid #00ff99;
+border-radius:20px;
+padding:25px;
+text-align:center;
+transition:.35s;
+box-shadow:0 0 15px rgba(0,255,153,.15);
+}
 
-        /* Yeh engine sandbox allow karega game ko direct chalne ke liye */
-        iframe {
-            width: 100%;
-            height: calc(100vh - 55px);
-            border: none;
-        }
-    </style>
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 30px rgba(0,255,153,.45);
+}
+
+.card h2{
+font-size:30px;
+margin-bottom:15px;
+color:#00ff99;
+}
+
+.card p{
+color:#ddd;
+line-height:1.6;
+margin-bottom:20px;
+}
+
+.btn{
+display:inline-block;
+padding:12px 30px;
+background:#00ff99;
+color:#000;
+font-weight:bold;
+border-radius:40px;
+transition:.3s;
+}
+
+.btn:hover{
+background:#00cc77;
+transform:scale(1.05);
+}
+
+.about{
+text-align:center;
+max-width:900px;
+margin:auto;
+font-size:20px;
+line-height:1.8;
+color:#ddd;
+}
+
+.contact{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:30px;
+}
+
+.contact a{
+padding:15px 25px;
+background:#1b2433;
+border:2px solid #00ff99;
+border-radius:12px;
+transition:.3s;
+}
+
+.contact a:hover{
+background:#00ff99;
+color:#000;
+}
+
+footer{
+background:#111827;
+text-align:center;
+padding:25px;
+font-size:18px;
+color:#bbb;
+margin-top:40px;
+}
+
+@media(max-width:768px){
+
+header{
+padding:0 20px;
+}
+
+.logo{
+font-size:22px;
+}
+
+nav a{
+margin-left:12px;
+font-size:15px;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.section-title{
+font-size:32px;
+}
+
+}</style>
 </head>
+
 <body>
 
-    <!-- HOME SCREEN -->
-    <div class="main-site" id="mainSite">
-        <nav>
-            <div class="logo">⚡ Zafar Games ⚡</div>
-        </nav>
+<header>
+<div class="logo">🎮 ZAFAR GAMES</div>
 
-        <section class="hero">
-            <h1>Zafar Arcade <span>Station</span></h1>
-            <p>Premium High-Quality HTML5 Station</p>
-        </section>
+<nav>
+<a href="#home">Home</a>
+<a href="#games">Games</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+</nav>
 
-        <section class="container">
-            <h2 class="section-title">Select Arcade Game</h2>
-            <div class="games-grid">
-                
-                <!-- GAME 1: 3D CAR RACING -->
-                <div class="play-zone runner-card" style="border-color: var(--neon-blue);">
-                    <div class="game-icon">🏎️</div>
-                    <h3 style="color: var(--neon-blue);">3D Car Racing</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">High speed 3D racing simulator.</p>
-                    <button class="play-now-btn" style="background: var(--neon-blue); color: #000;" onclick="startCarRacing()">▶ Play Game</button>
-                </div>
+</header>
 
-                <!-- GAME 2: SNAKE -->
-                <div class="play-zone snake-card">
-                    <div class="game-icon">🐍</div>
-                    <h3>Snake Game V2</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Smooth and controlled mobile grid engine.</p>
-                    <button class="play-now-btn" onclick="startSnake()">▶ Play</button>
-                </div>
+<section class="hero" id="home">
 
-            </div>
-        </section>
+<h1>Play Free Browser Games</h1>
 
-        <footer>
-            &copy; Zafar Games. All rights reserved.
-        </footer>
-    </div>
+<p>
+Welcome to Zafar Games. Enjoy free HTML5 games made with Godot and JavaScript.
+More exciting games are coming soon.
+</p>
 
-    <!-- 3D CAR RACING SCREEN (DIRECT EMBED WITH BYPASS) -->
-    <div class="game-screen" id="carRacingScreen">
-        <div class="game-header">
-            <button class="back-btn" onclick="closeCarRacing()">← Exit Game</button>
-            <div class="score-board">3D Racing Zone</div>
-        </div>
-        <!-- GDevelop official embed format used to play direct inside site -->
-        <iframe src="https://gd.games" allow="autoplay; fullscreen; gamepad"></iframe>
-    </div>
+<a href="#games" class="btn playbtn">🎮 Play Now</a>
 
-    <script>
-        function startCarRacing() {
-            document.getElementById('mainSite').style.display = 'none';
-            document.getElementById('carRacingScreen').style.display = 'flex';
-        }
+</section>
 
-        function closeCarRacing() {
-            document.getElementById('carRacingScreen').style.display = 'none';
-            document.getElementById('mainSite').style.display = 'block';
-        }
+<section id="games">
 
-        function startSnake() {
-            alert("Snake game chalu karne ka code yahan aayega.");
-        }
-    </script>
+<h2 class="section-title">Games</h2>
+
+<div class="games">
+
+<div class="card">
+
+<h2>🐍 Snake</h2>
+
+<p>
+Classic Snake Game.
+Works on PC.
+Mobile support coming soon.
+</p>
+
+<a class="btn" href="https://armansnakecobra.itch.io/snake-game" target="_blank">
+Play Snake
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>🎲 Ludo</h2>
+
+<p>
+Play Ludo against Computer.
+Coming Soon.
+</p>
+
+<a class="btn" href="#">
+Coming Soon
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>♟ Chess</h2>
+
+<p>
+Play Chess against AI.
+Coming Soon.
+</p>
+
+<a class="btn" href="#">
+Coming Soon
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="about">
+
+<h2 class="section-title">About</h2>
+
+<div class="about">
+
+Zafar Games is a free browser gaming website where you can play games directly from your browser.
+
+New games will be added regularly.
+
+</div>
+
+</section>
+
+<section id="contact">
+
+<h2 class="section-title">Contact</h2>
+
+<div class="contact">
+
+<a href="https://github.com/zafar-game">GitHub</a>
+
+<a href="mailto:your@email.com">Email</a>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Zafar Games. All Rights Reserved.
+
+</footer>
+
 </body>
 </html>
