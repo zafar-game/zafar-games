@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Premium Mobile Arcade</title>
+    <title>Zafar Games | Ultimate Mobile Arcade</title>
     <style>
         * {
             margin: 0;
@@ -19,6 +19,7 @@
             --neon-green: #00ff99;
             --neon-blue: #00e5ff;
             --neon-pink: #ff0055;
+            --neon-yellow: #ffe600;
             --text-white: #ffffff;
             --text-gray: #c5c6c7;
         }
@@ -50,7 +51,7 @@
         }
 
         .hero {
-            min-height: 25vh;
+            min-height: 22vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -70,9 +71,9 @@
         /* GAMES GRID */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -85,6 +86,8 @@
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
         }
         .play-zone.snake-card { border-color: var(--neon-green); }
+        .play-zone.ludo-card { border-color: var(--neon-yellow); }
+        .play-zone.chess-card { border-color: #ffffff; }
 
         .game-icon { font-size: 40px; margin-bottom: 10px; }
 
@@ -103,6 +106,8 @@
         }
         .snake-card .play-now-btn { background: var(--neon-green); }
         .runner-card .play-now-btn { background: var(--neon-pink); color: white; }
+        .ludo-card .play-now-btn { background: var(--neon-yellow); }
+        .chess-card .play-now-btn { background: #ffffff; color: #000; }
 
         .contact-box {
             background: var(--card-bg);
@@ -117,7 +122,7 @@
         .compact-link { color: var(--text-white); text-decoration: none; font-size: 13px; font-weight: 600; }
         footer { text-align: center; padding: 15px; color: #555; font-size: 12px; margin-top: 30px; }
 
-        /* --- FULLSCREEN MOB-OPTIMIZED SCREEN --- */
+        /* --- FULLSCREEN MOB-OPTIMIZED CONTAINER --- */
         .game-screen {
             display: none;
             position: fixed;
@@ -147,38 +152,36 @@
             font-weight: bold;
         }
 
-        .score-board { font-size: 20px; font-weight: bold; color: var(--neon-green); }
+        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); }
 
-        /* RESPONSIVE BIG CANVAS */
         #gameCanvas {
             background: #050508;
             display: block;
             border-radius: 10px;
             border: 2px solid var(--neon-green);
             width: 95vw;
-            height: 45vh; /* Perfect mid-ratio for phone screens */
+            height: 48vh; 
         }
 
-        .runner-tips { font-size: 13px; color: var(--text-gray); text-align: center; margin: 5px 0; }
+        .runner-tips { font-size: 13px; color: var(--text-gray); text-align: center; margin: 5px 0; padding: 0 10px; }
 
-        /* BIGGER MOBILE CONTROLS FOR EASY TAP */
+        /* MOBILE CONTROLS SYSTEM */
         .mobile-controls {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 12px;
             width: 90vw;
             max-width: 280px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .control-btn {
             background: #111;
             border: 2px solid var(--neon-blue);
             color: var(--neon-blue);
-            font-size: 28px;
-            padding: 15px 0;
+            font-size: 26px;
+            padding: 12px 0;
             border-radius: 15px;
-            user-select: no-select;
             text-align: center;
             font-weight: bold;
         }
@@ -187,6 +190,28 @@
         .control-btn.left { grid-column: 1; }
         .control-btn.right { grid-column: 3; }
         .control-btn.down { grid-column: 2; }
+
+        /* LUDO/CHESS EXTRA UTILITIES BUTTONS */
+        .action-bar {
+            display: none;
+            width: 90vw;
+            max-width: 320px;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .action-btn {
+            background: var(--neon-yellow);
+            color: #000;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -199,27 +224,43 @@
 
         <section class="hero">
             <h1>Zafar Arcade <span>Station</span></h1>
-            <p>Mobile Optimized Gaming</p>
+            <p>Premium High-Quality HTML5 Station</p>
         </section>
 
         <section class="container">
-            <h2 class="section-title">Select Game</h2>
+            <h2 class="section-title">Select Arcade Game</h2>
             <div class="games-grid">
                 
                 <!-- GAME 1: SNAKE -->
                 <div class="play-zone snake-card">
                     <div class="game-icon">🐍</div>
                     <h3>Snake Game V2</h3>
-                    <p style="color: var(--text-gray); font-size: 13px;">Smooth and controlled speed for mobile.</p>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Smooth and controlled mobile grid engine.</p>
                     <button class="play-now-btn" onclick="startSnake()">▶ Play</button>
                 </div>
 
                 <!-- GAME 2: CYBER RUNNER -->
                 <div class="play-zone runner-card">
                     <div class="game-icon">🏃‍♂️</div>
-                    <h3 style="color: var(--neon-pink);">Cyber Runner (Infinity)</h3>
-                    <p style="color: var(--text-gray); font-size: 13px;">Endless jump & crouch action game.</p>
+                    <h3 style="color: var(--neon-pink);">Cyber Runner</h3>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Endless infinity acceleration jump system.</p>
                     <button class="play-now-btn" onclick="startRunner()">▶ Play</button>
+                </div>
+
+                <!-- GAME 3: NEON LUDO -->
+                <div class="play-zone ludo-card">
+                    <div class="game-icon">🎲</div>
+                    <h3 style="color: var(--neon-yellow);">Neon Ludo (Pass/Bot)</h3>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Colorful mini board. Play vs Computer Bot or Friend.</p>
+                    <button class="play-now-btn" onclick="startLudo()">▶ Play</button>
+                </div>
+
+                <!-- GAME 4: FUTURISTIC CHESS -->
+                <div class="play-zone chess-card">
+                    <div class="game-icon">♟️</div>
+                    <h3 style="color: #ffffff;">Cyber Chess (vs AI)</h3>
+                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Futuristic mind battle. Challenge the Smart Bot.</p>
+                    <button class="play-now-btn" onclick="startChess()">▶ Play</button>
                 </div>
 
             </div>
@@ -243,19 +284,24 @@
     <div class="game-screen" id="gameScreen">
         <div class="game-header">
             <button class="back-btn" onclick="exitGame()">⬅ Exit</button>
-            <div class="score-board">Score: <span id="scoreText">0</span></div>
+            <div class="score-board" id="scoreWrapper">Status: <span id="scoreText">Ready</span></div>
         </div>
         
         <canvas id="gameCanvas"></canvas>
 
-        <div class="runner-tips" id="gameTips">Controls Below:</div>
+        <div class="runner-tips" id="gameTips">Loading controls...</div>
 
-        <!-- Touch Controls -->
+        <!-- Touch Controls Pad for Snake & Runner -->
         <div class="mobile-controls" id="controlPad">
             <button class="control-btn up" id="btnUp">▲</button>
             <button class="control-btn left" id="btnLeft">◀</button>
             <button class="control-btn right" id="btnRight">▶</button>
             <button class="control-btn down" id="btnDown">▼</button>
+        </div>
+
+        <!-- Custom Actions Bar for Ludo Dice / Chess controls -->
+        <div class="action-bar" id="actionBar">
+            <button class="action-btn" id="mainActionBtn" onclick="handleActionClick()">🎲 Roll Dice</button>
         </div>
     </div>
 
@@ -268,22 +314,47 @@
         let score = 0;
         let globalCount = 0;
 
-        // --- SNAKE ENGINE VARIABLES ---
+        // --- SNAKE SYSTEM ---
         let grid = 20;
-        let snake = { x: 100, y: 100, dx: grid, dy: 0, cells: [], maxCells: 4 };
-        let apple = { x: 200, y: 200 };
+        let snake = { x: 0, y: 0, dx: grid, dy: 0, cells: [], maxCells: 4 };
+        let apple = { x: 0, y: 0 };
 
-        // --- ENDLESS RUNNER ENGINE VARIABLES ---
+        // --- CYBER RUNNER SYSTEM ---
         let runnerPlayer = { x: 40, y: 0, width: 25, height: 35, vy: 0, gravity: 0.8, isJumping: false, isDucking: false };
         let obstacles = [];
-        let runnerSpeed = 3.5; // Kafi slow starting speed mobile ke liye
+        let runnerSpeed = 3.5;
         let runnerActive = false;
         let groundY = 0;
+
+        // --- LUDO GAME SYSTEM ---
+        let ludoTurn = 0; // 0: Player (Red), 1: Bot (Green)
+        let diceValue = 1;
+        let pRed = { pos: 0, color: "#ff0055", x: 0, y: 0 };
+        let pBot = { pos: 0, color: "#00ff99", x: 0, y: 0 };
+        const ludoPath = [
+            {cx:1, cy:2}, {cx:2, cy:2}, {cx:3, cy:2}, {cx:4, cy:2}, {cx:4, cy:1}, {cx:4, cy:0},
+            {cx:5, cy:0}, {cx:5, cy:1}, {cx:5, cy:2}, {cx:6, cy:2}, {cx:7, cy:2}, {cx:7, cy:3},
+            {cx:7, cy:4}, {cx:6, cy:4}, {cx:5, cy:4}, {cx:5, cy:5}, {cx:5, cy:6}, {cx:4, cy:6},
+            {cx:4, cy:5}, {cx:4, cy:4}, {cx:3, cy:4}, {cx:2, cy:4}, {cx:1, cy:4}, {cx:1, cy:3}
+        ];
+
+        // --- CHESS GAME SYSTEM ---
+        let selectedPiece = null;
+        let chessTurn = "player"; // player or bot
+        let chessBoard = [
+            ['r','n','b','q','k','b','n','r'],
+            ['p','p','p','p','p','p','p','p'],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['P','P','P','P','P','P','P','P'],
+            ['R','N','B','Q','K','B','N','R']
+        ];
 
         function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
 
         function resizeCanvas() {
-            // Screen resolution fix dynamically mapping to layout css sizes
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
             groundY = canvas.height - 30;
@@ -296,25 +367,23 @@
         }
 
         function exitGame() {
-            runnerActive = false;
-            currentImgMode = "";
+            runnerActive = false; currentImgMode = "";
             document.getElementById("gameScreen").style.display = "none";
             document.getElementById("mainSite").style.display = "block";
         }
 
-        // --- START SNAKE ---
+        // --- SNAKE INIT ---
         function startSnake() {
             currentImgMode = "snake";
             canvas.style.borderColor = "#00ff99";
+            document.getElementById("scoreWrapper").innerHTML = `Score: <span id="scoreText">0</span>`;
             document.getElementById("scoreText").style.color = "#00ff99";
-            document.getElementById("gameTips").innerText = "Use buttons to steer the snake.";
+            document.getElementById("gameTips").innerText = "Controls: Use Neon directional buttons.";
+            document.getElementById("controlPad").style.display = "grid";
+            document.getElementById("actionBar").style.display = "none";
             document.getElementById("btnLeft").style.visibility = "visible";
             document.getElementById("btnRight").style.visibility = "visible";
-            
-            score = 0;
-            document.getElementById("scoreText").innerText = score;
-            showScreen();
-
+            score = 0; showScreen();
             grid = 20;
             snake.x = Math.floor(canvas.width / 2 / grid) * grid;
             snake.y = Math.floor(canvas.height / 2 / grid) * grid;
@@ -326,37 +395,222 @@
         function resetApple() {
             let cols = Math.floor(canvas.width / grid) - 1;
             let rows = Math.floor(canvas.height / grid) - 1;
-            apple.x = getRandomInt(1, cols) * grid;
-            apple.y = getRandomInt(1, rows) * grid;
+            apple.x = getRandomInt(1, cols) * grid; apple.y = getRandomInt(1, rows) * grid;
         }
 
-        // --- START CYBER RUNNER ---
+        // --- CYBER RUNNER INIT ---
         function startRunner() {
             currentImgMode = "runner";
             canvas.style.borderColor = "#ff0055";
+            document.getElementById("scoreWrapper").innerHTML = `Score: <span id="scoreText">0</span>`;
             document.getElementById("scoreText").style.color = "#ff0055";
-            document.getElementById("gameTips").innerText = "▲ to JUMP | ▼ to DUCK under high lasers";
-            
+            document.getElementById("gameTips").innerText = "▲ to JUMP | ▼ to DUCK under flying lasers";
+            document.getElementById("controlPad").style.display = "grid";
+            document.getElementById("actionBar").style.display = "none";
             document.getElementById("btnLeft").style.visibility = "hidden";
             document.getElementById("btnRight").style.visibility = "hidden";
-
-            score = 0;
-            document.getElementById("scoreText").innerText = score;
-            runnerSpeed = 3.5; // Controlled initial velocity
-            obstacles = [];
-            showScreen();
-
-            runnerPlayer.y = groundY - 35; 
-            runnerPlayer.vy = 0; runnerPlayer.isJumping = false; runnerPlayer.isDucking = false; runnerPlayer.height = 35;
+            score = 0; showScreen();
+            runnerSpeed = 3.5; obstacles = [];
+            runnerPlayer.y = groundY - 35; runnerPlayer.vy = 0; runnerPlayer.isJumping = false; runnerPlayer.isDucking = false; runnerPlayer.height = 35;
             runnerActive = true;
         }
 
-        // MAIN REFRESH ENGINE LOOP
+        // --- LUDO SYSTEM INIT ---
+        function startLudo() {
+            currentImgMode = "ludo";
+            canvas.style.borderColor = "#ffe600";
+            document.getElementById("scoreWrapper").innerHTML = `Status: <span id="scoreText" style="color:#ff0055">Your Turn</span>`;
+            document.getElementById("gameTips").innerText = "Click 'Roll Dice' button to move token forward.";
+            document.getElementById("controlPad").style.display = "none";
+            document.getElementById("actionBar").style.display = "flex";
+            document.getElementById("mainActionBtn").innerText = "🎲 Roll Dice";
+            document.getElementById("mainActionBtn").style.background = "var(--neon-yellow)";
+            pRed.pos = 0; pBot.pos = 0; ludoTurn = 0;
+            showScreen();
+            drawLudoBoard();
+        }
+
+        function handleActionClick() {
+            if (currentImgMode === "ludo" && ludoTurn === 0) {
+                diceValue = getRandomInt(1, 7);
+                document.getElementById("gameTips").innerText = `You rolled a ${diceValue}!`;
+                pRed.pos += diceValue;
+                if (pRed.pos >= ludoPath.length) {
+                    alert("🎉 Winner! You beat the Bot!");
+                    pRed.pos = 0; pBot.pos = 0;
+                }
+                ludoTurn = 1; // pass turn to Bot
+                document.getElementById("scoreText").innerText = "Bot's Turn...";
+                document.getElementById("scoreText").style.color = "#00ff99";
+
+                // Bot playing trigger simulation
+                setTimeout(() => {
+                    let botDice = getRandomInt(1, 7);
+                    pBot.pos += botDice;
+                    document.getElementById("gameTips").innerText = `Bot rolled a ${botDice}!`;
+                    if (pBot.pos >= ludoPath.length) {
+                        alert("🤖 Bot Won! Better luck next time.");
+                        pRed.pos = 0; pBot.pos = 0;
+                    }
+                    ludoTurn = 0;
+                    document.getElementById("scoreText").innerText = "Your Turn";
+                    document.getElementById("scoreText").style.color = "#ff0055";
+                }, 1200);
+            }
+        }
+
+        function drawLudoBoard() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            let size = Math.min(canvas.width, canvas.height) / 9;
+            let startX = (canvas.width - size * 9) / 2;
+            let startY = (canvas.height - size * 7) / 2;
+
+            // Draw tracks
+            ludoPath.forEach((cell, index) => {
+                ctx.fillStyle = "#1f2833";
+                ctx.strokeStyle = "rgba(255,255,255,0.1)";
+                let cx = startX + cell.cx * size;
+                let cy = startY + cell.cy * size;
+                ctx.fillRect(cx, cy, size, size);
+                ctx.strokeRect(cx, cy, size, size);
+
+                // Target Destination highlight box neon logic
+                if (index === ludoPath.length - 1) {
+                    ctx.fillStyle = "rgba(255, 230, 0, 0.4)";
+                    ctx.fillRect(startX + cell.cx*size, startY + cell.cy*size, size, size);
+                }
+            });
+
+            // Map vectors coordinates for drawing tokens
+            let redCell = ludoPath[pRed.pos % ludoPath.length];
+            let botCell = ludoPath[pBot.pos % ludoPath.length];
+
+            // Render Tokens
+            ctx.fillStyle = pRed.color; ctx.shadowColor = pRed.color; ctx.shadowBlur = 10;
+            ctx.beginPath(); ctx.arc(startX + redCell.cx*size + size/2, startY + redCell.cy*size + size/2, size/3, 0, Math.PI*2); ctx.fill();
+
+            ctx.fillStyle = pBot.color; ctx.shadowColor = pBot.color; ctx.shadowBlur = 10;
+            ctx.beginPath(); ctx.arc(startX + botCell.cx*size + size/2, startY + botCell.cy*size + size/2, size/3, 0, Math.PI*2); ctx.fill();
+            ctx.shadowBlur = 0; // reset
+        }
+
+
+        // --- CHESS ENGINE INIT ---
+        function startChess() {
+            currentImgMode = "chess";
+            canvas.style.borderColor = "#ffffff";
+            document.getElementById("scoreWrapper").innerHTML = `Status: <span id="scoreText" style="color:#00e5ff">Your Turn</span>`;
+            document.getElementById("gameTips").innerText = "Tap on your piece (Caps letters) and click empty cell to Move.";
+            document.getElementById("controlPad").style.display = "none";
+            document.getElementById("actionBar").style.display = "none";
+            selectedPiece = null; chessTurn = "player";
+            showScreen();
+            drawChessBoard();
+
+            // Setup Touch Click tracker inside grid space matrices
+            canvas.onclick = function(e) {
+                if (currentImgMode !== "chess" || chessTurn !== "player") return;
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                
+                let boardSize = Math.min(canvas.width, canvas.height);
+                let cellSize = boardSize / 8;
+                let startX = (canvas.width - boardSize) / 2;
+                let startY = (canvas.height - boardSize) / 2;
+
+                let col = Math.floor((x - startX) / cellSize);
+                let row = Math.floor((y - startY) / cellSize);
+
+                if (col >= 0 && col < 8 && row >= 0 && row < 8) {
+                    let piece = chessBoard[row][col];
+                    if (selectedPiece) {
+                        // Move piece logic execution sequence
+                        chessBoard[selectedPiece.row][selectedPiece.col] = '';
+                        chessBoard[row][col] = selectedPiece.type;
+                        selectedPiece = null;
+                        chessTurn = "bot";
+                        document.getElementById("scoreText").innerText = "AI is thinking...";
+                        document.getElementById("scoreText").style.color = "#ff0055";
+                        drawChessBoard();
+
+                        // Bot Automated Response Action script
+                        setTimeout(() => {
+                            makeBotChessMove();
+                            chessTurn = "player";
+                            document.getElementById("scoreText").innerText = "Your Turn";
+                            document.getElementById("scoreText").style.color = "#00e5ff";
+                            drawChessBoard();
+                        }, 1000);
+                    } else {
+                        // Selection phase trigger checking uppercase condition matches player pieces
+                        if (piece !== '' && piece === piece.toUpperCase()) {
+                            selectedPiece = { row: row, col: col, type: piece };
+                            drawChessBoard();
+                        }
+                    }
+                }
+            };
+        }
+
+        function makeBotChessMove() {
+            // Smart Bot scan algorithm searching for existing lowercase enemy items
+            let botPieces = [];
+            for(let r=0; r<8; r++) {
+                for(let c=0; c<8; c++) {
+                    if (chessBoard[r][c] !== '' && chessBoard[r][c] === chessBoard[r][c].toLowerCase()) {
+                        botPieces.push({row: r, col: c, type: chessBoard[r][c]});
+                    }
+                }
+            }
+            if (botPieces.length > 0) {
+                let pick = botPieces[getRandomInt(0, botPieces.length)];
+                let nextRow = pick.row + 1; // Simple forward bot action step mapping physics matrices
+                if (nextRow < 8 && chessBoard[nextRow][pick.col] === '') {
+                    chessBoard[pick.row][pick.col] = '';
+                    chessBoard[nextRow][pick.col] = pick.type;
+                }
+            }
+        }
+
+        function drawChessBoard() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            let boardSize = Math.min(canvas.width, canvas.height);
+            let cellSize = boardSize / 8;
+            let startX = (canvas.width - boardSize) / 2;
+            let startY = (canvas.height - boardSize) / 2;
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    // Alternative cell checkered drawing loops
+                    ctx.fillStyle = (r + c) % 2 === 0 ? "#1f2833" : "#0b0c10";
+                    
+                    // Selection highlight modifier vector state 
+                    if (selectedPiece && selectedPiece.row === r && selectedPiece.col === c) {
+                        ctx.fillStyle = "rgba(0, 229, 255, 0.4)";
+                    }
+
+                    ctx.fillRect(startX + c * cellSize, startY + r * cellSize, cellSize, cellSize);
+                    
+                    // Render simple text symbols vectors to present characters
+                    let piece = chessBoard[r][c];
+                    if (piece !== '') {
+                        ctx.fillStyle = piece === piece.toUpperCase() ? "#00e5ff" : "#ff0055";
+                        ctx.font = `bold ${cellSize * 0.5}px sans-serif`;
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText(piece, startX + c * cellSize + cellSize/2, startY + r * cellSize + cellSize/2);
+                    }
+                }
+            }
+        }
+
+
+        // --- MASTER SYSTEM CORE PROCESSING LOOP ---
         function masterLoop() {
             requestAnimationFrame(masterLoop);
 
             if (currentImgMode === "snake") {
-                // MOBILE SPEED LOCK: Is framework counters ko 12 karne par snake slow aur manageable chalega
                 if (++globalCount < 12) return; 
                 globalCount = 0;
 
@@ -371,11 +625,8 @@
                 snake.cells.unshift({x: snake.x, y: snake.y});
                 if (snake.cells.length > snake.maxCells) snake.cells.pop();
 
-                // Apple Target
-                ctx.fillStyle = '#ff0055';
-                ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
+                ctx.fillStyle = '#ff0055'; ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
 
-                // Snake Processing
                 ctx.fillStyle = '#00ff99';
                 snake.cells.forEach(function(cell, index) {
                     ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
@@ -391,92 +642,63 @@
             } 
             
             else if (currentImgMode === "runner" && runnerActive) {
-                // Frame skipping built-in filter to fix crazy high refreshrate speed burst errors
                 if (++globalCount < 2) return;
                 globalCount = 0;
 
                 ctx.clearRect(0,0,canvas.width,canvas.height);
 
-                // Neon Ground Line Layout draw
                 ctx.strokeStyle = "#00e5ff"; ctx.lineWidth = 3;
                 ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(canvas.width, groundY); ctx.stroke();
 
-                // Physics gravity simulation scaling vectors
-                runnerPlayer.y += runnerPlayer.vy;
-                runnerPlayer.vy += runnerPlayer.gravity;
-
+                runnerPlayer.y += runnerPlayer.vy; runnerPlayer.vy += runnerPlayer.gravity;
                 let currentFloor = groundY - runnerPlayer.height;
-                if (runnerPlayer.y >= currentFloor) {
-                    runnerPlayer.y = currentFloor; runnerPlayer.vy = 0; runnerPlayer.isJumping = false;
-                }
+                if (runnerPlayer.y >= currentFloor) { runnerPlayer.y = currentFloor; runnerPlayer.vy = 0; runnerPlayer.isJumping = false; }
 
-                // Draw Running Hero Sprite Box
                 ctx.fillStyle = runnerPlayer.isDucking ? "#00ffff" : "#00e5ff";
                 ctx.fillRect(runnerPlayer.x, runnerPlayer.y, runnerPlayer.width, runnerPlayer.height);
 
-                // Obstacle Spawn distribution intervals
                 if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - getRandomInt(150, 250)) {
                     let type = getRandomInt(0, 2); 
-                    if (type === 0) {
-                        obstacles.push({ x: canvas.width, y: groundY - 25, width: 20, height: 25, type: 0 });
-                    } else {
-                        obstacles.push({ x: canvas.width, y: groundY - 55, width: 22, height: 20, type: 1 }); 
-                    }
+                    if (type === 0) obstacles.push({ x: canvas.width, y: groundY - 25, width: 20, height: 25, type: 0 });
+                    else obstacles.push({ x: canvas.width, y: groundY - 55, width: 22, height: 20, type: 1 }); 
                 }
 
-                // Draw obstacles frame vectors
                 ctx.fillStyle = "#ff0055"; 
                 obstacles.forEach((obs, index) => {
-                    obs.x -= runnerSpeed;
-                    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                    obs.x -= runnerSpeed; ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
 
                     if (!obs.passed && obs.x < runnerPlayer.x) {
                         obs.passed = true; score += 5;
                         document.getElementById("scoreText").innerText = score;
-                        if (score % 30 === 0) runnerSpeed += 0.4; // Safe dynamic slow acceleration curve
+                        if (score % 30 === 0) runnerSpeed += 0.4;
                     }
 
-                    // Mobile collision calculations
-                    if (runnerPlayer.x < obs.x + obs.width &&
-                        runnerPlayer.x + runnerPlayer.width > obs.x &&
-                        runnerPlayer.y < obs.y + obs.height &&
-                        runnerPlayer.y + runnerPlayer.height > obs.y) {
-                        startRunner(); // instant restart state
+                    if (runnerPlayer.x < obs.x + obs.width && runnerPlayer.x + runnerPlayer.width > obs.x &&
+                        runnerPlayer.y < obs.y + obs.height && runnerPlayer.y + runnerPlayer.height > obs.y) {
+                        startRunner(); 
                     }
-
                     if (obs.x < -30) obstacles.splice(index, 1);
                 });
+            } 
+            
+            else if (currentImgMode === "ludo") {
+                drawLudoBoard();
             }
         }
 
-        // --- BUTTON HANDLING EVENTS ---
-        function triggerJump() {
-            if (currentImgMode === "runner" && !runnerPlayer.isJumping && !runnerPlayer.isDucking) {
-                runnerPlayer.vy = -12.5; runnerPlayer.isJumping = true; // Perfect physics jump height
-            }
-        }
-        function triggerDuckStart() {
-            if (currentImgMode === "runner" && !runnerPlayer.isJumping) {
-                runnerPlayer.isDucking = true; runnerPlayer.height = 18; 
-            }
-        }
-        function triggerDuckEnd() {
-            if (currentImgMode === "runner") {
-                runnerPlayer.isDucking = false; runnerPlayer.height = 35;
-            }
-        }
+        // --- INTERACTIVE TAP ACTION ROUTES ROUTING LOGIC ---
+        function triggerJump() { if (currentImgMode === "runner" && !runnerPlayer.isJumping && !runnerPlayer.isDucking) runnerPlayer.vy = -12.5; runnerPlayer.isJumping = true; }
+        function triggerDuckStart() { if (currentImgMode === "runner" && !runnerPlayer.isJumping) { runnerPlayer.isDucking = true; runnerPlayer.height = 18; } }
+        function triggerDuckEnd() { if (currentImgMode === "runner") { runnerPlayer.isDucking = false; runnerPlayer.height = 35; } }
 
-        // Event hooks mapper setup for touch inputs
         document.getElementById("btnUp").addEventListener("touchstart", (e) => { e.preventDefault(); if (currentImgMode === "snake" && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } else if (currentImgMode === "runner") triggerJump(); });
         document.getElementById("btnDown").addEventListener("touchstart", (e) => { e.preventDefault(); if (currentImgMode === "snake" && snake.dy === 0) { snake.dy = grid; snake.dx = 0; } else if (currentImgMode === "runner") triggerDuckStart(); });
         document.getElementById("btnDown").addEventListener("touchend", (e) => { e.preventDefault(); triggerDuckEnd(); });
-
         document.getElementById("btnLeft").addEventListener("touchstart", (e) => { e.preventDefault(); if(currentImgMode === "snake" && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } });
         document.getElementById("btnRight").addEventListener("touchstart", (e) => { e.preventDefault(); if(currentImgMode === "snake" && snake.dx === 0) { snake.dx = grid; snake.dy = 0; } });
 
-        // Backup PC Click inputs listeners map
         document.getElementById("btnUp").addEventListener("click", () => { if(currentImgMode === "runner") triggerJump(); });
-        
+
         window.addEventListener('resize', resizeCanvas);
         requestAnimationFrame(masterLoop);
     </script>
