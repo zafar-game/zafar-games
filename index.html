@@ -69,13 +69,13 @@
         }
 
         .hero {
-            min-height: 50vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(11, 12, 16, 0.83), rgba(11, 12, 16, 0.95)), 
+            background: linear-gradient(rgba(11, 12, 16, 0.85), rgba(11, 12, 16, 0.95)), 
                         url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1920') no-repeat center center/cover;
             padding: 40px 20px;
         }
@@ -94,30 +94,92 @@
             font-size: 1.1rem;
             color: var(--text-gray);
             max-width: 600px;
-            margin-bottom: 20px;
         }
 
         .container {
-            padding: 60px 8%;
+            padding: 40px 5%;
         }
 
         .section-title {
             text-align: center;
             font-size: 2rem;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* --- NEW PRO COMPACT CONTACT SECTION --- */
+        /* --- NATIVE GAME ENGINE BOX --- */
+        .game-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 153, 0.15);
+            text-align: center;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        #gameCanvas {
+            background: #000;
+            display: block;
+            margin: 0 auto;
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* MOBILE CONTROLS (ARROWS) */
+        .mobile-controls {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 180px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .control-btn {
+            background: #111;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-size: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.2s;
+        }
+
+        .control-btn:active {
+            background: var(--neon-blue);
+            color: #000;
+        }
+
+        .control-btn.up { grid-column: 2; }
+        .control-btn.left { grid-column: 1; }
+        .control-btn.right { grid-column: 3; }
+        .control-btn.down { grid-column: 2; }
+
+        /* CONTACT SECTION */
         .contact-box {
             background: var(--card-bg);
             max-width: 500px;
-            margin: 0 auto;
+            margin: 40px auto 0 auto;
             padding: 25px;
             border-radius: 15px;
             border: 1px solid rgba(0, 229, 255, 0.2);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             text-align: center;
         }
 
@@ -148,18 +210,6 @@
         .compact-link:hover {
             border-color: var(--neon-blue);
             color: var(--neon-blue);
-            transform: translateY(-2px);
-        }
-
-        /* --- GAME CONTAINER (FOR NEXT STEP) --- */
-        .game-display {
-            background: #111;
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            border-radius: 15px;
-            border: 2px solid var(--neon-green);
-            padding: 20px;
-            text-align: center;
         }
 
         footer {
@@ -168,13 +218,8 @@
             padding: 20px;
             color: #555;
             font-size: 13px;
+            margin-top: 40px;
             border-top: 1px solid rgba(255,255,255,0.02);
-        }
-
-        @media (max-width: 768px) {
-            nav { padding: 15px 5%; flex-direction: column; gap: 10px; }
-            .hero h1 { font-size: 2.2rem; }
-            .container { padding: 40px 5%; }
         }
     </style>
 </head>
@@ -191,15 +236,29 @@
 
     <section class="hero" id="home">
         <h1>Welcome to <span>Zafar Games</span></h1>
-        <p>Play upgraded, mobile-friendly native web games directly in your browser. No redirection, just pure action.</p>
+        <p>Play upgraded, mobile-friendly native web games directly in your browser.</p>
     </section>
 
-    <!-- GAME AREA -->
+    <!-- NATIVE GAME ENGINE AREA -->
     <section class="container" id="play">
-        <h2 class="section-title">Snake Game V2 (Native)</h2>
-        <div class="game-display">
-            <p style="color: var(--neon-blue); margin-bottom: 10px;">[ Game Code Setup Ready ]</p>
-            <p style="font-size: 14px; color: var(--text-gray);">Bhai, pehle yeh layout save karo, phir agle message mein direct touch + arrow controls wala game code isme fit karte hain!</p>
+        <h2 class="section-title">Snake Game V2</h2>
+        <div class="game-wrapper">
+            <div class="score-board">
+                <div>Score: <span id="score">0</span></div>
+                <div>High Score: <span id="highScore">0</span></div>
+            </div>
+            
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+            <p style="font-size: 12px; color: var(--text-gray); margin-top: 10px;">PC: Use Arrow Keys | Mobile: Swipe or Use Buttons below</p>
+
+            <!-- ON SCREEN ARROWS FOR MOBILE -->
+            <div class="mobile-controls">
+                <button class="control-btn up" id="btnUp">▲</button>
+                <button class="control-btn left" id="btnLeft">◀</button>
+                <button class="control-btn right" id="btnRight">▶</button>
+                <button class="control-btn down" id="btnDown">▼</button>
+            </div>
         </div>
     </section>
 
@@ -208,12 +267,8 @@
         <div class="contact-box">
             <h3 style="font-size: 18px; color: var(--neon-blue); text-transform: uppercase;">Connect With Me</h3>
             <div class="contact-row">
-                <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">
-                    📸 @skarman.exe
-                </a>
-                <a href="mailto:info@zafargames.com" class="compact-link">
-                    📩 Send Email
-                </a>
+                <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">📸 @skarman.exe</a>
+                <a href="mailto:info@zafargames.com" class="compact-link">📩 Send Email</a>
             </div>
         </div>
     </section>
@@ -222,5 +277,147 @@
         ZAFAR GAMES ARCADE | OFFICIAL CHANNELS | &copy; 2026
     </footer>
 
+    <!-- GAME ENGINE CODE -->
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const grid = 20;
+        let count = 0;
+        
+        let snake = {
+            x: 160,
+            y: 160,
+            dx: grid,
+            dy: 0,
+            cells: [{x: 160, y: 160}, {x: 140, y: 160}],
+            maxCells: 4
+        };
+
+        let apple = { x: 320, y: 320 };
+        let score = 0;
+        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        document.getElementById("highScore").innerText = highScore;
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        // Main Game Loop
+        function loop() {
+            requestAnimationFrame(loop);
+
+            // Slow game loop down to 15 fps instead of 60
+            if (++count < 6) { return; }
+            count = 0;
+
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            // Move Snake
+            snake.x += snake.dx;
+            snake.y += snake.dy;
+
+            // Wall Collision wrapping
+            if (snake.x < 0) snake.x = canvas.width - grid;
+            else if (snake.x >= canvas.width) snake.x = 0;
+            
+            if (snake.y < 0) snake.y = canvas.height - grid;
+            else if (snake.y >= canvas.height) snake.y = 0;
+
+            snake.cells.unshift({x: snake.x, y: snake.y});
+
+            if (snake.cells.length > snake.maxCells) {
+                snake.cells.pop();
+            }
+
+            // Draw Apple
+            ctx.fillStyle = '#ff0055';
+            ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
+
+            // Draw Snake
+            ctx.fillStyle = '#00ff99';
+            snake.cells.forEach(function(cell, index) {
+                ctx.fillRect(cell.x, cell.y, grid-1, grid-1);  
+
+                // Snake eats apple
+                if (cell.x === apple.x && cell.y === apple.y) {
+                    snake.maxCells++;
+                    score += 10;
+                    document.getElementById("score").innerText = score;
+                    if(score > highScore) {
+                        highScore = score;
+                        localStorage.setItem("snakeHighScore", highScore);
+                        document.getElementById("highScore").innerText = highScore;
+                    }
+                    apple.x = getRandomInt(0, 20) * grid;
+                    apple.y = getRandomInt(0, 20) * grid;
+                }
+
+                // Collision with self Check
+                for (let i = index + 1; i < snake.cells.length; i++) {
+                    if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+                        // Reset Game
+                        snake.x = 160;
+                        snake.y = 160;
+                        snake.cells = [{x: 160, y: 160}, {x: 140, y: 160}];
+                        snake.maxCells = 4;
+                        snake.dx = grid;
+                        snake.dy = 0;
+                        score = 0;
+                        document.getElementById("score").innerText = score;
+                        apple.x = getRandomInt(0, 20) * grid;
+                        apple.y = getRandomInt(0, 20) * grid;
+                    }
+                }
+            });
+        }
+
+        // Keyboard Controls
+        document.addEventListener('keydown', function(e) {
+            if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
+            else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
+            else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+            else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+        });
+
+        // Button Controls (Mobile)
+        document.getElementById("btnUp").addEventListener("click", () => { if(snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } });
+        document.getElementById("btnDown").addEventListener("click", () => { if(snake.dy === 0) { snake.dy = grid; snake.dx = 0; } });
+        document.getElementById("btnLeft").addEventListener("click", () => { if(snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } });
+        document.getElementById("btnRight").addEventListener("click", () => { if(snake.dx === 0) { snake.dx = grid; snake.dy = 0; } });
+
+        // Touch Swipe Controls
+        let touchstartX = 0;
+        let touchstartY = 0;
+        let touchendX = 0;
+        let touchendY = 0;
+
+        canvas.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+            touchstartY = e.changedTouches[0].screenY;
+        }, false);
+
+        canvas.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            touchendY = e.changedTouches[0].screenY;
+            handleGesture();
+        }, false);
+
+        function handleGesture() {
+            let xDiff = touchendX - touchstartX;
+            let yDiff = touchendY - touchstartY;
+
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; } // Swipe Right
+                else if (xDiff < 0 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } // Swipe Left
+            } else {
+                if (yDiff > 0 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; } // Swipe Down
+                else if (yDiff < 0 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } // Swipe Up
+            }
+        }
+
+        // Start Game
+        requestAnimationFrame(loop);
+    </script>
 </body>
 </html>
