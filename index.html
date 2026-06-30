@@ -3,270 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zafar Games | Play Free Browser Games</title>
+    <title>Zafar Games | Premium Browser Gaming</title>
     <style>
-        /* CSS Reset & Variables */
+        /* CSS Reset & Variable System */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             scroll-behavior: smooth;
         }
 
         :root {
-            --bg-color: #0a0a0c;
-            --card-bg: #141419;
-            --primary-neon: #00ff99;
-            --primary-glow: rgba(0, 255, 153, 0.4);
-            --text-main: #ffffff;
-            --text-muted: #a0a0a5;
+            --bg-dark: #050508;
+            --card-bg: #0c0c10;
+            --neon-green: #00ff99;
+            --neon-glow: rgba(0, 255, 153, 0.35);
+            --neon-pulse: rgba(0, 255, 153, 0.6);
+            --insta-color: #e1306c;
+            --insta-glow: rgba(225, 48, 108, 0.4);
+            --text-white: #ffffff;
+            --text-gray: #8e8e93;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: var(--text-white);
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Header & Navigation */
+        /* Continuous Neon Pulse Keyframes */
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 8px var(--neon-glow), 0 0 15px rgba(0, 255, 153, 0.2); }
+            50% { text-shadow: 0 0 18px var(--neon-pulse), 0 0 30px rgba(0, 255, 153, 0.4); }
+            100% { text-shadow: 0 0 8px var(--neon-glow), 0 0 15px rgba(0, 255, 153, 0.2); }
+        }
+
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.05), inset 0 0 0px rgba(0, 255, 153, 0); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 153, 0.2), inset 0 0 8px rgba(0, 255, 153, 0.05); }
+            100% { box-shadow: 0 0 12px rgba(0, 255, 153, 0.05), inset 0 0 0px rgba(0, 255, 153, 0); }
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Navigation Bar */
         header {
-            background: rgba(20, 20, 25, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(12, 12, 16, 0.75);
+            backdrop-filter: blur(12px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .nav-container {
+        .nav-box {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 18px 24px;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 26px;
+            font-weight: 900;
             color: #fff;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--primary-glow);
+            letter-spacing: 1.5px;
+            animation: neonPulse 3s infinite ease-in-out;
         }
 
         .logo span {
-            color: var(--primary-neon);
+            color: var(--neon-green);
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 25px;
+            gap: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         nav ul li a {
-            color: var(--text-muted);
+            color: var(--text-gray);
             text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
         nav ul li a:hover {
-            color: var(--primary-neon);
-            text-shadow: 0 0 5px var(--primary-glow);
+            color: var(--neon-green);
         }
 
-        /* Hero Section */
+        /* Main Hero Banner */
         .hero {
-            padding: 150px 20px 80px 20px;
+            padding: 180px 24px 90px 24px;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(0, 255, 153, 0.1) 0%, rgba(10, 10, 12, 0) 70%);
+            background: radial-gradient(circle at top, rgba(0, 255, 153, 0.1) 0%, rgba(5, 5, 8, 0) 65%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 255, 153, 0.06);
+            border: 1px solid rgba(0, 255, 153, 0.18);
+            color: var(--neon-green);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+            text-transform: uppercase;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            letter-spacing: -1px;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
         }
 
         .hero h1 span {
-            color: var(--primary-neon);
-            text-shadow: 0 0 20px var(--primary-glow);
+            color: var(--neon-green);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 30px auto;
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            max-width: 650px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
         }
 
-        /* Section Global Layout */
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            position: relative;
+        /* Animated Ticker / Notification Bar */
+        .ticker-wrap {
+            width: 100%;
+            background: rgba(12, 12, 16, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 10px 0;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
 
-        .section-title span {
-            color: var(--primary-neon);
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scrollText 25s linear infinite;
+            color: var(--text-gray);
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
+        .ticker span {
+            color: var(--neon-green);
+            margin-right: 50px;
+        }
+
+        /* Grid Framework */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 60px 24px;
         }
 
-        /* Games Grid & Cards */
-        .games-grid {
+        .section-header {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header span {
+            color: var(--neon-green);
+        }
+
+        /* Premium Gaming Cards Grid */
+        .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
-        .game-card {
+        .card {
             background-color: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border 0.3s;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 25px;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-neon);
-            box-shadow: 0 10px 30px rgba(0, 255, 153, 0.1);
+        /* Hover Glow States matching the pattern screenshot */
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-green);
+            box-shadow: 0 12px 40px rgba(0, 255, 153, 0.15);
+        }
+
+        .card-active {
+            animation: cardGlow 4s infinite ease-in-out;
+            border-color: rgba(0, 255, 153, 0.15);
+        }
+
+        .rating-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 195, 0, 0.1);
+            color: #ffc300;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
         .game-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .game-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-
-        .game-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
+            font-size: 46px;
             margin-bottom: 20px;
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-neon);
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Buttons */
+        .action-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--neon-green);
             color: #000;
             text-decoration: none;
             font-weight: 700;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 24px;
+            border-radius: 10px;
             text-align: center;
-            transition: 0.3s;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--neon-glow);
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn:hover {
-            background-color: #00cc77;
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px var(--primary-glow);
+        .action-btn:hover {
+            background-color: #00e688;
+            box-shadow: 0 6px 25px rgba(0, 255, 153, 0.5);
+            transform: scale(1.01);
         }
 
-        .btn-secondary {
-            background-color: #222227;
-            color: #777;
+        .btn-locked {
+            background-color: #14141a;
+            color: #44444a;
             box-shadow: none;
             cursor: not-allowed;
         }
 
-        .btn-secondary:hover {
-            background-color: #222227;
-            transform: none;
+        .btn-locked:hover {
+            background-color: #14141a;
             box-shadow: none;
+            transform: none;
         }
 
         /* About Section */
-        .about-box {
+        .bio-panel {
             background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 40px;
+            border-radius: 20px;
+            padding: 45px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.01);
         }
 
-        .about-box p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .bio-panel p {
+            color: var(--text-gray);
+            font-size: 1.15rem;
             line-height: 1.8;
         }
 
-        /* Contact Section */
-        .contact-grid {
+        /* Contact & Social Links Setup */
+        .connect-box {
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
         }
 
-        .contact-link {
-            background: #141419;
-            padding: 15px 30px;
-            border-radius: 8px;
+        .social-btn {
+            background: #0c0c10;
+            padding: 16px 32px;
+            border-radius: 12px;
             color: #fff;
             text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .contact-link:hover {
-            border-color: var(--primary-neon);
-            color: var(--primary-neon);
+        .social-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.1);
         }
 
-        /* Footer */
+        /* Dedicated Premium Instagram Link Button */
+        .social-btn.insta-btn:hover {
+            border-color: var(--insta-color);
+            color: var(--insta-color);
+            box-shadow: 0 0 20px var(--insta-glow);
+        }
+
+        /* Footer Element */
         footer {
-            background-color: #060608;
+            background-color: #040406;
             text-align: center;
-            padding: 30px 20px;
-            color: var(--text-muted);
+            padding: 35px 24px;
+            color: #44444a;
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            margin-top: 60px;
         }
 
-        /* Responsive Design */
+        /* Layout Breakpoints */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav ul { display: none; } /* Simple layout for mobile menu placeholder */
-            .nav-container { justify-content: center; }
+            .hero h1 { font-size: 2.6rem; }
+            nav ul { display: none; }
+            .nav-box { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navbar -->
+    <!-- Top Glow Navigation -->
     <header>
-        <div class="nav-container">
-            <a href="#" class="logo">🎮 Zafar<span>Games</span></a>
+        <div class="nav-box">
+            <a href="#" class="logo">⚡ Zafar <span>Games</span> ⚡</a>
             <nav>
                 <ul>
                     <li><a href="#">Home</a></li>
@@ -278,71 +380,92 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Interactive Hero Space -->
     <section class="hero">
-        <h1>Play the Best <span>Free Browser Games</span></h1>
-        <p>Welcome to Zafar Games. High-quality instant indie games made with Godot Engine. No installation required!</p>
-        <a href="#games" class="btn">⚡ Explore Games</a>
+        <div class="hero-badge">Next-Gen Web Gaming Station</div>
+        <h1>Play Premium Indie <span>Games Instantly</span></h1>
+        <p>No downloads required. High-octane arcade experiences built with Godot Engine, running directly in your modern web browser.</p>
+        <a href="#games" class="action-btn" style="max-width: 250px; margin: 0 auto;">EXPLORE NOW</a>
     </section>
 
-    <!-- Games Section -->
+    <!-- Animated Ticker / Pattern Screenshot Element -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>🐍 New features added to Snake Game!</span> <span>🚗 Racing Arena development started!</span> <span>🐦 Flappy Bird Neo arriving next week!</span> <span>🔥 Submit your game ideas on our Instagram!</span>
+        </div>
+    </div>
+
+    <!-- Arcade Showcase Grid -->
     <section id="games" class="container">
-        <h2 class="section-title">Featured <span>Games</span></h2>
-        <div class="games-grid">
+        <h2 class="section-header">Featured <span>Games</span></h2>
+        <div class="grid-layout">
             
-            <!-- Snake Game Card -->
-            <div class="game-card">
+            <!-- Card 1: Snake Game -->
+            <div class="card card-active">
+                <span class="rating-badge">★ 5-Star</span>
                 <div>
                     <div class="game-icon">🐍</div>
                     <h3>Snake Game V1</h3>
-                    <p>The classic arcade experience. Control the snake, eat meat, and grow bigger without hitting the walls or yourself.</p>
+                    <p>The ultimate arcade classic re-imagined. Survive the dynamic grid, eat meat targets, and aim for the absolute highscore.</p>
                 </div>
-                <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="btn">▶ Play Now</a>
+                <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="action-btn">PLAY NOW</a>
             </div>
 
-            <!-- Racing Game Card -->
-            <div class="game-card">
+            <!-- Card 2: Racing Game -->
+            <div class="card">
                 <div>
                     <div class="game-icon">🚗</div>
                     <h3>Racing Arena</h3>
-                    <p>High-speed top-down racing game with advanced physics and multiple drifting tracks. (Coming Soon)</p>
+                    <p>High-speed top-down racing circuit with drift mechanics, nitro triggers, and customizable retro cars.</p>
                 </div>
-                <button class="btn btn-secondary" disabled>Coming Soon</button>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
 
-            <!-- Horror Game Card -->
-            <div class="game-card">
+            <!-- Card 3: Horror Game -->
+            <div class="card">
                 <div>
                     <div class="game-icon">👻</div>
                     <h3>Silent Echo</h3>
-                    <p>A terrifying 2D top-down survival horror mystery game with dark puzzles and spooky audio design. (Coming Soon)</p>
+                    <p>Dark isometric puzzle rooms. Use directional audio and light sources to escape the shifting maze.</p>
                 </div>
-                <button class="btn btn-secondary" disabled>Coming Soon</button>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
+            </div>
+
+            <!-- Card 4: Flappy Bird Neo -->
+            <div class="card">
+                <div>
+                    <div class="game-icon">🐦</div>
+                    <h3>Flappy Bird Neo</h3>
+                    <p>Cyberpunk styling with neon obstacle grids and hyper-responsive click/tap gravity physics.</p>
+                </div>
+                <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
 
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Studio Details Panel -->
     <section id="about" class="container">
-        <h2 class="section-title">About <span>Me</span></h2>
-        <div class="about-box">
-            <p>Hey! I am Zafar, an indie game developer creating engaging HTML5 browser games using the Godot Engine. My goal is to build a modern gaming station where players can experience awesome interactive games instantly on any device. Stay tuned for new updates!</p>
+        <h2 class="section-header">About <span>The Studio</span></h2>
+        <div class="bio-panel">
+            <p>Welcome to Zafar Games! I am an independent game creator developing cross-platform browser experiences using HTML5 and the Godot Engine ecosystem. This hub is built to give gamers instant access to smooth, high-quality, and visually striking arcade content directly from one central deck.</p>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Interactive Contact Deck -->
     <section id="contact" class="container">
-        <h2 class="section-title">Get In <span>Touch</span></h2>
-        <div class="contact-grid">
-            <a href="mailto:your-email@example.com" class="contact-link">📧 Email Me</a>
-            <a href="https://github.com/" target="_blank" class="contact-link">💻 GitHub Profile</a>
+        <h2 class="section-header">Connect <span>With Me</span></h2>
+        <div class="connect-box">
+            <!-- Updated Links with Real Data -->
+            <a href="mailto:zafargames.contact@gmail.com" class="social-btn">📧 Email Studio</a>
+            <a href="https://instagram.com/skarman.exe" target="_blank" class="social-btn insta-btn">📸 Instagram @skarman.exe</a>
+            <a href="https://github.com/" target="_blank" class="social-btn">💻 GitHub Feed</a>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Fixed Corporate Footer -->
     <footer>
-        <p>&copy; 2026 Zafar Games. All rights reserved. Powered by Godot & GitHub Pages.</p>
+        <p>&copy; 2026 Zafar Games. Managed securely via GitHub Pages.</p>
     </footer>
 
 </body>
