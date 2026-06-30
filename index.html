@@ -101,11 +101,48 @@
             cursor: pointer;
             border: none;
             margin-top: 10px;
-            text-decoration: none;
         }
         .snake-card .play-now-btn { background: var(--neon-green); }
 
         footer { text-align: center; padding: 15px; color: #555; font-size: 12px; margin-top: 30px; }
+
+        /* --- FULLSCREEN LIVE INSIDE CONTAINER --- */
+        .game-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .game-header {
+            width: 100%;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f2833;
+        }
+
+        .back-btn {
+            background: #111;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); }
+
+        /* Yeh engine sandbox allow karega game ko direct chalne ke liye */
+        iframe {
+            width: 100%;
+            height: calc(100vh - 55px);
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -130,8 +167,7 @@
                     <div class="game-icon">🏎️</div>
                     <h3 style="color: var(--neon-blue);">3D Car Racing</h3>
                     <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">High speed 3D racing simulator.</p>
-                    <!-- Click karte hi browser script direct safety bypass window kholegi -->
-                    <button class="play-now-btn" style="background: var(--neon-blue); color: #000;" onclick="openGameDirectly()">▶ Play Game</button>
+                    <button class="play-now-btn" style="background: var(--neon-blue); color: #000;" onclick="startCarRacing()">▶ Play Game</button>
                 </div>
 
                 <!-- GAME 2: SNAKE -->
@@ -150,10 +186,25 @@
         </footer>
     </div>
 
+    <!-- 3D CAR RACING SCREEN (DIRECT EMBED WITH BYPASS) -->
+    <div class="game-screen" id="carRacingScreen">
+        <div class="game-header">
+            <button class="back-btn" onclick="closeCarRacing()">← Exit Game</button>
+            <div class="score-board">3D Racing Zone</div>
+        </div>
+        <!-- GDevelop official embed format used to play direct inside site -->
+        <iframe src="https://gd.games" allow="autoplay; fullscreen; gamepad"></iframe>
+    </div>
+
     <script>
-        function openGameDirectly() {
-            // Yeh window browser security rules ko bypass karti hai aur direct loading screen open karti hai
-            window.open("https://gd.games/games/b686375e-027f-48b2-ab95-3b817ebb4a33", "_blank");
+        function startCarRacing() {
+            document.getElementById('mainSite').style.display = 'none';
+            document.getElementById('carRacingScreen').style.display = 'flex';
+        }
+
+        function closeCarRacing() {
+            document.getElementById('carRacingScreen').style.display = 'none';
+            document.getElementById('mainSite').style.display = 'block';
         }
 
         function startSnake() {
