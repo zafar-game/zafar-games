@@ -86,8 +86,6 @@
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
         }
         .play-zone.snake-card { border-color: var(--neon-green); }
-        .play-zone.ludo-card { border-color: var(--neon-yellow); }
-        .play-zone.chess-card { border-color: #ffffff; }
 
         .game-icon { font-size: 40px; margin-bottom: 10px; }
 
@@ -105,21 +103,7 @@
             margin-top: 10px;
         }
         .snake-card .play-now-btn { background: var(--neon-green); }
-        .runner-card .play-now-btn { background: var(--neon-pink); color: white; }
-        .ludo-card .play-now-btn { background: var(--neon-yellow); }
-        .chess-card .play-now-btn { background: #ffffff; color: #000; }
 
-        .contact-box {
-            background: var(--card-bg);
-            max-width: 400px;
-            margin: 30px auto 0 auto;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            text-align: center;
-        }
-        .contact-row { display: flex; justify-content: space-around; margin-top: 10px; }
-        .compact-link { color: var(--text-white); text-decoration: none; font-size: 13px; font-weight: 600; }
         footer { text-align: center; padding: 15px; color: #555; font-size: 12px; margin-top: 30px; }
 
         /* --- FULLSCREEN CONTAINER --- */
@@ -201,12 +185,13 @@
         </footer>
     </div>
 
-    <!-- 3D CAR RACING SCREEN -->
+    <!-- 3D CAR RACING SCREEN (DIRECT PLAYER INJECTED) -->
     <div class="game-screen" id="carRacingScreen">
         <div class="game-header">
             <button class="back-btn" onclick="closeCarRacing()">← Exit Game</button>
             <div class="score-board">3D Racing Zone</div>
         </div>
+        <!-- /player jodne se yeh list ke bajaye direct game play karega -->
         <iframe src="https://gd.games"></iframe>
     </div>
 
