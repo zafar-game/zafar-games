@@ -1,359 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zafar Games</title>
+  <div class="canvas-wrap" id="game-area">
+    <canvas id="game"></canvas>
+    <div class="grid"></div>
+    <div class="overlay-ui">
+      <div class="topbar">
+        <div class="score-pill">Score: <span id="score">0</span></div>
+        <div class="controls">
+          <div class="level-pill">Level <span id="level">1</span></div>
+          <button id="pause" class="small-btn">Pause</button>
+        </div>
+      </div>
+      <div class="center-screen" id="center-msg" style="pointer-events:none">
+        <div class="small-center" id="status">Tap Play to start</div>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:flex-end">
+        <div class="touch-controls" id="touch-controls" style="display:none">
+          <div class="dpad" role="group" aria-label="On-screen controls">
+            <div></div>
+            <button data-dir="up">↑</button>
+            <div></div>
+            <button data-dir="left">←</button>
+            <button data-dir="down">↓</button>
+            <button data-dir="right">→</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<style>
+  <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+    <button id="start" class="play-btn">Play</button>
+    <button id="restart" class="small-btn">Restart</button>
+    <div style="flex:1"></div>
+    <div class="muted">High Score: <strong id="high">0</strong></div>
+  </div>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
+  <div class="footer" style="width:100%;margin-top:12px">
+    <div class="muted">Instagram: @skarman.exe</div>
+    <div class="muted">zafar-game.github.io</div>
+  </div>
 
-html{
-scroll-behavior:smooth;
-}
-
-body{
-background:#0b0f19;
-color:#fff;
-overflow-x:hidden;
-}
-
-a{
-text-decoration:none;
-color:white;
-}
-
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:75px;
-background:#111827;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 40px;
-z-index:1000;
-box-shadow:0 0 15px rgba(0,255,170,.2);
-}
-
-.logo{
-font-size:30px;
-font-weight:bold;
-color:#00ff99;
-}
-
-nav a{
-margin-left:25px;
-font-size:18px;
-transition:.3s;
-}
-
-nav a:hover{
-color:#00ff99;
-}
-
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-background:linear-gradient(#0b0f19,#101827);
-}
-
-.hero h1{
-font-size:60px;
-color:#00ff99;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:22px;
-color:#ddd;
-max-width:700px;
-line-height:1.6;
-}
-
-.playbtn{
-margin-top:35px;
-padding:15px 40px;
-font-size:20px;
-border:none;
-border-radius:50px;
-background:#00ff99;
-cursor:pointer;
-font-weight:bold;
-transition:.3s;
-}
-
-.playbtn:hover{
-transform:scale(1.08);
-}
-
-section{
-padding:90px 10%;
-}
-
-.section-title{
-text-align:center;
-font-size:40px;
-margin-bottom:50px;
-color:#00ff99;
-}.games{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:30px;
-margin-top:40px;
-}
-
-.card{
-background:#1b2433;
-border:2px solid #00ff99;
-border-radius:20px;
-padding:25px;
-text-align:center;
-transition:.35s;
-box-shadow:0 0 15px rgba(0,255,153,.15);
-}
-
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 0 30px rgba(0,255,153,.45);
-}
-
-.card h2{
-font-size:30px;
-margin-bottom:15px;
-color:#00ff99;
-}
-
-.card p{
-color:#ddd;
-line-height:1.6;
-margin-bottom:20px;
-}
-
-.btn{
-display:inline-block;
-padding:12px 30px;
-background:#00ff99;
-color:#000;
-font-weight:bold;
-border-radius:40px;
-transition:.3s;
-}
-
-.btn:hover{
-background:#00cc77;
-transform:scale(1.05);
-}
-
-.about{
-text-align:center;
-max-width:900px;
-margin:auto;
-font-size:20px;
-line-height:1.8;
-color:#ddd;
-}
-
-.contact{
-display:flex;
-justify-content:center;
-gap:20px;
-flex-wrap:wrap;
-margin-top:30px;
-}
-
-.contact a{
-padding:15px 25px;
-background:#1b2433;
-border:2px solid #00ff99;
-border-radius:12px;
-transition:.3s;
-}
-
-.contact a:hover{
-background:#00ff99;
-color:#000;
-}
-
-footer{
-background:#111827;
-text-align:center;
-padding:25px;
-font-size:18px;
-color:#bbb;
-margin-top:40px;
-}
-
-@media(max-width:768px){
-
-header{
-padding:0 20px;
-}
-
-.logo{
-font-size:22px;
-}
-
-nav a{
-margin-left:12px;
-font-size:15px;
-}
-
-.hero h1{
-font-size:42px;
-}
-
-.hero p{
-font-size:18px;
-}
-
-.section-title{
-font-size:32px;
-}
-
-}</style>
-</head>
-
-<body>
-
-<header>
-<div class="logo">🎮 ZAFAR GAMES</div>
-
-<nav>
-<a href="#home">Home</a>
-<a href="#games">Games</a>
-<a href="#about">About</a>
-<a href="#contact">Contact</a>
-</nav>
-
-</header>
-
-<section class="hero" id="home">
-
-<h1>Play Free Browser Games</h1>
-
-<p>
-Welcome to Zafar Games. Enjoy free HTML5 games made with Godot and JavaScript.
-More exciting games are coming soon.
-</p>
-
-<a href="#games" class="btn playbtn">🎮 Play Now</a>
-
-</section>
-
-<section id="games">
-
-<h2 class="section-title">Games</h2>
-
-<div class="games">
-
-<div class="card">
-
-<h2>🐍 Snake</h2>
-
-<p>
-Classic Snake Game.
-Works on PC.
-Mobile support coming soon.
-</p>
-
-<a class="btn" href="https://armansnakecobra.itch.io/snake-game" target="_blank">
-Play Snake
-</a>
-
+  <div class="neon-bg" aria-hidden></div>
 </div>
 
-<div class="card">
+<div class="right">
+  <div class="header">
+    <div>
+      <div class="h1">Snake — Classic, Reborn</div>
+      <div class="muted">Play with keyboard, touch or swipe. Infinite levels, neon vibes.</div>
+    </div>
+    <div class="row">
+      <div class="muted">Sound</div>
+      <div id="sound-toggle" class="toggle on"><div class="knob"></div></div>
+    </div>
+  </div>
 
-<h2>🎲 Ludo</h2>
+  <div class="panel">
+    <div class="setting-row">
+      <div>
+        <div style="font-weight:700">Settings</div>
+        <div class="muted" style="font-size:13px">Customize your play</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="setting-row"><div class="muted">Grid</div><div id="grid-toggle" class="toggle"><div class="knob"></div></div></div>
+        <div class="setting-row"><div class="muted">Vibrate</div><div id="vib-toggle" class="toggle"><div class="knob"></div></div></div>
+        <div class="setting-row"><div class="muted">Dark Mode</div><div id="dark-toggle" class="toggle on"><div class="knob"></div></div></div>
+      </div>
+    </div>
 
-<p>
-Play Ludo against Computer.
-Coming Soon.
-</p>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="icon">🎧</div>
+      <div>
+        <div style="font-weight:700">Sound & Feedback</div>
+        <div class="muted" style="font-size:13px">Toggle beep & vibrations</div>
+      </div>
+    </div>
 
-<a class="btn" href="#">
-Coming Soon
-</a>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="icon">📈</div>
+      <div>
+        <div style="font-weight:700">Stats</div>
+        <div class="muted" id="bestText">Best: 0 • Level: 1</div>
+      </div>
+    </div>
 
+  </div>
+
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:700">Other Games</div>
+      <div class="muted">Coming Soon</div>
+    </div>
+    <div class="coming">
+      <div class="item">🎲 Ludo</div>
+      <div class="item">♟️ Chess</div>
+      <div class="item">🕹️ Arcade</div>
+      <div class="item">🏎️ Racing</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+    <div class="muted">© Zafar Games</div>
+    <div class="muted">Contact: <a href="mailto:skarman@example.com" style="color:var(--accent);text-decoration:none">skarman@example.com</a></div>
+  </div>
 </div>
-
-<div class="card">
-
-<h2>♟ Chess</h2>
-
-<p>
-Play Chess against AI.
-Coming Soon.
-</p>
-
-<a class="btn" href="#">
-Coming Soon
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-<section id="about">
-
-<h2 class="section-title">About</h2>
-
-<div class="about">
-
-Zafar Games is a free browser gaming website where you can play games directly from your browser.
-
-New games will be added regularly.
-
-</div>
-
-</section>
-
-<section id="contact">
-
-<h2 class="section-title">Contact</h2>
-
-<div class="contact">
-
-<a href="https://github.com/zafar-game">GitHub</a>
-
-<a href="mailto:your@email.com">Email</a>
-
-</div>
-
-</section>
-
-<footer>
-
-<div style="display:flex;justify-content:center;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
-
-<a href="https://instagram.com/skarman.exe" target="_blank" style="color:white;text-decoration:none;font-size:16px;">
-📷 @skarman.exe
-</a>
-
-<a href="mailto:YOUR_EMAIL@gmail.com" style="color:white;text-decoration:none;font-size:16px;">
-📧 YOUR_EMAIL@gmail.com
-</a>
-
-</div>
-
-<p style="color:#888;font-size:15px;">
-© 2026 Zafar Games. All Rights Reserved.
-</p>
-
-</footer>
