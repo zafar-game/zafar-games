@@ -3,305 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Ultimate Mobile Arcade</title>
+    <title>Zafar Games | Poki Style Arcade</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --neon-green: #00ff99;
-            --neon-blue: #00e5ff;
-            --neon-pink: #ff0055;
-            --neon-yellow: #ffe600;
-            --text-white: #ffffff;
-            --text-gray: #c5c6c7;
+            --bg-main: #f0f4f8;
+            --panel-bg: #ffffff;
+            --primary-accent: #4a90e2;
+            --wood-dark: #8b5a2b;
+            --wood-light: #cdaf95;
+            --ludo-red: #d9534f;
+            --ludo-green: #5cb85c;
+            --ludo-blue: #0275d8;
+            --ludo-yellow: #f0ad4e;
+            --text-dark: #2c3e50;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
             overflow-x: hidden;
         }
 
-        /* HOME SCREEN LAYOUT */
-        .main-site { display: block; }
-
+        /* Poki Style Top Navigation Bar */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
-            background: rgba(31, 40, 51, 0.95);
-            border-bottom: 1px solid rgba(0, 255, 153, 0.1);
+            padding: 12px 6%;
+            background: var(--panel-bg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 800;
-            color: var(--neon-green);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .hero {
-            min-height: 22vh;
+            color: #2b6cb0;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(11, 12, 16, 0.85), rgba(11, 12, 16, 0.95)), 
-                        url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1920') no-repeat center center/cover;
-            padding: 20px;
+            gap: 8px;
         }
 
-        .hero h1 { font-size: 2rem; margin-bottom: 5px; }
-        .hero h1 span { color: var(--neon-green); }
+        .logo span {
+            background: #ededff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            color: #4c51bf;
+        }
 
-        .container { padding: 25px 5%; }
-        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 20px; text-transform: uppercase; }
+        /* Poki Styled Hero Layout */
+        .hero-banner {
+            padding: 30px 6% 10px 6%;
+            text-align: center;
+        }
 
-        /* GAMES GRID */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
+        .hero-banner h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+
+        /* Poki Grid System - Dynamic & Clean Cards */
+        .games-container {
+            padding: 20px 6%;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .play-zone {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
         }
-        .play-zone.snake-card { border-color: var(--neon-green); }
-        .play-zone.ludo-card { border-color: var(--neon-yellow); }
-        .play-zone.chess-card { border-color: #ffffff; }
 
-        .game-icon { font-size: 40px; margin-bottom: 10px; }
-
-        .play-now-btn {
-            display: inline-block;
-            background: var(--neon-blue);
-            color: #000;
-            font-size: 15px;
-            font-weight: bold;
-            padding: 10px 25px;
-            border-radius: 25px;
-            text-transform: uppercase;
+        /* Poki Style Real & Interactive Cards */
+        .game-card {
+            background: var(--panel-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.15);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             cursor: pointer;
-            border: none;
-            margin-top: 10px;
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
         }
-        .snake-card .play-now-btn { background: var(--neon-green); }
-        .runner-card .play-now-btn { background: var(--neon-pink); color: white; }
-        .ludo-card .play-now-btn { background: var(--neon-yellow); }
-        .chess-card .play-now-btn { background: #ffffff; color: #000; }
 
-        .contact-box {
-            background: var(--card-bg);
-            max-width: 400px;
-            margin: 30px auto 0 auto;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            text-align: center;
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(149, 157, 165, 0.25);
         }
-        .contact-row { display: flex; justify-content: space-around; margin-top: 10px; }
-        .compact-link { color: var(--text-white); text-decoration: none; font-size: 13px; font-weight: 600; }
-        footer { text-align: center; padding: 15px; color: #555; font-size: 12px; margin-top: 30px; }
 
-        /* --- FULLSCREEN MOB-OPTIMIZED CONTAINER --- */
+        .card-preview {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            position: relative;
+        }
+
+        .ludo-preview { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .chess-preview { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+
+        .card-details {
+            padding: 20px;
+            text-align: left;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-details h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 6px;
+        }
+
+        .card-details p {
+            font-size: 13px;
+            color: #718096;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .play-tag {
+            align-self: flex-start;
+            background: #48bb78;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* FULLSCREEN GAME WINDOW */
         .game-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #000;
+            background-color: #1a202c;
             z-index: 9999;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 5px;
+            padding: 15px 10px;
         }
 
-        .game-header {
+        .game-navbar {
             width: 100%;
-            padding: 5px 15px;
+            max-width: 1000px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 10px;
         }
 
-        .back-btn {
-            background: #1f2833;
-            color: #00e5ff;
-            border: 1px solid #00e5ff;
+        .close-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        }
+
+        .status-pill {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
         }
-
-        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); }
 
         #gameCanvas {
-            background: #050508;
+            background: #f7fafc;
             display: block;
-            border-radius: 10px;
-            border: 2px solid var(--neon-green);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             width: 95vw;
-            height: 48vh; 
+            max-width: 500px;
+            height: 55vh;
+            max-height: 500px;
         }
 
-        .runner-tips { font-size: 13px; color: var(--text-gray); text-align: center; margin: 5px 0; padding: 0 10px; }
+        .game-hints {
+            color: #a0aec0;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 500;
+        }
 
-        /* MOBILE CONTROLS SYSTEM */
-        .mobile-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 90vw;
-            max-width: 280px;
+        .action-container {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 10px;
             margin-bottom: 10px;
         }
 
-        .control-btn {
-            background: #111;
-            border: 2px solid var(--neon-blue);
-            color: var(--neon-blue);
-            font-size: 26px;
-            padding: 12px 0;
-            border-radius: 15px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .control-btn:active { background: var(--neon-blue); color: #000; }
-        .control-btn.up { grid-column: 2; }
-        .control-btn.left { grid-column: 1; }
-        .control-btn.right { grid-column: 3; }
-        .control-btn.down { grid-column: 2; }
-
-        /* LUDO/CHESS EXTRA UTILITIES BUTTONS */
-        .action-bar {
-            display: none;
-            width: 90vw;
-            max-width: 320px;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .action-btn {
-            background: var(--neon-yellow);
-            color: #000;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
+        .roll-btn {
             width: 100%;
-            text-transform: uppercase;
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(49, 130, 206, 0.4);
+            cursor: pointer;
         }
+        .roll-btn:active { transform: translateY(2px); }
+
+        footer { text-align: center; padding: 40px 0; color: #a0aec0; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <!-- HOME SCREEN -->
-    <div class="main-site" id="mainSite">
+    <!-- POKI STYLE MAIN PORTAL -->
+    <div id="portalView">
         <nav>
-            <div class="logo">⚡ Zafar Games ⚡</div>
+            <div class="logo">🎮 Zafar<span>Poki</span></div>
         </nav>
 
-        <section class="hero">
-            <h1>Zafar Arcade <span>Station</span></h1>
-            <p>Premium High-Quality HTML5 Station</p>
-        </section>
+        <div class="hero-banner">
+            <h1>Free Online Natural Games</h1>
+        </div>
 
-        <section class="container">
-            <h2 class="section-title">Select Arcade Game</h2>
-            <div class="games-grid">
+        <div class="games-container">
+            <div class="grid-layout">
                 
-                <!-- GAME 1: SNAKE -->
-                <div class="play-zone snake-card">
-                    <div class="game-icon">🐍</div>
-                    <h3>Snake Game V2</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Smooth and controlled mobile grid engine.</p>
-                    <button class="play-now-btn" onclick="startSnake()">▶ Play</button>
+                <!-- CARD 1: LUDO -->
+                <div class="game-card" onclick="launchLudo()">
+                    <div class="card-preview ludo-preview">🎲</div>
+                    <div class="card-details">
+                        <div>
+                            <h3>Classic Ludo Club</h3>
+                            <p>Real organic colors. Play turn-by-turn steps against local smart computer bot engine.</p>
+                        </div>
+                        <div class="play-tag">Play Now</div>
+                    </div>
                 </div>
 
-                <!-- GAME 2: CYBER RUNNER -->
-                <div class="play-zone runner-card">
-                    <div class="game-icon">🏃‍♂️</div>
-                    <h3 style="color: var(--neon-pink);">Cyber Runner</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Endless infinity acceleration jump system.</p>
-                    <button class="play-now-btn" onclick="startRunner()">▶ Play</button>
-                </div>
-
-                <!-- GAME 3: NEON LUDO -->
-                <div class="play-zone ludo-card">
-                    <div class="game-icon">🎲</div>
-                    <h3 style="color: var(--neon-yellow);">Neon Ludo (Pass/Bot)</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Colorful mini board. Play vs Computer Bot or Friend.</p>
-                    <button class="play-now-btn" onclick="startLudo()">▶ Play</button>
-                </div>
-
-                <!-- GAME 4: FUTURISTIC CHESS -->
-                <div class="play-zone chess-card">
-                    <div class="game-icon">♟️</div>
-                    <h3 style="color: #ffffff;">Cyber Chess (vs AI)</h3>
-                    <p style="color: var(--text-gray); font-size: 13px; margin-top:5px;">Futuristic mind battle. Challenge the Smart Bot.</p>
-                    <button class="play-now-btn" onclick="startChess()">▶ Play</button>
+                <!-- CARD 2: CHESS -->
+                <div class="game-card" onclick="launchChess()">
+                    <div class="card-preview chess-preview">👑</div>
+                    <div class="card-details">
+                        <div>
+                            <h3>Royal Wood Chess</h3>
+                            <p>Hand-crafted wooden style tiles and traditional pieces. Test strategy against AI.</p>
+                        </div>
+                        <div class="play-tag">Play Now</div>
+                    </div>
                 </div>
 
             </div>
-        </section>
+        </div>
 
-        <section class="container">
-            <div class="contact-box">
-                <h3 style="font-size: 15px; color: var(--neon-blue);">CONNECT</h3>
-                <div class="contact-row">
-                    <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">📸 @skarman.exe</a>
-                    <a href="mailto:info@zafargames.com" class="compact-link">📩 Send Email</a>
-                </div>
-            </div>
-        </section>
-
-        <footer>ZAFAR GAMES ARCADE | &copy; 2026</footer>
+        <footer>ZAFAR ARCADE • COPIED WITH LOVE FOR POKI LOOKS • 2026</footer>
     </div>
 
 
-    <!-- FULLSCREEN GAME VIEW -->
-    <div class="game-screen" id="gameScreen">
-        <div class="game-header">
-            <button class="back-btn" onclick="exitGame()">⬅ Exit</button>
-            <div class="score-board" id="scoreWrapper">Status: <span id="scoreText">Ready</span></div>
+    <!-- FULLSCREEN DYNAMIC CANVAS APPLICATION -->
+    <div class="game-screen" id="appScreen">
+        <div class="game-navbar">
+            <button class="close-btn" onclick="terminateGame()">✕ Leave</button>
+            <div class="status-pill" id="statusDisplay">Turn: -</div>
         </div>
         
         <canvas id="gameCanvas"></canvas>
 
-        <div class="runner-tips" id="gameTips">Loading controls...</div>
+        <div class="game-hints" id="hintDisplay">Loading match dynamics...</div>
 
-        <!-- Touch Controls Pad for Snake & Runner -->
-        <div class="mobile-controls" id="controlPad">
-            <button class="control-btn up" id="btnUp">▲</button>
-            <button class="control-btn left" id="btnLeft">◀</button>
-            <button class="control-btn right" id="btnRight">▶</button>
-            <button class="control-btn down" id="btnDown">▼</button>
-        </div>
-
-        <!-- Custom Actions Bar for Ludo Dice / Chess controls -->
-        <div class="action-bar" id="actionBar">
-            <button class="action-btn" id="mainActionBtn" onclick="handleActionClick()">🎲 Roll Dice</button>
+        <div class="action-container" id="rollActionBox">
+            <button class="roll-btn" onclick="triggerDiceRoll()">🎲 Roll Natural Dice</button>
         </div>
     </div>
 
@@ -310,397 +304,254 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         
-        let currentImgMode = ""; 
-        let score = 0;
-        let globalCount = 0;
+        let activeEngine = "";
+        let ludoTurn = 0; 
+        let userSteps = 0, botSteps = 0;
 
-        // --- SNAKE SYSTEM ---
-        let grid = 20;
-        let snake = { x: 0, y: 0, dx: grid, dy: 0, cells: [], maxCells: 4 };
-        let apple = { x: 0, y: 0 };
-
-        // --- CYBER RUNNER SYSTEM ---
-        let runnerPlayer = { x: 40, y: 0, width: 25, height: 35, vy: 0, gravity: 0.8, isJumping: false, isDucking: false };
-        let obstacles = [];
-        let runnerSpeed = 3.5;
-        let runnerActive = false;
-        let groundY = 0;
-
-        // --- LUDO GAME SYSTEM ---
-        let ludoTurn = 0; // 0: Player (Red), 1: Bot (Green)
-        let diceValue = 1;
-        let pRed = { pos: 0, color: "#ff0055", x: 0, y: 0 };
-        let pBot = { pos: 0, color: "#00ff99", x: 0, y: 0 };
-        const ludoPath = [
+        // Path structure for realistic board track layout
+        const traditionalPath = [
             {cx:1, cy:2}, {cx:2, cy:2}, {cx:3, cy:2}, {cx:4, cy:2}, {cx:4, cy:1}, {cx:4, cy:0},
             {cx:5, cy:0}, {cx:5, cy:1}, {cx:5, cy:2}, {cx:6, cy:2}, {cx:7, cy:2}, {cx:7, cy:3},
             {cx:7, cy:4}, {cx:6, cy:4}, {cx:5, cy:4}, {cx:5, cy:5}, {cx:5, cy:6}, {cx:4, cy:6},
             {cx:4, cy:5}, {cx:4, cy:4}, {cx:3, cy:4}, {cx:2, cy:4}, {cx:1, cy:4}, {cx:1, cy:3}
         ];
 
-        // --- CHESS GAME SYSTEM ---
-        let selectedPiece = null;
-        let chessTurn = "player"; // player or bot
-        let chessBoard = [
-            ['r','n','b','q','k','b','n','r'],
-            ['p','p','p','p','p','p','p','p'],
+        // Traditional real pieces map grid
+        let selectedCoordinates = null;
+        let activeChessTurn = "player";
+        let chessBoardGrid = [
+            ['♜','♞','♝','♛','♚','♝','♞','♜'],
+            ['♟','♟','♟','♟','♟','♟','♟','♟'],
             ['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','','','','',''],
-            ['P','P','P','P','P','P','P','P'],
-            ['R','N','B','Q','K','B','N','R']
+            ['♙','♙','♙','♙','♙','♙','♙','♙'],
+            ['♖','♘','♗','♕','♔','♗','♘','♖']
         ];
 
-        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
-
-        function resizeCanvas() {
+        function resizeAppCanvas() {
             canvas.width = canvas.clientWidth;
             canvas.height = canvas.clientHeight;
-            groundY = canvas.height - 30;
         }
 
-        function showScreen() {
-            document.getElementById("mainSite").style.display = "none";
-            document.getElementById("gameScreen").style.display = "flex";
-            resizeCanvas();
+        function launchLudo() {
+            activeEngine = "ludo";
+            document.getElementById("portalView").style.display = "none";
+            document.getElementById("appScreen").style.display = "flex";
+            document.getElementById("rollActionBox").style.display = "block";
+            document.getElementById("statusDisplay").innerText = "Your Turn";
+            document.getElementById("statusDisplay").style.color = "#5cb85c";
+            document.getElementById("hintDisplay").innerText = "Tap the dice button below to make a natural move.";
+            userSteps = 0; botSteps = 0; ludoTurn = 0;
+            resizeAppCanvas();
+            renderLudoGraphics();
         }
 
-        function exitGame() {
-            runnerActive = false; currentImgMode = "";
-            document.getElementById("gameScreen").style.display = "none";
-            document.getElementById("mainSite").style.display = "block";
-        }
-
-        // --- SNAKE INIT ---
-        function startSnake() {
-            currentImgMode = "snake";
-            canvas.style.borderColor = "#00ff99";
-            document.getElementById("scoreWrapper").innerHTML = `Score: <span id="scoreText">0</span>`;
-            document.getElementById("scoreText").style.color = "#00ff99";
-            document.getElementById("gameTips").innerText = "Controls: Use Neon directional buttons.";
-            document.getElementById("controlPad").style.display = "grid";
-            document.getElementById("actionBar").style.display = "none";
-            document.getElementById("btnLeft").style.visibility = "visible";
-            document.getElementById("btnRight").style.visibility = "visible";
-            score = 0; showScreen();
-            grid = 20;
-            snake.x = Math.floor(canvas.width / 2 / grid) * grid;
-            snake.y = Math.floor(canvas.height / 2 / grid) * grid;
-            snake.dx = grid; snake.dy = 0;
-            snake.cells = [{x: snake.x, y: snake.y}]; snake.maxCells = 4;
-            resetApple();
-        }
-
-        function resetApple() {
-            let cols = Math.floor(canvas.width / grid) - 1;
-            let rows = Math.floor(canvas.height / grid) - 1;
-            apple.x = getRandomInt(1, cols) * grid; apple.y = getRandomInt(1, rows) * grid;
-        }
-
-        // --- CYBER RUNNER INIT ---
-        function startRunner() {
-            currentImgMode = "runner";
-            canvas.style.borderColor = "#ff0055";
-            document.getElementById("scoreWrapper").innerHTML = `Score: <span id="scoreText">0</span>`;
-            document.getElementById("scoreText").style.color = "#ff0055";
-            document.getElementById("gameTips").innerText = "▲ to JUMP | ▼ to DUCK under flying lasers";
-            document.getElementById("controlPad").style.display = "grid";
-            document.getElementById("actionBar").style.display = "none";
-            document.getElementById("btnLeft").style.visibility = "hidden";
-            document.getElementById("btnRight").style.visibility = "hidden";
-            score = 0; showScreen();
-            runnerSpeed = 3.5; obstacles = [];
-            runnerPlayer.y = groundY - 35; runnerPlayer.vy = 0; runnerPlayer.isJumping = false; runnerPlayer.isDucking = false; runnerPlayer.height = 35;
-            runnerActive = true;
-        }
-
-        // --- LUDO SYSTEM INIT ---
-        function startLudo() {
-            currentImgMode = "ludo";
-            canvas.style.borderColor = "#ffe600";
-            document.getElementById("scoreWrapper").innerHTML = `Status: <span id="scoreText" style="color:#ff0055">Your Turn</span>`;
-            document.getElementById("gameTips").innerText = "Click 'Roll Dice' button to move token forward.";
-            document.getElementById("controlPad").style.display = "none";
-            document.getElementById("actionBar").style.display = "flex";
-            document.getElementById("mainActionBtn").innerText = "🎲 Roll Dice";
-            document.getElementById("mainActionBtn").style.background = "var(--neon-yellow)";
-            pRed.pos = 0; pBot.pos = 0; ludoTurn = 0;
-            showScreen();
-            drawLudoBoard();
-        }
-
-        function handleActionClick() {
-            if (currentImgMode === "ludo" && ludoTurn === 0) {
-                diceValue = getRandomInt(1, 7);
-                document.getElementById("gameTips").innerText = `You rolled a ${diceValue}!`;
-                pRed.pos += diceValue;
-                if (pRed.pos >= ludoPath.length) {
-                    alert("🎉 Winner! You beat the Bot!");
-                    pRed.pos = 0; pBot.pos = 0;
+        function triggerDiceRoll() {
+            if (activeEngine === "ludo" && ludoTurn === 0) {
+                let rolledVal = Math.floor(Math.random() * 6) + 1;
+                userSteps += rolledVal;
+                document.getElementById("hintDisplay").innerText = `You rolled a solid ${rolledVal}!`;
+                
+                if (userSteps >= traditionalPath.length) {
+                    alert("🏆 Splendid! You conquered the board!");
+                    terminateGame();
+                    return;
                 }
-                ludoTurn = 1; // pass turn to Bot
-                document.getElementById("scoreText").innerText = "Bot's Turn...";
-                document.getElementById("scoreText").style.color = "#00ff99";
+                
+                ludoTurn = 1;
+                document.getElementById("statusDisplay").innerText = "Bot Thinking...";
+                document.getElementById("statusDisplay").style.color = "#d9534f";
+                renderLudoGraphics();
 
-                // Bot playing trigger simulation
                 setTimeout(() => {
-                    let botDice = getRandomInt(1, 7);
-                    pBot.pos += botDice;
-                    document.getElementById("gameTips").innerText = `Bot rolled a ${botDice}!`;
-                    if (pBot.pos >= ludoPath.length) {
-                        alert("🤖 Bot Won! Better luck next time.");
-                        pRed.pos = 0; pBot.pos = 0;
+                    let botRolled = Math.floor(Math.random() * 6) + 1;
+                    botSteps += botRolled;
+                    document.getElementById("hintDisplay").innerText = `Bot calculated a move of ${botRolled}.`;
+                    
+                    if (botSteps >= traditionalPath.length) {
+                        alert("🤖 Match Finished! Bot took the win.");
+                        terminateGame();
+                        return;
                     }
+                    
                     ludoTurn = 0;
-                    document.getElementById("scoreText").innerText = "Your Turn";
-                    document.getElementById("scoreText").style.color = "#ff0055";
-                }, 1200);
+                    document.getElementById("statusDisplay").innerText = "Your Turn";
+                    document.getElementById("statusDisplay").style.color = "#5cb85c";
+                    renderLudoGraphics();
+                }, 1100);
             }
         }
 
-        function drawLudoBoard() {
+        function renderLudoGraphics() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            let size = Math.min(canvas.width, canvas.height) / 9;
-            let startX = (canvas.width - size * 9) / 2;
-            let startY = (canvas.height - size * 7) / 2;
+            let unit = Math.min(canvas.width, canvas.height) / 9;
+            let offsetCol = (canvas.width - unit * 9) / 2;
+            let offsetRow = (canvas.height - unit * 7) / 2;
 
-            // Draw tracks
-            ludoPath.forEach((cell, index) => {
-                ctx.fillStyle = "#1f2833";
-                ctx.strokeStyle = "rgba(255,255,255,0.1)";
-                let cx = startX + cell.cx * size;
-                let cy = startY + cell.cy * size;
-                ctx.fillRect(cx, cy, size, size);
-                ctx.strokeRect(cx, cy, size, size);
+            // Paint clean natural grid fields
+            traditionalPath.forEach((tile, idx) => {
+                ctx.strokeStyle = "#cbd5e0";
+                ctx.lineWidth = 1;
+                
+                if(idx < 4) ctx.fillStyle = "#fed7d7"; 
+                else if(idx >= 6 && idx < 10) ctx.fillStyle = "#c6f6d5";
+                else if(idx === traditionalPath.length - 1) ctx.fillStyle = "#feebc8";
+                else ctx.fillStyle = "#ffffff";
 
-                // Target Destination highlight box neon logic
-                if (index === ludoPath.length - 1) {
-                    ctx.fillStyle = "rgba(255, 230, 0, 0.4)";
-                    ctx.fillRect(startX + cell.cx*size, startY + cell.cy*size, size, size);
-                }
+                ctx.fillRect(offsetCol + tile.cx*unit, offsetRow + tile.cy*unit, unit, unit);
+                ctx.strokeRect(offsetCol + tile.cx*unit, offsetRow + tile.cy*unit, unit, unit);
             });
 
-            // Map vectors coordinates for drawing tokens
-            let redCell = ludoPath[pRed.pos % ludoPath.length];
-            let botCell = ludoPath[pBot.pos % ludoPath.length];
+            // Realistic tokens rendering (Solid Organic tokens)
+            let userLoc = traditionalPath[userSteps % traditionalPath.length];
+            let botLoc = traditionalPath[botSteps % traditionalPath.length];
 
-            // Render Tokens
-            ctx.fillStyle = pRed.color; ctx.shadowColor = pRed.color; ctx.shadowBlur = 10;
-            ctx.beginPath(); ctx.arc(startX + redCell.cx*size + size/2, startY + redCell.cy*size + size/2, size/3, 0, Math.PI*2); ctx.fill();
+            // User Token
+            ctx.fillStyle = "#e53e3e";
+            ctx.beginPath();
+            ctx.arc(offsetCol + userLoc.cx*unit + unit/2, offsetRow + userLoc.cy*unit + unit/2, unit/3, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
 
-            ctx.fillStyle = pBot.color; ctx.shadowColor = pBot.color; ctx.shadowBlur = 10;
-            ctx.beginPath(); ctx.arc(startX + botCell.cx*size + size/2, startY + botCell.cy*size + size/2, size/3, 0, Math.PI*2); ctx.fill();
-            ctx.shadowBlur = 0; // reset
+            // Bot Token
+            ctx.fillStyle = "#38a169";
+            ctx.beginPath();
+            ctx.arc(offsetCol + botLoc.cx*unit + unit/2, offsetRow + botLoc.cy*unit + unit/2, unit/3, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
         }
 
+        function launchChess() {
+            activeEngine = "chess";
+            document.getElementById("portalView").style.display = "none";
+            document.getElementById("appScreen").style.display = "flex";
+            document.getElementById("rollActionBox").style.display = "none";
+            document.getElementById("statusDisplay").innerText = "Your Turn (White)";
+            document.getElementById("statusDisplay").style.color = "#ecc94b";
+            document.getElementById("hintDisplay").innerText = "Tap on your piece, then choose destination block.";
+            selectedCoordinates = null; activeChessTurn = "player";
+            resizeAppCanvas();
+            renderChessGraphics();
 
-        // --- CHESS ENGINE INIT ---
-        function startChess() {
-            currentImgMode = "chess";
-            canvas.style.borderColor = "#ffffff";
-            document.getElementById("scoreWrapper").innerHTML = `Status: <span id="scoreText" style="color:#00e5ff">Your Turn</span>`;
-            document.getElementById("gameTips").innerText = "Tap on your piece (Caps letters) and click empty cell to Move.";
-            document.getElementById("controlPad").style.display = "none";
-            document.getElementById("actionBar").style.display = "none";
-            selectedPiece = null; chessTurn = "player";
-            showScreen();
-            drawChessBoard();
-
-            // Setup Touch Click tracker inside grid space matrices
-            canvas.onclick = function(e) {
-                if (currentImgMode !== "chess" || chessTurn !== "player") return;
-                let rect = canvas.getBoundingClientRect();
-                let x = e.clientX - rect.left;
-                let y = e.clientY - rect.top;
+            // Direct tap actions handler
+            canvas.onclick = function(event) {
+                if (activeEngine !== "chess" || activeChessTurn !== "player") return;
+                let bRect = canvas.getBoundingClientRect();
+                let clickedX = event.clientX - bRect.left;
+                let clickedY = event.clientY - bRect.top;
                 
-                let boardSize = Math.min(canvas.width, canvas.height);
-                let cellSize = boardSize / 8;
-                let startX = (canvas.width - boardSize) / 2;
-                let startY = (canvas.height - boardSize) / 2;
+                let viewWidth = Math.min(canvas.width, canvas.height);
+                let tileBlock = viewWidth / 8;
+                let gridX = (canvas.width - viewWidth) / 2;
+                let gridY = (canvas.height - viewWidth) / 2;
 
-                let col = Math.floor((x - startX) / cellSize);
-                let row = Math.floor((y - startY) / cellSize);
+                let selectedCol = Math.floor((clickedX - gridX) / tileBlock);
+                let selectedRow = Math.floor((clickedY - gridY) / tileBlock);
 
-                if (col >= 0 && col < 8 && row >= 0 && row < 8) {
-                    let piece = chessBoard[row][col];
-                    if (selectedPiece) {
-                        // Move piece logic execution sequence
-                        chessBoard[selectedPiece.row][selectedPiece.col] = '';
-                        chessBoard[row][col] = selectedPiece.type;
-                        selectedPiece = null;
-                        chessTurn = "bot";
-                        document.getElementById("scoreText").innerText = "AI is thinking...";
-                        document.getElementById("scoreText").style.color = "#ff0055";
-                        drawChessBoard();
+                if (selectedCol >= 0 && selectedCol < 8 && selectedRow >= 0 && selectedRow < 8) {
+                    let targetUnit = chessBoardGrid[selectedRow][selectedCol];
+                    
+                    if (selectedCoordinates) {
+                        chessBoardGrid[selectedCoordinates.r][selectedCoordinates.c] = '';
+                        chessBoardGrid[selectedRow][selectedCol] = selectedCoordinates.symbol;
+                        selectedCoordinates = null;
+                        activeChessTurn = "bot";
+                        document.getElementById("statusDisplay").innerText = "Bot Engine calculating...";
+                        renderChessGraphics();
 
-                        // Bot Automated Response Action script
                         setTimeout(() => {
-                            makeBotChessMove();
-                            chessTurn = "player";
-                            document.getElementById("scoreText").innerText = "Your Turn";
-                            document.getElementById("scoreText").style.color = "#00e5ff";
-                            drawChessBoard();
-                        }, 1000);
+                            executeBotChessCalculation();
+                            activeChessTurn = "player";
+                            document.getElementById("statusDisplay").innerText = "Your Turn (White)";
+                            renderChessGraphics();
+                        }, 900);
                     } else {
-                        // Selection phase trigger checking uppercase condition matches player pieces
-                        if (piece !== '' && piece === piece.toUpperCase()) {
-                            selectedPiece = { row: row, col: col, type: piece };
-                            drawChessBoard();
+                        if (targetUnit !== '' && ['♙','♖','♘','♗','♕','♔'].includes(targetUnit)) {
+                            selectedCoordinates = { r: selectedRow, c: selectedCol, symbol: targetUnit };
+                            renderChessGraphics();
                         }
                     }
                 }
             };
         }
 
-        function makeBotChessMove() {
-            // Smart Bot scan algorithm searching for existing lowercase enemy items
-            let botPieces = [];
+        function executeBotChessCalculation() {
+            let activeBotUnits = [];
             for(let r=0; r<8; r++) {
                 for(let c=0; c<8; c++) {
-                    if (chessBoard[r][c] !== '' && chessBoard[r][c] === chessBoard[r][c].toLowerCase()) {
-                        botPieces.push({row: r, col: c, type: chessBoard[r][c]});
+                    if (chessBoardGrid[r][c] !== '' && ['♟','♜','♞','♝','♛','♚'].includes(chessBoardGrid[r][c])) {
+                        activeBotUnits.push({r: r, c: c, symbol: chessBoardGrid[r][c]});
                     }
                 }
             }
-            if (botPieces.length > 0) {
-                let pick = botPieces[getRandomInt(0, botPieces.length)];
-                let nextRow = pick.row + 1; // Simple forward bot action step mapping physics matrices
-                if (nextRow < 8 && chessBoard[nextRow][pick.col] === '') {
-                    chessBoard[pick.row][pick.col] = '';
-                    chessBoard[nextRow][pick.col] = pick.type;
+            if (activeBotUnits.length > 0) {
+                let randomUnit = activeBotUnits[Math.floor(Math.random() * activeBotUnits.length)];
+                let nextTargetRow = randomUnit.r + 1;
+                if (nextTargetRow < 8 && chessBoardGrid[nextTargetRow][randomUnit.c] === '') {
+                    chessBoardGrid[randomUnit.r][randomUnit.c] = '';
+                    chessBoardGrid[nextTargetRow][randomUnit.c] = randomUnit.symbol;
                 }
             }
         }
 
-        function drawChessBoard() {
+        function renderChessGraphics() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
-            let boardSize = Math.min(canvas.width, canvas.height);
-            let cellSize = boardSize / 8;
-            let startX = (canvas.width - boardSize) / 2;
-            let startY = (canvas.height - boardSize) / 2;
+            let mapSize = Math.min(canvas.width, canvas.height);
+            let blockUnit = mapSize / 8;
+            let startColX = (canvas.width - mapSize) / 2;
+            let startRowY = (canvas.height - mapSize) / 2;
 
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    // Alternative cell checkered drawing loops
-                    ctx.fillStyle = (r + c) % 2 === 0 ? "#1f2833" : "#0b0c10";
+                    // Real Maple wood vs Walnut wood color tone combination
+                    ctx.fillStyle = (r + c) % 2 === 0 ? "#eed9b3" : "#b58863";
                     
-                    // Selection highlight modifier vector state 
-                    if (selectedPiece && selectedPiece.row === r && selectedPiece.col === c) {
-                        ctx.fillStyle = "rgba(0, 229, 255, 0.4)";
+                    if (selectedCoordinates && selectedCoordinates.r === r && selectedCoordinates.c === c) {
+                        ctx.fillStyle = "#90cdf4";
                     }
 
-                    ctx.fillRect(startX + c * cellSize, startY + r * cellSize, cellSize, cellSize);
+                    ctx.fillRect(startColX + c*blockUnit, startRowY + r*blockUnit, blockUnit, blockUnit);
                     
-                    // Render simple text symbols vectors to present characters
-                    let piece = chessBoard[r][c];
-                    if (piece !== '') {
-                        ctx.fillStyle = piece === piece.toUpperCase() ? "#00e5ff" : "#ff0055";
-                        ctx.font = `bold ${cellSize * 0.5}px sans-serif`;
+                    let activeFig = chessBoardGrid[r][c];
+                    if (activeFig !== '') {
+                        ctx.fillStyle = ['♙','♖','♘','♗','♕','♔'].includes(activeFig) ? "#ffffff" : "#2d3748";
+                        
+                        if(ctx.fillStyle === "#ffffff") {
+                            ctx.strokeStyle = "#000000";
+                            ctx.lineWidth = 1;
+                        }
+                        
+                        ctx.font = `${blockUnit * 0.65}px sans-serif`;
                         ctx.textAlign = "center";
                         ctx.textBaseline = "middle";
-                        ctx.fillText(piece, startX + c * cellSize + cellSize/2, startY + r * cellSize + cellSize/2);
+                        
+                        let posX = startColX + c*blockUnit + blockUnit/2;
+                        let posY = startRowY + r*blockUnit + blockUnit/2;
+                        
+                        ctx.fillText(activeFig, posX, posY);
+                        if(['♙','♖','♘','♗','♕','♔'].includes(activeFig)) {
+                            ctx.strokeText(activeFig, posX, posY);
+                        }
                     }
                 }
             }
         }
 
-
-        // --- MASTER SYSTEM CORE PROCESSING LOOP ---
-        function masterLoop() {
-            requestAnimationFrame(masterLoop);
-
-            if (currentImgMode === "snake") {
-                if (++globalCount < 12) return; 
-                globalCount = 0;
-
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                snake.x += snake.dx; snake.y += snake.dy;
-
-                if (snake.x < 0) snake.x = canvas.width - grid;
-                else if (snake.x >= canvas.width) snake.x = 0;
-                if (snake.y < 0) snake.y = canvas.height - grid;
-                else if (snake.y >= canvas.height) snake.y = 0;
-
-                snake.cells.unshift({x: snake.x, y: snake.y});
-                if (snake.cells.length > snake.maxCells) snake.cells.pop();
-
-                ctx.fillStyle = '#ff0055'; ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
-
-                ctx.fillStyle = '#00ff99';
-                snake.cells.forEach(function(cell, index) {
-                    ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
-                    if (cell.x === apple.x && cell.y === apple.y) {
-                        snake.maxCells++; score += 10;
-                        document.getElementById("scoreText").innerText = score;
-                        resetApple();
-                    }
-                    for (let i = index + 1; i < snake.cells.length; i++) {
-                        if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) startSnake(); 
-                    }
-                });
-            } 
-            
-            else if (currentImgMode === "runner" && runnerActive) {
-                if (++globalCount < 2) return;
-                globalCount = 0;
-
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-
-                ctx.strokeStyle = "#00e5ff"; ctx.lineWidth = 3;
-                ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(canvas.width, groundY); ctx.stroke();
-
-                runnerPlayer.y += runnerPlayer.vy; runnerPlayer.vy += runnerPlayer.gravity;
-                let currentFloor = groundY - runnerPlayer.height;
-                if (runnerPlayer.y >= currentFloor) { runnerPlayer.y = currentFloor; runnerPlayer.vy = 0; runnerPlayer.isJumping = false; }
-
-                ctx.fillStyle = runnerPlayer.isDucking ? "#00ffff" : "#00e5ff";
-                ctx.fillRect(runnerPlayer.x, runnerPlayer.y, runnerPlayer.width, runnerPlayer.height);
-
-                if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - getRandomInt(150, 250)) {
-                    let type = getRandomInt(0, 2); 
-                    if (type === 0) obstacles.push({ x: canvas.width, y: groundY - 25, width: 20, height: 25, type: 0 });
-                    else obstacles.push({ x: canvas.width, y: groundY - 55, width: 22, height: 20, type: 1 }); 
-                }
-
-                ctx.fillStyle = "#ff0055"; 
-                obstacles.forEach((obs, index) => {
-                    obs.x -= runnerSpeed; ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-
-                    if (!obs.passed && obs.x < runnerPlayer.x) {
-                        obs.passed = true; score += 5;
-                        document.getElementById("scoreText").innerText = score;
-                        if (score % 30 === 0) runnerSpeed += 0.4;
-                    }
-
-                    if (runnerPlayer.x < obs.x + obs.width && runnerPlayer.x + runnerPlayer.width > obs.x &&
-                        runnerPlayer.y < obs.y + obs.height && runnerPlayer.y + runnerPlayer.height > obs.y) {
-                        startRunner(); 
-                    }
-                    if (obs.x < -30) obstacles.splice(index, 1);
-                });
-            } 
-            
-            else if (currentImgMode === "ludo") {
-                drawLudoBoard();
-            }
+        function terminateGame() {
+            activeEngine = "";
+            document.getElementById("appScreen").style.display = "none";
+            document.getElementById("portalView").style.display = "block";
         }
 
-        // --- INTERACTIVE TAP ACTION ROUTES ROUTING LOGIC ---
-        function triggerJump() { if (currentImgMode === "runner" && !runnerPlayer.isJumping && !runnerPlayer.isDucking) runnerPlayer.vy = -12.5; runnerPlayer.isJumping = true; }
-        function triggerDuckStart() { if (currentImgMode === "runner" && !runnerPlayer.isJumping) { runnerPlayer.isDucking = true; runnerPlayer.height = 18; } }
-        function triggerDuckEnd() { if (currentImgMode === "runner") { runnerPlayer.isDucking = false; runnerPlayer.height = 35; } }
-
-        document.getElementById("btnUp").addEventListener("touchstart", (e) => { e.preventDefault(); if (currentImgMode === "snake" && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; } else if (currentImgMode === "runner") triggerJump(); });
-        document.getElementById("btnDown").addEventListener("touchstart", (e) => { e.preventDefault(); if (currentImgMode === "snake" && snake.dy === 0) { snake.dy = grid; snake.dx = 0; } else if (currentImgMode === "runner") triggerDuckStart(); });
-        document.getElementById("btnDown").addEventListener("touchend", (e) => { e.preventDefault(); triggerDuckEnd(); });
-        document.getElementById("btnLeft").addEventListener("touchstart", (e) => { e.preventDefault(); if(currentImgMode === "snake" && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; } });
-        document.getElementById("btnRight").addEventListener("touchstart", (e) => { e.preventDefault(); if(currentImgMode === "snake" && snake.dx === 0) { snake.dx = grid; snake.dy = 0; } });
-
-        document.getElementById("btnUp").addEventListener("click", () => { if(currentImgMode === "runner") triggerJump(); });
-
-        window.addEventListener('resize', resizeCanvas);
-        requestAnimationFrame(masterLoop);
+        function frameLoop() {
+            requestAnimationFrame(frameLoop);
+            if (activeEngine === "ludo") {
+                renderLudoGraphics();
+            }
+        }
+        requestAnimationFrame(frameLoop);
     </script>
 </body>
 </html>
