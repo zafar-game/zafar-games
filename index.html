@@ -48,7 +48,6 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* Cartoon Dynamic Video Simulation Animations */
         @keyframes characterJump {
             0%, 100% { transform: translateY(0) scaleY(1); }
             50% { transform: translateY(-25px) scaleY(0.9); }
@@ -131,7 +130,6 @@
             align-items: center;
         }
 
-        /* LEFT SIDE: Cartoon Simulated Video Player Frame */
         .video-container {
             width: 100%;
             aspect-ratio: 16 / 10;
@@ -143,19 +141,17 @@
             overflow: hidden;
         }
 
-        /* Inner Cartoon Engine Viewport */
         .cartoon-screen {
             position: absolute;
             top: 15px;
             left: 15px;
             right: 15px;
             bottom: 50px;
-            background: linear-gradient(to bottom, #3a7bd5, #3a6073);
+            background: linear-gradient(to bottom, #111726, #1d293d);
             border-radius: 14px;
             overflow: hidden;
         }
 
-        /* Player Controls UI overlay */
         .player-bar {
             position: absolute;
             bottom: 0;
@@ -200,10 +196,9 @@
             border-radius: 2px;
         }
 
-        /* Cartoon Stage Props */
         .cloud {
             position: absolute;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.1);
             width: 50px;
             height: 18px;
             border-radius: 10px;
@@ -217,25 +212,23 @@
             left: 0;
             width: 100%;
             height: 30px;
-            background: #27ae60;
-            border-top: 4px solid #2ecc71;
+            background: #111;
+            border-top: 4px solid var(--neon-green);
         }
 
-        /* Main Hero Character (Snake/Monster mix) */
         .cartoon-hero {
             position: absolute;
             bottom: 26px;
             left: 50px;
             width: 32px;
             height: 32px;
-            background: #ffcc00;
+            background: #00ffff;
             border-radius: 8px 8px 0 0;
-            border: 3px solid #000;
-            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.15);
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px #00ffff;
             animation: characterJump 1.2s infinite ease-in-out;
         }
 
-        /* Eyes for character */
         .cartoon-hero::after {
             content: '';
             position: absolute;
@@ -243,24 +236,23 @@
             right: 4px;
             width: 6px;
             height: 6px;
-            background: #000;
+            background: #fff;
             border-radius: 50%;
         }
 
-        /* Enemy Block */
         .cartoon-enemy {
             position: absolute;
             bottom: 26px;
             right: 60px;
             width: 24px;
             height: 24px;
-            background: #e74c3c;
+            background: #ff3366;
             border-radius: 4px;
-            border: 3px solid #000;
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px #ff3366;
             animation: enemyPatrol 3s infinite linear;
         }
 
-        /* RIGHT SIDE: Core Content Static Block */
         .hero-text-side {
             text-align: left;
         }
@@ -445,6 +437,118 @@
             cursor: not-allowed;
         }
 
+        /* --- INTERNAL PLAY MODAL SYSTEM --- */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 4, 7, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 800px;
+            background: #09090d;
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 255, 153, 0.2);
+        }
+
+        .modal-header {
+            background: #12121a;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .modal-title {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #ff3366;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- MOBILE TOUCH CONTROLS PANEL --- */
+        .touch-controls {
+            display: none; /* Only visible on touch mobile screens */
+            width: 100%;
+            max-width: 200px;
+            margin-top: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .touch-btn {
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
+            transition: all 0.1s ease;
+        }
+
+        .touch-btn:active {
+            background: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            transform: scale(0.9);
+        }
+
+        .btn-up { grid-column: 2; }
+        .btn-left { grid-column: 1; }
+        .btn-right { grid-column: 3; }
+        .btn-down { grid-column: 2; }
+
         /* Analytics Stats Unit */
         .stats-grid {
             display: grid;
@@ -547,7 +651,6 @@
             box-shadow: 0 0 15px rgba(0, 255, 153, 0.08);
         }
 
-        /* Micro sized Instagram Button Style Setup */
         .social-btn.insta-btn {
             border-color: rgba(225, 48, 108, 0.15);
         }
@@ -580,6 +683,11 @@
             .hero-text-side h1 { font-size: 2.8rem; }
             nav ul { display: none; }
             .nav-box { justify-content: center; }
+            
+            /* Enable Touch Control UI on smaller mobile viewports */
+            .touch-controls {
+                display: grid;
+            }
         }
     </style>
 </head>
@@ -601,7 +709,7 @@
         </div>
     </header>
 
-    <!-- NEW SPLIT GRID HERO WITH CARTOON SIMULATOR PLAYER -->
+    <!-- SPLIT GRID HERO WITH CARTOON SIMULATOR PLAYER -->
     <section class="hero-split">
         
         <!-- Left Column: The Interactive Cartoon Video Simulator -->
@@ -652,7 +760,8 @@
                     <h3>Snake Game V1</h3>
                     <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and record the highest score log instantly.</p>
                 </div>
-                <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="action-btn">PLAY NOW</a>
+                <!-- Updated Button to trigger modal window -->
+                <button onclick="openGame('https://armansnakecobra.itch.io/snake-game')" class="action-btn">PLAY NOW</button>
             </div>
 
             <!-- Game 2: Racing Module -->
@@ -687,6 +796,27 @@
 
         </div>
     </section>
+
+    <!-- INTERNAL POPUP MODAL ARCHITECTURE -->
+    <div id="gameModal" class="game-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">🎮 Arcade Player Console</div>
+                <button class="close-btn" onclick="closeGame()">&times;</button>
+            </div>
+            <div class="iframe-container">
+                <iframe id="gameFrame" src="" allow="autoplay; keyboard"></iframe>
+            </div>
+        </div>
+        
+        <!-- MOBILE TOUCH CONTROLS INTERFACE -->
+        <div class="touch-controls">
+            <button class="touch-btn btn-up" onclick="triggerKey(38)">▲</button>
+            <button class="touch-btn btn-left" onclick="triggerKey(37)">◀</button>
+            <button class="touch-btn btn-right" onclick="triggerKey(39)">▶</button>
+            <button class="touch-btn btn-down" onclick="triggerKey(40)">▼</button>
+        </div>
+    </div>
 
     <!-- Console Engine Analytics Dashboard -->
     <section class="container" style="padding-top: 10px; padding-bottom: 40px;">
@@ -750,6 +880,33 @@
     <footer>
         <p>&copy; 2026 Zafar Games. Streamed globally over secure CDN pipelines.</p>
     </footer>
+
+    <!-- JAVASCRIPT MODAL & TOUCH TRIGGER SYSTEM -->
+    <script>
+        function openGame(url) {
+            document.getElementById('gameFrame').src = url;
+            document.getElementById('gameModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Stop page scrolling background
+        }
+
+        function closeGame() {
+            document.getElementById('gameFrame').src = '';
+            document.getElementById('gameModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Bridge function to simulate Keyboard events for itch.io iframe on mobile touch click
+        function triggerKey(keyCode) {
+            const iframe = document.getElementById('gameFrame');
+            if(iframe && iframe.contentWindow) {
+                // Post messages or dispatch codes natively to window focus
+                iframe.focus();
+                const eventConfig = { bubbles: true, cancelable: true, keyCode: keyCode, which: keyCode };
+                iframe.contentWindow.dispatchEvent(new KeyboardEvent('keydown', eventConfig));
+                iframe.contentWindow.dispatchEvent(new KeyboardEvent('keyup', eventConfig));
+            }
+        }
+    </script>
 
 </body>
 </html>
