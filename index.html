@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zafar Games | Play Free Browser Games</title>
     <style>
-        /* --- CSS RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* --- NAVBAR --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -39,17 +37,16 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 255, 153, 0.1);
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 153, 0.1);
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
         }
 
         .nav-links {
@@ -61,7 +58,7 @@
         .nav-links a {
             color: var(--text-gray);
             text-decoration: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             transition: 0.3s;
             text-transform: uppercase;
@@ -69,375 +66,161 @@
 
         .nav-links a:hover, .nav-links a.active {
             color: var(--neon-green);
-            text-shadow: 0 0 8px rgba(0, 255, 153, 0.5);
         }
 
-        /* --- HERO BANNER --- */
         .hero {
-            min-height: 70vh;
+            min-height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(11, 12, 16, 0.7), rgba(11, 12, 16, 0.9)), 
+            background: linear-gradient(rgba(11, 12, 16, 0.83), rgba(11, 12, 16, 0.95)), 
                         url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1920') no-repeat center center/cover;
-            padding: 0 20px;
+            padding: 40px 20px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            animation: pulse 2s infinite alternate;
+            font-size: 3rem;
+            margin-bottom: 15px;
         }
 
         .hero h1 span {
             color: var(--neon-green);
-            text-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
+            text-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-gray);
             max-width: 600px;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .cta-btn {
-            padding: 15px 40px;
-            font-size: 18px;
-            font-weight: 700;
-            background: transparent;
-            color: var(--neon-green);
-            border: 2px solid var(--neon-green);
-            border-radius: 50px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
-        }
-
-        .cta-btn:hover {
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 30px rgba(0, 255, 153, 0.6);
-            transform: translateY(-3px);
-        }
-
-        /* --- GAMES SECTION --- */
         .container {
-            padding: 80px 8%;
+            padding: 60px 8%;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            position: relative;
+            font-size: 2rem;
+            margin-bottom: 40px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--neon-blue);
-            border-radius: 2px;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-        }
-
-        .game-card {
+        /* --- NEW PRO COMPACT CONTACT SECTION --- */
+        .contact-box {
             background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-green);
-            box-shadow: 0 15px 30px rgba(0, 255, 153, 0.2);
-        }
-
-        .game-thumb {
-            height: 200px;
-            background: #111;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 4rem;
-            position: relative;
-            border-bottom: 2px solid rgba(255,255,255,0.05);
-        }
-
-        .game-card:hover .game-thumb {
-            background: linear-gradient(45deg, #1f2833, #0b0c10);
-        }
-
-        .badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--neon-blue);
-            color: #000;
-            padding: 5px 12px;
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        .badge.live {
-            background: var(--neon-green);
-        }
-
-        .game-info {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .game-info h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .game-info p {
-            color: var(--text-gray);
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .play-btn {
-            width: 100%;
-            padding: 12px;
-            background: #111;
-            color: var(--text-white);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            display: inline-block;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .game-card:hover .play-btn {
-            background: var(--neon-green);
-            color: #000;
-            border-color: var(--neon-green);
-            font-weight: 700;
-        }
-
-        .play-btn.disabled {
-            background: #111 !important;
-            color: #555 !important;
-            border-color: #222 !important;
-            cursor: not-allowed;
-        }
-
-        /* --- ABOUT SECTION --- */
-        .about-section {
-            background: #11141a;
-            text-align: center;
-        }
-
-        .about-content {
-            max-width: 800px;
+            max-width: 500px;
             margin: 0 auto;
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        /* --- CONTACT SECTION --- */
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .contact-card {
-            background: var(--card-bg);
-            padding: 20px 40px;
+            padding: 25px;
             border-radius: 15px;
-            text-decoration: none;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .contact-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .compact-link {
             color: var(--text-white);
+            text-decoration: none;
+            font-size: 15px;
             font-weight: 600;
-            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(11, 12, 16, 0.6);
             border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
         }
 
-        .contact-card:hover {
+        .compact-link:hover {
             border-color: var(--neon-blue);
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
             color: var(--neon-blue);
+            transform: translateY(-2px);
         }
 
-        /* --- FOOTER --- */
+        /* --- GAME CONTAINER (FOR NEXT STEP) --- */
+        .game-display {
+            background: #111;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            border-radius: 15px;
+            border: 2px solid var(--neon-green);
+            padding: 20px;
+            text-align: center;
+        }
+
         footer {
             background: #050608;
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             color: #555;
-            font-size: 14px;
+            font-size: 13px;
             border-top: 1px solid rgba(255,255,255,0.02);
         }
 
-        /* --- ANIMATIONS & RESPONSIVENESS --- */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
-        }
-
         @media (max-width: 768px) {
-            nav { padding: 15px 5%; flex-direction: column; gap: 15px; }
-            .hero h1 { font-size: 2.3rem; }
-            .container { padding: 60px 5%; }
+            nav { padding: 15px 5%; flex-direction: column; gap: 10px; }
+            .hero h1 { font-size: 2.2rem; }
+            .container { padding: 40px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav>
         <div class="logo">⚡ Zafar Games ⚡</div>
         <ul class="nav-links">
             <li><a href="#home" class="active">Home</a></li>
-            <li><a href="#games">Games</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#play">Play Game</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <!-- HERO HEADER -->
     <section class="hero" id="home">
         <h1>Welcome to <span>Zafar Games</span></h1>
-        <p>Experience ultra-smooth, free-to-play browser games crafted using modern game engines. No downloads, no hassle—just pure arcade action.</p>
-        <a href="#games"><button class="cta-btn">Browse Games</button></a>
+        <p>Play upgraded, mobile-friendly native web games directly in your browser. No redirection, just pure action.</p>
     </section>
 
-    <!-- GAMES SECTION -->
-    <section class="container" id="games">
-        <h2 class="section-title">Our Arcade</h2>
-        <div class="games-grid">
-            
-            <!-- Game 1: Snake -->
-            <div class="game-card">
-                <div class="game-thumb">
-                    🐍
-                    <span class="badge live">Live</span>
-                </div>
-                <div class="game-info">
-                    <div>
-                        <h3>Snake Cobra</h3>
-                        <p>Classic arcade action! Control the snake, eat points, and grow larger without crashing into your own tail.</p>
-                    </div>
-                    <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="play-btn">▶ Play Now</a>
-                </div>
-            </div>
-
-            <!-- Game 2: Racing -->
-            <div class="game-card">
-                <div class="game-thumb">
-                    🏎️
-                    <span class="badge">Soon</span>
-                </div>
-                <div class="game-info">
-                    <div>
-                        <h3>Neon Racer</h3>
-                        <p>Dodge obstacles, speed through high-tech grid systems, and beat the clock in this upcoming racing adventure.</p>
-                    </div>
-                    <button class="play-btn disabled" disabled>Coming Soon</button>
-                </div>
-            </div>
-
-            <!-- Game 3: Horror -->
-            <div class="game-card">
-                <div class="game-thumb">
-                    👻
-                    <span class="badge">Soon</span>
-                </div>
-                <div class="game-info">
-                    <div>
-                        <h3>Shadow Escape</h3>
-                        <p>A thrilling psychological top-down survival puzzle. Find keys and evade shadows lurking in the dark.</p>
-                    </div>
-                    <button class="play-btn disabled" disabled>Coming Soon</button>
-                </div>
-            </div>
-
+    <!-- GAME AREA -->
+    <section class="container" id="play">
+        <h2 class="section-title">Snake Game V2 (Native)</h2>
+        <div class="game-display">
+            <p style="color: var(--neon-blue); margin-bottom: 10px;">[ Game Code Setup Ready ]</p>
+            <p style="font-size: 14px; color: var(--text-gray);">Bhai, pehle yeh layout save karo, phir agle message mein direct touch + arrow controls wala game code isme fit karte hain!</p>
         </div>
     </section>
 
-    <!-- ABOUT SECTION -->
-    <section class="container about-section" id="about">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-content">
-            <p>Welcome to Zafar Games! I am an independent creator passionate about building engaging, interactive web games using the Godot Engine and HTML5 templates. My goal is to craft highly optimized experiences that everyone can enjoy instantly on both desktop and mobile platforms.</p>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
+    <!-- COMPACT CONTACT SECTION -->
     <section class="container" id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <p style="text-align: center; color: var(--text-gray); margin-bottom: 20px;">Have feedback or want to collaborate? Connect with me directly through these channels.</p>
-        <div class="contact-links">
-            <a href="https://www.instagram.com/skarman.exe" target="_blank" class="contact-card">📸 Instagram (@skarman.exe)</a>
-            <a href="mailto:your-email@example.com" class="contact-card">📩 Send Email</a>
+        <div class="contact-box">
+            <h3 style="font-size: 18px; color: var(--neon-blue); text-transform: uppercase;">Connect With Me</h3>
+            <div class="contact-row">
+                <a href="https://www.instagram.com/skarman.exe" target="_blank" class="compact-link">
+                    📸 @skarman.exe
+                </a>
+                <a href="mailto:info@zafargames.com" class="compact-link">
+                    📩 Send Email
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        &copy; 2026 Zafar Games. Powering independent web arcade experiences.
+        ZAFAR GAMES ARCADE | OFFICIAL CHANNELS | &copy; 2026
     </footer>
 
-    <script>
-        // Smooth Active Link Indicator
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(a => {
-                a.classList.remove('active');
-                if (a.getAttribute('href').includes(current)) {
-                    a.classList.add('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
