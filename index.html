@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
-    <title>Zafar Games | Ultimate Mobile Arcade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zafar Games | Play Free Browser Games</title>
     <style>
+        /* --- CSS RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
         }
 
         :root {
@@ -18,8 +19,6 @@
             --card-bg: #1f2833;
             --neon-green: #00ff99;
             --neon-blue: #00e5ff;
-            --neon-pink: #ff0055;
-            --neon-yellow: #ffe600;
             --text-white: #ffffff;
             --text-gray: #c5c6c7;
         }
@@ -28,236 +27,417 @@
             background-color: var(--bg-color);
             color: var(--text-white);
             overflow-x: hidden;
-            background: radial-gradient(circle at center, #1f2833 0%, #0b0c10 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* DYNAMIC NAV BAR & SVG LOGO */
+        /* --- NAVBAR --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
+            padding: 20px 8%;
             background: rgba(31, 40, 51, 0.95);
-            border-bottom: 2px solid var(--neon-green);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 255, 153, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text {
-            font-size: 22px;
+        .logo {
+            font-size: 28px;
             font-weight: 800;
             color: var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 153, 0.3);
         }
 
-        /* HERO ZONE */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px rgba(0, 255, 153, 0.5);
+        }
+
+        /* --- HERO BANNER --- */
         .hero {
-            min-height: 25vh;
+            min-height: 70vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
-            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            background: linear-gradient(rgba(11, 12, 16, 0.7), rgba(11, 12, 16, 0.9)), 
+                        url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1920') no-repeat center center/cover;
+            padding: 0 20px;
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 5px; text-shadow: 0 0 15px var(--neon-blue); }
-        .hero h1 span { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
-
-        .container { padding: 30px 5%; }
-        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; color: var(--neon-blue); }
-
-        /* ARCADE GAMES SYSTEM LAYOUT */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
-            margin: 0 auto;
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            animation: pulse 2s infinite alternate;
         }
 
-        .play-zone {
-            background: rgba(31, 40, 51, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
-        }
-        
-        .play-zone:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+        .hero h1 span {
+            color: var(--neon-green);
+            text-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
         }
 
-        .play-zone.snake-card { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 153, 0.1); }
-        .play-zone.snake-card:hover { box-shadow: 0 0 25px rgba(0, 255, 153, 0.4); }
-        .play-zone.ludo-card { border-color: var(--neon-yellow); opacity: 0.6; }
-        .play-zone.chess-card { border-color: #ffffff; opacity: 0.6; }
-        .play-zone.racing-card { border-color: var(--neon-pink); opacity: 0.6; }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
 
-        .game-icon { font-size: 50px; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
-        .snake-card .game-icon { filter: drop-shadow(0 0 12px var(--neon-green)); }
+        .cta-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            background: transparent;
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
+        }
 
-        /* CORE ENGINE COMPATIBLE BUTTONS */
-        .play-now-btn {
-            display: inline-block;
+        .cta-btn:hover {
             background: var(--neon-green);
             color: #000;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            margin-top: 15px;
-            box-shadow: 0 0 10px rgba(0, 255, 153, 0.4);
-            transition: all 0.2s;
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.6);
+            transform: translateY(-3px);
         }
-        .play-now-btn:hover { transform: scale(1.05); }
-        .coming-soon-tag { display: inline-block; background: #333; color: #aaa; padding: 8px 20px; border-radius: 25px; font-size: 14px; margin-top: 15px; font-weight: bold; text-transform: uppercase; }
 
-        /* ABOUT & UPDATED CONTACT SECTIONS */
-        .about-section {
-            max-width: 800px;
-            margin: 40px auto 0 auto;
+        /* --- GAMES SECTION --- */
+        .container {
+            padding: 80px 8%;
+        }
+
+        .section-title {
             text-align: center;
-            padding: 25px;
-            background: rgba(31, 40, 51, 0.4);
-            border-radius: 15px;
-            border: 1px solid rgba(0, 229, 255, 0.1);
-        }
-        .about-section h2 { color: var(--neon-green); margin-bottom: 12px; font-size: 1.5rem; text-transform: uppercase; }
-        .about-section p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
-
-        .contact-box {
-            background: rgba(31, 40, 51, 0.8);
-            max-width: 550px;
-            margin: 40px auto 0 auto;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid var(--neon-blue);
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-        }
-        .contact-box h3 { color: var(--neon-blue); font-size: 18px; margin-bottom: 5px; text-transform: uppercase; text-shadow: 0 0 5px var(--neon-blue); }
-        .contact-row { display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
-        .compact-link { color: var(--text-white); text-decoration: none; font-size: 15px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
-        .compact-link:hover { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
-        
-        footer { text-align: center; padding: 25px; color: #666; font-size: 13px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); }
-        footer a { color: var(--neon-green); text-decoration: none; font-weight: bold; transition: all 0.2s; }
-        footer a:hover { text-shadow: 0 0 5px var(--neon-green); }
-
-        /* --- INTEGRATED SNAKE ARCADE GAME BOARD --- */
-        .game-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #050508;
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 5px;
-        }
-
-        .game-header {
-            width: 100%;
-            max-width: 440px;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .back-btn {
-            background: #1f2833;
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .score-board { font-size: 18px; font-weight: bold; color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
-
-        #canvas-container {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
             position: relative;
-            width: 95vw;
-            max-width: 400px;
-            height: 400px;
+            text-transform: uppercase;
         }
 
-        #gameCanvas {
-            background: #0b0c10;
-            display: block;
-            border-radius: 15px;
-            border: 3px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
-            width: 100%; height: 100%;
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 2px;
         }
 
-        /* KEYPAD BUTTON SYSTEM */
-        .mobile-controls {
+        .games-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 90vw;
-            max-width: 240px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 30px rgba(0, 255, 153, 0.2);
+        }
+
+        .game-thumb {
+            height: 200px;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            position: relative;
+            border-bottom: 2px solid rgba(255,255,255,0.05);
+        }
+
+        .game-card:hover .game-thumb {
+            background: linear-gradient(45deg, #1f2833, #0b0c10);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--neon-blue);
+            color: #000;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .badge.live {
+            background: var(--neon-green);
+        }
+
+        .game-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .game-info p {
+            color: var(--text-gray);
+            font-size: 14px;
+            line-height: 1.5;
             margin-bottom: 20px;
         }
 
-        .control-btn {
-            background: #1f2833;
-            border: 2px solid var(--neon-blue);
-            color: var(--neon-blue);
-            font-size: 26px;
-            padding: 12px 0;
-            border-radius: 50%;
-            text-align: center;
-            font-weight: bold;
+        .play-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            color: var(--text-white);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            user-select: none;
-            display: flex; align-items: center; justify-content: center;
-            height: 65px; width: 65px; margin: 0 auto;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
         }
-        .control-btn:active { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
-        .control-btn.up { grid-column: 2; }
-        .control-btn.left { grid-column: 1; }
-        .control-btn.right { grid-column: 3; }
-        .control-btn.down { grid-column: 2; }
 
-        .settings-bar { display: flex; gap: 15px; margin-bottom: 5px; }
-        .settings-btn { background: #1f2833; border: 1px solid var(--text-gray); color: var(--text-white); padding: 5px 15px; border-radius: 5px; font-size: 13px; cursor: pointer; }
+        .game-card:hover .play-btn {
+            background: var(--neon-green);
+            color: #000;
+            border-color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .play-btn.disabled {
+            background: #111 !important;
+            color: #555 !important;
+            border-color: #222 !important;
+            cursor: not-allowed;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-section {
+            background: #11141a;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--text-white);
+            font-weight: 600;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .contact-card:hover {
+            border-color: var(--neon-blue);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            color: var(--neon-blue);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #050608;
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* --- ANIMATIONS & RESPONSIVENESS --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 15px 5%; flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 2.3rem; }
+            .container { padding: 60px 5%; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- HIGH-DENSITY HOME SCREEN -->
-    <div class="main-site" id="mainSite">
-        <nav>
-            <div class="logo-container">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://w3.org" style="filter: drop-shadow(0 0 8px #00ff99);">
-                    <path d="M8 24L16 16L24 24M8 14L16 6L24 14" stroke="#00ff99" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">⚡ Zafar Games ⚡</div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <section class="hero" id="home">
+        <h1>Welcome to <span>Zafar Games</span></h1>
+        <p>Experience ultra-smooth, free-to-play browser games crafted using modern game engines. No downloads, no hassle—just pure arcade action.</p>
+        <a href="#games"><button class="cta-btn">Browse Games</button></a>
+    </section>
+
+    <!-- GAMES SECTION -->
+    <section class="container" id="games">
+        <h2 class="section-title">Our Arcade</h2>
+        <div class="games-grid">
+            
+            <!-- Game 1: Snake -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    🐍
+                    <span class="badge live">Live</span>
+                </div>
+                <div class="game-info">
+                    <div>
+                        <h3>Snake Cobra</h3>
+                        <p>Classic arcade action! Control the snake, eat points, and grow larger without crashing into your own tail.</p>
+                    </div>
+                    <a href="https://armansnakecobra.itch.io/snake-game" target="_blank" class="play-btn">▶ Play Now</a>
+                </div>
+            </div>
+
+            <!-- Game 2: Racing -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    🏎️
+                    <span class="badge">Soon</span>
+                </div>
+                <div class="game-info">
+                    <div>
+                        <h3>Neon Racer</h3>
+                        <p>Dodge obstacles, speed through high-tech grid systems, and beat the clock in this upcoming racing adventure.</p>
+                    </div>
+                    <button class="play-btn disabled" disabled>Coming Soon</button>
+                </div>
+            </div>
+
+            <!-- Game 3: Horror -->
+            <div class="game-card">
+                <div class="game-thumb">
+                    👻
+                    <span class="badge">Soon</span>
+                </div>
+                <div class="game-info">
+                    <div>
+                        <h3>Shadow Escape</h3>
+                        <p>A thrilling psychological top-down survival puzzle. Find keys and evade shadows lurking in the dark.</p>
+                    </div>
+                    <button class="play-btn disabled" disabled>Coming Soon</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="container about-section" id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <p>Welcome to Zafar Games! I am an independent creator passionate about building engaging, interactive web games using the Godot Engine and HTML5 templates. My goal is to craft highly optimized experiences that everyone can enjoy instantly on both desktop and mobile platforms.</p>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="container" id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p style="text-align: center; color: var(--text-gray); margin-bottom: 20px;">Have feedback or want to collaborate? Connect with me directly through these channels.</p>
+        <div class="contact-links">
+            <a href="https://www.instagram.com/skarman.exe" target="_blank" class="contact-card">📸 Instagram (@skarman.exe)</a>
+            <a href="mailto:your-email@example.com" class="contact-card">📩 Send Email</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        &copy; 2026 Zafar Games. Powering independent web arcade experiences.
+    </footer>
+
+    <script>
+        // Smooth Active Link Indicator
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
