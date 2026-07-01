@@ -38,14 +38,48 @@
             paused: false
         };
 
-        // Game Loop
+      // Game Loop
         function gameLoop() {
             if (!gameActive) return;
             
-            // Clear Screen
+            // 1. Clear Screen
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Logic updates (To be added in next parts)
+            // 2. Logic updates (Yahan naya code call karein)
+            // ... (Part 1 ka code yahan hoga) ...
+
+// Yahan PASTE karein (Part 2 ka code)
+const platforms = [
+    { x: 0, y: 350, w: 2000, h: 50 },
+    { x: 300, y: 250, w: 200, h: 20 },
+    { x: 600, y: 180, w: 200, h: 20 }
+];
+
+function drawWorld() {
+    ctx.fillStyle = '#ffcc00';
+    platforms.forEach(p => {
+        ctx.fillRect(p.x - GameState.cameraX, p.y, p.w, p.h);
+    });
+}
+
+function updateCamera() {
+    if (player && player.x > canvas.width / 2) {
+        GameState.cameraX = player.x - canvas.width / 2;
+    }
+}
+
+// Ab apne main Game Loop mein inhein call karein
+function gameLoop() {
+    if (!gameActive) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    updateCamera(); // Camera update karein
+    drawWorld();    // Duniya draw karein
+
+    requestAnimationFrame(gameLoop);
+}
+            updateCamera(); // Camera position update karega
+            drawWorld();    // Platforms draw karega
             
             requestAnimationFrame(gameLoop);
         }
