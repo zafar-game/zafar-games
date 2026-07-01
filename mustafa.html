@@ -1,87 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mustafa Adventure | Pro Engine</title>
-    <style>
-        body { margin: 0; background: #000; overflow: hidden; touch-action: none; font-family: sans-serif; }
-        #gameCanvas { display: block; width: 100vw; height: 100vh; background: linear-gradient(#2c3e50, #000); }
-        .ui-layer { position: absolute; top: 10px; left: 10px; color: #fff; pointer-events: none; font-size: 20px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+ 
+<title>Mustafa Adventure</title>
+ 
+<style>
+ 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+ 
+body{
+ 
+background:#000;
+overflow:hidden;
+font-family:Arial;
+}
+ 
+canvas{
+ 
+display:block;
+margin:auto;
+background:linear-gradient(#55c8ff,#dff8ff);
+ 
+}
+ 
+</style>
+ 
 </head>
+ 
 <body>
-
-    <div class="ui-layer">Score: <span id="score">0</span></div>
-    <canvas id="gameCanvas"></canvas>
-
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let gameActive = true;
-
-        // 1. Setup
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-
-        // 2. Game Objects
-        const GameState = { cameraX: 0 };
-        const platforms = [
-            { x: 0, y: 350, w: 2000, h: 50 },
-            { x: 300, y: 250, w: 200, h: 20 },
-            { x: 600, y: 180, w: 200, h: 20 }
-        ];
-        const player = { x: 100, y: 100, w: 40, h: 40, vx: 0, vy: 0, speed: 5, jumpStrength: -12, grounded: false, color: '#00ff99' };
-        const keys = { right: false, left: false, up: false };
-
-        // 3. Inputs
-        window.addEventListener('keydown', e => {
-            if(e.code === 'ArrowRight') keys.right = true;
-            if(e.code === 'ArrowLeft') keys.left = true;
-            if(e.code === 'Space' && player.grounded) { player.vy = player.jumpStrength; player.grounded = false; }
-        });
-        window.addEventListener('keyup', e => {
-            if(e.code === 'ArrowRight') keys.right = false;
-            if(e.code === 'ArrowLeft') keys.left = false;
-        });
-
-        // 4. Functions
-        function updatePlayer() {
-            player.vx = keys.right ? player.speed : (keys.left ? -player.speed : 0);
-            player.vy += 0.6;
-            player.x += player.vx;
-            player.y += player.vy;
-
-            player.grounded = false;
-            platforms.forEach(p => {
-                if (player.x < p.x + p.w && player.x + player.w > p.x && player.y + player.h > p.y && player.y + player.h < p.y + p.h + player.vy) {
-                    player.y = p.y - player.h;
-                    player.vy = 0;
-                    player.grounded = true;
-                }
-            });
-        }
-
-        function updateCamera() { if (player.x > canvas.width / 2) GameState.cameraX = player.x - canvas.width / 2; }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffcc00';
-            platforms.forEach(p => ctx.fillRect(p.x - GameState.cameraX, p.y, p.w, p.h));
-            ctx.fillStyle = player.color;
-            ctx.fillRect(player.x - GameState.cameraX, player.y, player.w, player.h);
-        }
-
-        // 5. Loop
-        function gameLoop() {
-            if (!gameActive) return;
-            updatePlayer();
-            updateCamera();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
-    </script>
+ 
+<canvas id="game" width="1000" height="550"></canvas>
+ 
+<script>
+ 
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+ 
+let player={
+ 
+x:120,
+ 
+y:380,
+ 
+w:45,
+ 
+h:60,
+ 
+dx:0,
+ 
+dy:0,
+ 
+speed:6,
+ 
+jump:-15,
+ 
+ground:false
+ 
+};
+ 
+const gravity=0.8;
+ 
+const keys={};
+ 
+document.addEventListener("keydown",e=>{
+ 
+keys[e.key]=true;
+ 
+});
+ 
+document.addEventListener("keyup",e=>{
+ 
+keys[e.key]=false;
+ 
+});
+ 
+function update(){
+ 
+player.dx=0;
+ 
+if(keys["ArrowLeft"]||keys["a"]){
+ 
+player.dx=-player.speed;
+ 
+}
+ 
+if(keys["ArrowRight"]||keys["d"]){
+ 
+player.dx=player.speed;
+ 
+}
+ 
+if((keys["ArrowUp"]||keys["w"]||keys[" "])&&player.ground){
+ 
+player.dy=player.jump;
+ 
+player.ground=false;
+ 
+}
+ 
+player.x+=player.dx;
+ 
+player.dy+=gravity;
+ 
+player.y+=player.dy;
+ 
+if(player.y+player.h>=500){
+ 
+player.y=500-player.h;
+ 
+player.dy=0;
+ 
+player.ground=true;
+ 
+}
+ 
+}
+let cameraX=0;
+ 
+const coins=[
+{x:500,y:450,collected:false},
+{x:650,y:450,collected:false},
+{x:820,y:450,collected:false},
+{x:980,y:450,collected:false},
+{x:1300,y:450,collected:false},
+{x:1500,y:380,collected:false}
+];
+ 
+const platforms=[
+{x:700,y:430,w:150,h:20},
+{x:1050,y:360,w:150,h:20},
+{x:1450,y:300,w:180,h:20}
+];
+ 
+const trees=[
+{x:300},
+{x:900},
+{x:1700},
+{x:2300}
+];
+ 
+let score=0;
+function draw(){cameraX=player.x-250;
+ 
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.save();
+ 
+ctx.translate(-cameraX,0);
+ctx.fillStyle="#79d45d";
+ 
+ctx.fillRect(0,500,1000,50);
+// Trees
+ 
+trees.forEach(tree=>{
+ 
+ctx.fillStyle="#7a4516";
+ 
+ctx.fillRect(tree.x,410,20,90);
+ 
+ctx.fillStyle="#0c8f2d";
+ 
+ctx.beginPath();
+ 
+ctx.arc(tree.x+10,390,40,0,Math.PI*2);
+ 
+ctx.fill();
+ 
+});
+ 
+// Platforms
+ 
+ctx.fillStyle="#704214";
+ 
+platforms.forEach(p=>{
+ 
+ctx.fillRect(p.x,p.y,p.w,p.h);
+ 
+});
+ 
+// Coins
+ 
+coins.forEach(c=>{
+ 
+if(!c.collected){
+ 
+ctx.fillStyle="gold";
+ 
+ctx.beginPath();
+ 
+ctx.arc(c.x,c.y,10,0,Math.PI*2);
+ 
+ctx.fill();
+ 
+}
+ 
+});
+ctx.fillStyle="#7b4a1b";
+ 
+ctx.fillRect(0,495,1000,5);
+ 
+ctx.fillStyle="#00aaff";
+ 
+ctx.fillRect(player.x,player.y,player.w,player.h);
+ 
+ctx.fillStyle="#fff";
+ 
+ctx.beginPath();
+ 
+ctx.arc(player.x+15,player.y+20,4,0,Math.PI*2);
+ 
+ctx.fill();
+ 
+ctx.beginPath();
+ 
+ctx.arc(player.x+30,player.y+20,4,0,Math.PI*2);
+ 
+ctx.fill();
+ 
+ctx.fillStyle="#000";
+ 
+ctx.fillRect(player.x+15,player.y+38,15,3);
+ 
+ctx.fillStyle="#fff";
+ 
+ctx.font="24px Arial";
+ 
+ctx.fillText("Mustafa Adventure - Part 1",20,35);
+ 
+ctx.font="18px Arial";
+ 
+ctx.fillText("Move : ← →   Jump : SPACE",20,65);
+ 
+}
+ 
+function game(){
+ 
+update();
+ 
+draw();
+ 
+requestAnimationFrame(game);
+ 
+}
+ 
+game();
+ 
+</script>
+ 
 </body>
 </html>
