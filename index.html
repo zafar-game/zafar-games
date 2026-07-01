@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zafar Games | Ultimate Browser Gaming Hub</title>
-    <!-- Chess Libraries (Rules & Engine Mechanics) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
+    <title>Zafar Games | Pro Arcade Hub</title>
+    <!-- Chess Rules Engine Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <style>
         /* CSS Core Framework */
@@ -14,6 +14,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -95,9 +96,7 @@
             animation: neonPulse 3s infinite ease-in-out;
         }
 
-        .logo span {
-            color: var(--neon-green);
-        }
+        .logo span { color: var(--neon-green); }
 
         nav ul {
             display: flex;
@@ -117,9 +116,7 @@
             transition: all 0.3s ease;
         }
 
-        nav ul li a:hover {
-            color: var(--neon-green);
-        }
+        nav ul li a:hover { color: var(--neon-green); }
 
         /* Hero Split Screen Interface */
         .hero-split {
@@ -167,18 +164,8 @@
             background: #0d0d14;
         }
 
-        .play-icon {
-            color: var(--neon-green);
-            font-size: 1.1rem;
-        }
-
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            background: #ff3366;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ff3366;
-        }
+        .play-icon { color: var(--neon-green); font-size: 1.1rem; }
+        .live-dot { width: 8px; height: 8px; background: #ff3366; border-radius: 50%; box-shadow: 0 0 8px #ff3366; }
 
         .progress-line {
             flex-grow: 1;
@@ -224,10 +211,10 @@
             left: 50px;
             width: 32px;
             height: 32px;
-            background: #00ffff !important;
+            background: #00ffff;
             border-radius: 8px 8px 0 0;
-            border: 2px solid #fff !important;
-            box-shadow: 0 0 15px #00ffff !important;
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px #00ffff;
             animation: characterJump 1.2s infinite ease-in-out;
         }
 
@@ -238,7 +225,7 @@
             right: 4px;
             width: 6px;
             height: 6px;
-            background: #fff !important;
+            background: #fff;
             border-radius: 50%;
         }
 
@@ -255,9 +242,7 @@
             animation: enemyPatrol 3s infinite linear;
         }
 
-        .hero-text-side {
-            text-align: left;
-        }
+        .hero-text-side { text-align: left; }
 
         .hero-badge {
             display: inline-block;
@@ -281,16 +266,8 @@
             line-height: 1.1;
         }
 
-        .hero-text-side h1 span {
-            color: var(--neon-green);
-        }
-
-        .hero-text-side p {
-            font-size: 1.15rem;
-            color: var(--text-gray);
-            margin-bottom: 35px;
-            line-height: 1.6;
-        }
+        .hero-text-side h1 span { color: var(--neon-green); }
+        .hero-text-side p { font-size: 1.15rem; color: var(--text-gray); margin-bottom: 35px; line-height: 1.6; }
 
         /* Live Ticker Board */
         .ticker-wrap {
@@ -312,47 +289,17 @@
             font-size: 0.95rem;
         }
 
-        .ticker span {
-            color: var(--neon-green);
-            margin-right: 60px;
-        }
+        .ticker span { color: var(--neon-green); margin-right: 60px; }
 
         /* Container Standard Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 24px; }
 
-        .section-header {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .section-header span {
-            color: var(--neon-green);
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-gray);
-            font-size: 1rem;
-            margin-bottom: 50px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .section-header { text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-header span { color: var(--neon-green); }
+        .section-subtitle { text-align: center; color: var(--text-gray); font-size: 1rem; margin-bottom: 50px; max-width: 500px; margin-left: auto; margin-right: auto; }
 
         /* Cards Grid Layout */
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
-        }
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
 
         .card {
             background-color: var(--card-bg);
@@ -372,42 +319,13 @@
             box-shadow: 0 12px 40px rgba(0, 255, 153, 0.12);
         }
 
-        .card-active {
-            animation: cardGlow 4s infinite ease-in-out;
-            border-color: rgba(0, 255, 153, 0.1);
-        }
+        .card-active { animation: cardGlow 4s infinite ease-in-out; border-color: rgba(0, 255, 153, 0.1); }
+        .rating-badge { position: absolute; top: 20px; right: 20px; background: rgba(255, 195, 0, 0.08); color: #ffc300; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+        .game-icon { font-size: 44px; margin-bottom: 20px; }
+        .card h3 { font-size: 1.35rem; margin-bottom: 12px; font-weight: 700; }
+        .card p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
 
-        .rating-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 195, 0, 0.08);
-            color: #ffc300;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .game-icon {
-            font-size: 44px;
-            margin-bottom: 20px;
-        }
-
-        .card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .card p {
-            color: var(--text-gray);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Action Controls Buttons */
+        /* Action Buttons */
         .action-btn {
             display: block;
             width: 100%;
@@ -432,14 +350,9 @@
             transform: scale(1.01);
         }
 
-        .btn-locked {
-            background-color: #111115;
-            color: #3e3e44;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
+        .btn-locked { background-color: #111115; color: #3e3e44; box-shadow: none; cursor: not-allowed; }
 
-        /* --- MODERN GAME OVERLAY/MODAL SYSTEM --- */
+        /* --- OVERLAY MODAL SYSTEM --- */
         .game-modal {
             display: none;
             position: fixed;
@@ -447,11 +360,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(4, 4, 7, 0.95);
+            background: rgba(4, 4, 7, 0.98);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
 
         .modal-content {
@@ -465,10 +378,11 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            max-height: 95vh;
         }
 
         .modal-header {
-            padding: 20px 30px;
+            padding: 15px 25px;
             background: #0e0e14;
             display: flex;
             justify-content: space-between;
@@ -476,254 +390,60 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            color: #fff;
-        }
+        .modal-title { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; color: #fff; }
+        .close-modal { background: none; border: none; color: var(--text-gray); font-size: 2rem; cursor: pointer; transition: color 0.3s; }
+        .close-modal:hover { color: #ff3366; }
+        #modalGameBody { background: #09090d; overflow-y: auto; display: flex; justify-content: center; align-items: center; padding: 10px; min-height: 400px;}
 
-        .close-modal {
-            background: none;
-            border: none;
-            color: var(--text-gray);
-            font-size: 2rem;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
+        /* --- PRO SNAKE INTERFACE --- */
+        .snake-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; max-width: 400px; }
+        .snake-canvas { background: #020204; border: 3px solid #1a1a24; box-shadow: 0 0 20px rgba(0,0,0,0.8); border-radius: 10px; width: 100%; aspect-ratio: 1; max-width: 340px; }
+        .game-controls-bar { display: flex; justify-content: space-between; width: 100%; background: #0e0e14; padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem;}
+        
+        /* Mobile D-Pad Control Controller */
+        .dpad-container { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 8px; margin-top: 5px; justify-content: center; }
+        .dpad-btn { background: #14141f; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; }
+        .dpad-btn:active { background: var(--neon-green); color: #000; }
 
-        .close-modal:hover {
-            color: #ff3366;
-        }
-
-        .game-frame-container {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            max-height: 550px;
-            background: #000;
-        }
-
-        .game-frame-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* --- CHESS GAME BOARD CUSTOM DESIGN --- */
-        .chess-container {
-            display: grid;
-            grid-template-columns: 1fr 240px;
-            gap: 20px;
-            padding: 30px;
-            background: #09090d;
-        }
-
-        @media (max-width: 768px) {
-            .chess-container { grid-template-columns: 1fr; }
-        }
-
-        .chess-board-wrapper {
-            width: 100%;
-            max-width: 440px;
-            margin: 0 auto;
-        }
-
-        .chessboard {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(8, 1fr);
-            border: 4px solid #1a1a24;
-            aspect-ratio: 1;
-            width: 100%;
-        }
-
-        .square {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: calc(2vw + 14px);
-            cursor: pointer;
-            user-select: none;
-            position: relative;
-        }
-
-        @media (min-width: 850px) { .square { font-size: 38px; } }
-
+        /* --- PRO CHESS INTERFACE --- */
+        .chess-container { display: grid; grid-template-columns: 1fr 240px; gap: 20px; padding: 15px; width: 100%; }
+        @media (max-width: 768px) { .chess-container { grid-template-columns: 1fr; padding: 5px; } }
+        .chess-board-wrapper { width: 100%; max-width: 380px; margin: 0 auto; }
+        .chessboard { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 4px solid #1a1a24; aspect-ratio: 1; width: 100%; }
+        .square { display: flex; justify-content: center; align-items: center; font-size: calc(3vw + 12px); cursor: pointer; user-select: none; position: relative; }
+        @media (min-width: 850px) { .square { font-size: 34px; } }
         .light-sq { background-color: #e2e4e6; color: #111; }
         .dark-sq { background-color: #3b506d; color: #fff; }
-        .selected-sq { background-color: #00ff99a0 !important; }
-        .highlight-sq::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            background: rgba(0, 255, 153, 0.7);
-            border-radius: 50%;
-            position: absolute;
-        }
+        .selected-sq { background-color: rgba(0, 255, 153, 0.5) !important; }
+        .highlight-sq::after { content: ''; width: 12px; height: 12px; background: rgba(0, 255, 153, 0.7); border-radius: 50%; position: absolute; }
+        .chess-sidebar { display: flex; flex-direction: column; justify-content: space-between; background: #0e0e14; padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.03); gap: 15px;}
+        .status-header { font-weight: 700; font-size: 0.85rem; color: var(--text-gray); text-transform: uppercase; }
+        .status-text { font-size: 1.05rem; color: var(--neon-green); font-weight: 800; }
+        .turn-indicator { padding: 8px; background: #14141f; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.85rem; }
 
-        .chess-sidebar {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: #0e0e14;
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
+        /* Stats & Analytics Panels */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center; margin-top: 20px; }
+        .stat-box { background: #06060a; padding: 25px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.005); }
+        .stat-box h4 { font-size: 2rem; color: var(--neon-green); margin-bottom: 5px; font-weight: 800; }
+        .stat-box p { color: var(--text-gray); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .status-header {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
+        /* Capabilities / Features */
+        .features-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 20px; }
+        .feature-item { background: var(--card-bg); padding: 25px; border-radius: 16px; border-left: 3px solid var(--neon-green); }
+        .feature-item h4 { font-size: 1.15rem; margin-bottom: 8px; }
+        .feature-item p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.5; }
 
-        .status-text {
-            font-size: 1.1rem;
-            color: var(--neon-green);
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
+        .bio-panel { background-color: var(--card-bg); border-radius: 20px; padding: 40px; text-align: center; max-width: 850px; margin: 0 auto; border: 1px solid rgba(255, 255, 255, 0.01); }
+        .bio-panel p { color: var(--text-gray); font-size: 1.1rem; line-height: 1.8; }
 
-        .turn-indicator {
-            padding: 10px;
-            background: #14141f;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 700;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.02);
-        }
+        .connect-box { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .social-btn { background: #06060a; padding: 14px 28px; border-radius: 12px; color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; border: 1px solid rgba(255, 255, 255, 0.02); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
+        .social-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 153, 0.08); }
+        .social-btn.insta-btn { border-color: rgba(225, 48, 108, 0.15); }
+        .social-btn.insta-btn:hover { border-color: var(--insta-color); color: #fff; box-shadow: 0 0 15px var(--insta-glow); }
 
-        /* Analytics Stats Unit */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            text-align: center;
-            margin-top: 20px;
-        }
+        footer { background-color: #020204; text-align: center; padding: 35px 24px; color: #3e3e44; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.005); margin-top: 60px; }
 
-        .stat-box {
-            background: #06060a;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.005);
-        }
-
-        .stat-box h4 {
-            font-size: 2rem;
-            color: var(--neon-green);
-            margin-bottom: 5px;
-            font-weight: 800;
-        }
-
-        .stat-box p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Core Framework Specs Panel */
-        .features-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .feature-item {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
-            border-left: 3px solid var(--neon-green);
-        }
-
-        .feature-item h4 {
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-
-        .feature-item p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Studio About Deck Panel */
-        .bio-panel {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            max-width: 850px;
-            margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.01);
-        }
-
-        .bio-panel p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        /* Contact Deck Anchor Modules */
-        .connect-box {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
-            background: #06060a;
-            padding: 14px 28px;
-            border-radius: 12px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .social-btn:hover {
-            border-color: var(--neon-green);
-            color: var(--neon-green);
-            box-shadow: 0 0 15px rgba(0, 255, 153, 0.08);
-        }
-
-        .social-btn.insta-btn {
-            border-color: rgba(225, 48, 108, 0.15);
-        }
-
-        .social-btn.insta-btn .insta-icon {
-            font-size: 13px;
-        }
-
-        .social-btn.insta-btn:hover {
-            border-color: var(--insta-color);
-            color: #fff;
-            box-shadow: 0 0 15px var(--insta-glow);
-        }
-
-        /* Footer Frame */
-        footer {
-            background-color: #020204;
-            text-align: center;
-            padding: 35px 24px;
-            color: #3e3e44;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.005);
-            margin-top: 60px;
-        }
-
-        /* Responsive UI viewports code */
         @media (max-width: 992px) {
             .hero-split { grid-template-columns: 1fr; gap: 40px; padding-top: 140px; text-align: center; }
             .hero-text-side { text-align: center; }
@@ -735,7 +455,6 @@
 </head>
 <body>
 
-    <!-- Fixed Core Navigation Header -->
     <header>
         <div class="nav-box">
             <a href="#" class="logo">⚡ Zafar <span>Games</span> ⚡</a>
@@ -751,7 +470,6 @@
         </div>
     </header>
 
-    <!-- SPLIT GRID HERO WITH CARTOON SIMULATOR PLAYER -->
     <section class="hero-split">
         <div class="video-container">
             <div class="cartoon-screen">
@@ -767,43 +485,37 @@
                 <div style="font-size:0.75rem; color:var(--text-gray); font-weight:700;">LIVE DEMO</div>
             </div>
         </div>
-
         <div class="hero-text-side">
             <div class="hero-badge">Next-Gen Arcade Console</div>
             <h1>Play Premium Indie <span>Games Instantly</span></h1>
-            <p>No deployment lag, no terminal setups required. High-grade web experiences built seamlessly via advanced scripts and launched directly on secure clouds.</p>
+            <p>No deployment lag, no external frames or terminal setups required. High-grade native web experiences running on pure performant vector codes.</p>
             <a href="#games" class="action-btn" style="max-width: 240px;">LAUNCH HUB</a>
         </div>
     </section>
 
-    <!-- Studio Rolling Notice Board -->
     <div class="ticker-wrap">
         <div class="ticker">
-            <span>🐍 Snake Engine updated with in-app seamless overlay!</span> <span>♟️ Smart Deep-AI Chess arena module deployed!</span> <span>🥊 Cyber Fighting dynamic combat system designs upcoming!</span> <span>🔥 Drop game reviews on our social channel below!</span>
+            <span>🐍 Native Javascript Snake Engine deployed directly on layout matrix!</span> <span>♟️ Smart Deep-AI Chess arena module deployed!</span> <span>🥊 Cyber Fighting dynamic combat system designs upcoming!</span> <span>🔥 Drop game reviews on our social channel below!</span>
         </div>
     </div>
 
-    <!-- Arcade Showcase Modules Selection Grid -->
     <section id="games" class="container">
         <h2 class="section-header">Featured <span>Games</span></h2>
         <p class="section-subtitle">Experience lightning-response lightweight grid modules engineered directly for modern setups.</p>
         
         <div class="grid-layout">
-            
-            <!-- Game 1: Snake Module -->
             <div class="card card-active">
-                <span class="rating-badge">★ 5.0 Rating</span>
+                <span class="rating-badge">★ 5.0 Native</span>
                 <div>
                     <div class="game-icon">🐍</div>
                     <h3>Snake Game V1</h3>
-                    <p>The timeless retro classic re-engineered. Command modern grid lines, ingest fuel particles, and play instantly inside our premium secure game deck.</p>
+                    <p>The timeless retro classic re-engineered on direct canvas layout. Control arrow paths, eat fuel particles, and record scores without frames.</p>
                 </div>
-                <button onclick="openSnakeGame()" class="action-btn">PLAY NOW</button>
+                <button onclick="openSnakeGame()" class="action-btn">PLAY NATIVE</button>
             </div>
 
-            <!-- Game 2: Chess Deep AI Module -->
             <div class="card card-active" style="animation: cardGlow 5s infinite ease-in-out;">
-                <span class="rating-badge">★ 4.9 Smart AI</span>
+                <span class="rating-badge">★ 4.9 Pro AI</span>
                 <div>
                     <div class="game-icon">♟️</div>
                     <h3>Smart AI Chess</h3>
@@ -812,7 +524,6 @@
                 <button onclick="openChessGame()" class="action-btn">CHALLENGE AI</button>
             </div>
 
-            <!-- Game 3: Fighting Cyber Arena -->
             <div class="card">
                 <div>
                     <div class="game-icon">🥊</div>
@@ -822,7 +533,6 @@
                 <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
 
-            <!-- Game 4: Horror Project -->
             <div class="card">
                 <div>
                     <div class="game-icon">👻</div>
@@ -831,28 +541,24 @@
                 </div>
                 <button class="action-btn btn-locked" disabled>COMING SOON</button>
             </div>
-
         </div>
     </section>
 
-    <!-- UNIVERSAL GAME OVERLAY MODAL -->
     <div id="gameModal" class="game-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <div id="modalGameTitle" class="modal-title">Zafar Arcade Console</div>
                 <button onclick="closeGameModal()" class="close-modal">&times;</button>
             </div>
-            <!-- Dynamic Content (Iframe for snake, Custom Layout for Chess) -->
             <div id="modalGameBody"></div>
         </div>
     </div>
 
-    <!-- Console Engine Analytics Dashboard -->
     <section class="container" style="padding-top: 10px; padding-bottom: 40px;">
         <div class="stats-grid">
             <div class="stat-box">
                 <h4>2 Active</h4>
-                <h4>Instances</h4>
+                <p>Native Instances</p>
             </div>
             <div class="stat-box">
                 <h4>60 FPS</h4>
@@ -865,18 +571,17 @@
         </div>
     </section>
 
-    <!-- Capabilities / Tech Framework Specifications -->
     <section id="features" class="container">
         <h2 class="section-header">Engine <span>Capabilities</span></h2>
         <p class="section-subtitle">Compiled precisely through lightweight web environments to maximize refresh ratios.</p>
         <div class="features-box">
             <div class="feature-item">
-                <h4>⚡ Seamless Modal Injection</h4>
-                <p>Games open immediately without external window redirections or annoying browser pop-up blocks.</p>
+                <h4>⚡ Pure JS Native Logic</h4>
+                <p>No dependency on itch.io or external cloud instances. Code executes directly on client hardware with instant response times.</p>
             </div>
             <div class="feature-item">
-                <h4>🧠 Tactical MinMax AI</h4>
-                <p>Chess Engine evaluates tactical matrix matrices to formulate defensive blocks and aggressive counter strikes.</p>
+                <h4>🧠 Pro Alpha-Beta MinMax AI</h4>
+                <p>Chess Engine evaluates complex matrices up to Depth 3 to block human strategies and execute counter strikes.</p>
             </div>
             <div class="feature-item">
                 <h4>🛡️ Secured Sandbox</h4>
@@ -885,7 +590,6 @@
         </div>
     </section>
 
-    <!-- Profile Module Box -->
     <section id="about" class="container">
         <h2 class="section-header">About <span>The Studio</span></h2>
         <div class="bio-panel">
@@ -893,7 +597,6 @@
         </div>
     </section>
 
-    <!-- Clean Contact Node -->
     <section id="contact" class="container">
         <h2 class="section-header">Secure <span>Console Deck</span></h2>
         <p class="section-subtitle">Reach out for feedback or system logging improvements.</p>
@@ -905,54 +608,223 @@
         </div>
     </section>
 
-    <!-- Global Footer -->
     <footer>
         <p>&copy; 2026 Zafar Games. Streamed globally over secure CDN pipelines.</p>
     </footer>
 
-    <!-- INTERACTIVE GAME LOGICS -->
     <script>
         const modal = document.getElementById('gameModal');
         const modalTitle = document.getElementById('modalGameTitle');
         const modalBody = document.getElementById('modalGameBody');
+        let snakeLoop = null;
 
-        // 1. OPEN SNAKE GAME MECHANISM
+        // --- PRO NATIVE SNAKE ENGINE (MOBILE + PC ADVANCED) ---
         function openSnakeGame() {
-            modalTitle.innerText = "Snake Game V1 - Live Deck";
-            modalBody.className = "game-frame-container";
-            // Custom embed loader specifically configured to render seamlessly inside your grid frame
-            modalBody.innerHTML = `<iframe src="https://itch.io/embed-upload/12470701?color=09090d" allowfullscreen></iframe>`;
+            modalTitle.innerText = "Snake Game Pro - Touch & Keyboard";
+            let localHigh = localStorage.getItem('snake_high') || 0;
+            modalBody.innerHTML = `
+                <div class="snake-wrapper">
+                    <div class="game-controls-bar">
+                        <div>Score: <span id="snakeScore" style="color:var(--neon-green)">0</span></div>
+                        <div>High: <span id="snakeHigh" style="color:#ffc300">${localHigh}</span></div>
+                    </div>
+                    <canvas id="snakeCanvas" class="snake-canvas" width="340" height="340"></canvas>
+                    <div class="dpad-container">
+                        <div></div><div class="dpad-btn" id="dpad-up">▲</div><div></div>
+                        <div class="dpad-btn" id="dpad-left">◀</div><div></div><div class="dpad-btn" id="dpad-right">▶</div>
+                        <div></div><div class="dpad-btn" id="dpad-down">▼</div><div></div>
+                    </div>
+                </div>
+            `;
             modal.style.display = 'flex';
+            setTimeout(initSnakeGame, 100);
         }
 
-        // 2. OPEN SMART CHESS MECHANISM
+        function initSnakeGame() {
+            clearInterval(snakeLoop);
+            const canvas = document.getElementById('snakeCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const grid = 17;
+            let score = 0;
+            let highScore = localStorage.getItem('snake_high') || 0;
+            let gameSpeed = 110;
+
+            let snake = { x: 136, y: 136, dx: grid, dy: 0, cells: [{x:136,y:136},{x:119,y:136}], maxCells: 4 };
+            let apple = { x: 238, y: 238 };
+
+            function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
+            function generateApple() {
+                apple.x = getRandomInt(0, 20) * grid;
+                apple.y = getRandomInt(0, 20) * grid;
+                snake.cells.forEach(c => { if(c.x === apple.x && c.y === apple.y) generateApple(); });
+            }
+
+            function gameTick() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                snake.x += snake.dx; snake.y += snake.dy;
+
+                if (snake.x < 0) snake.x = canvas.width - grid;
+                else if (snake.x >= canvas.width) snake.x = 0;
+                if (snake.y < 0) snake.y = canvas.height - grid;
+                else if (snake.y >= canvas.height) snake.y = 0;
+
+                snake.cells.unshift({x: snake.x, y: snake.y});
+                if (snake.cells.length > snake.maxCells) snake.cells.pop();
+
+                // Draw Apple
+                ctx.fillStyle = '#ff3366'; ctx.beginPath();
+                ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/2 - 2, 0, 2*Math.PI); ctx.fill();
+
+                // Draw Snake
+                ctx.fillStyle = '#00ff99';
+                snake.cells.forEach((cell, index) => {
+                    ctx.shadowBlur = index === 0 ? 8 : 0; ctx.shadowColor = '#00ff99';
+                    ctx.fillRect(cell.x + 1, cell.y + 1, grid - 2, grid - 2);
+
+                    if (cell.x === apple.x && cell.y === apple.y) {
+                        snake.maxCells++; score += 10;
+                        document.getElementById('snakeScore').innerText = score;
+                        if(score > highScore) {
+                            highScore = score; localStorage.setItem('snake_high', highScore);
+                            document.getElementById('snakeHigh').innerText = highScore;
+                        }
+                        generateApple();
+                        // Speed scaling mechanics
+                        if(gameSpeed > 50) { clearInterval(snakeLoop); gameSpeed -= 2; snakeLoop = setInterval(gameTick, gameSpeed); }
+                    }
+
+                    for (let i = index + 1; i < snake.cells.length; i++) {
+                        if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+                            document.getElementById('snakeScore').innerText = "Game Over!";
+                            setTimeout(initSnakeGame, 1200); clearInterval(snakeLoop);
+                        }
+                    }
+                });
+            }
+
+            // Keyboard Map
+            window.onkeydown = function(e) {
+                if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; e.preventDefault(); }
+                else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; e.preventDefault(); }
+                else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; e.preventDefault(); }
+                else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; e.preventDefault(); }
+            };
+
+            // Mobile D-Pad Bindings
+            document.getElementById('dpad-up').onclick = () => { if(snake.dy === 0){ snake.dy = -grid; snake.dx = 0; } };
+            document.getElementById('dpad-down').onclick = () => { if(snake.dy === 0){ snake.dy = grid; snake.dx = 0; } };
+            document.getElementById('dpad-left').onclick = () => { if(snake.dx === 0){ snake.dx = -grid; snake.dy = 0; } };
+            document.getElementById('dpad-right').onclick = () => { if(snake.dx === 0){ snake.dx = grid; snake.dy = 0; } };
+
+            // Swipe Gestures Logic
+            let touchStartX = 0, touchStartY = 0;
+            canvas.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; e.preventDefault(); }, {passive:false});
+            canvas.addEventListener('touchmove', e => {
+                if(!touchStartX || !touchStartY) return;
+                let diffX = e.touches[0].clientX - touchStartX; let diffY = e.touches[0].clientY - touchStartY;
+                if(Math.abs(diffX) > Math.abs(diffY)) {
+                    if(diffX > 30 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+                    else if(diffX < -30 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
+                } else {
+                    if(diffY > 30 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+                    else if(diffY < -30 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
+                }
+                touchStartX = 0; touchStartY = 0; e.preventDefault();
+            }, {passive:false});
+
+            snakeLoop = setInterval(gameTick, gameSpeed);
+        }
+        // --- PRO CHESS AI ENGINE (ALPHA-BETA MINMAX DEPTH 3) ---
         let chessGame = null;
         let selectedSquare = null;
-
         const pieceUnicode = {
             'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
             'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
         };
 
+        // Advanced Evaluation Matrix for Pro AI
+        const positionalValues = {
+            p: [
+                [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+                [5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+                [1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+                [0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+                [0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+                [0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+                [0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
+                [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+            ],
+            n: [
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+                [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+                [-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0],
+                [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+                [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+                [-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0],
+                [-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0],
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+            ],
+            b: [
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+                [-1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+                [-1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+                [-1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+                [-1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+            ],
+            r: [
+                [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+                [0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+                [-0.5, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5, 0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [0.0,  0.0,  0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+            ],
+            q: [
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [-0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [-1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+            ],
+            k: [
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+                [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+                [ 2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0],
+                [ 2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0]
+            ]
+        };
+
         function openChessGame() {
-            modalTitle.innerText = "Smart Tactical Chess AI";
-            modalBody.className = "chess-container";
+            modalTitle.innerText = "Chess Pro AI - AlphaBeta Deep Engine";
             modalBody.innerHTML = `
-                <div class="chess-board-wrapper">
-                    <div id="chessBoard" class="chessboard"></div>
-                </div>
-                <div class="chess-sidebar">
-                    <div>
-                        <div class="status-header">Match Parameters</div>
-                        <div id="chessStatus" class="status-text">Your Turn (White)</div>
-                        <div id="turnIndicator" class="turn-indicator">WHITE's MOVE</div>
+                <div class="chess-container">
+                    <div class="chess-board-wrapper">
+                        <div id="chessBoard" class="chessboard"></div>
                     </div>
-                    <button onclick="resetChessMatch()" class="action-btn" style="background:#ff3366; color:#fff; box-shadow:none;">RESET MATCH</button>
+                    <div class="chess-sidebar">
+                        <div>
+                            <div class="status-header">Match Core</div>
+                            <div id="chessStatus" class="status-text">Your Move</div>
+                            <div id="turnIndicator" class="turn-indicator">WHITE (YOU)</div>
+                        </div>
+                        <button onclick="resetChessMatch()" class="action-btn" style="background:#ff3366; color:#fff; box-shadow:none;">RESET</button>
+                    </div>
                 </div>
             `;
             modal.style.display = 'flex';
-            
-            // Initialize Chess JS Engine
             chessGame = new Chess();
             renderBoard();
         }
@@ -961,11 +833,9 @@
             const boardElement = document.getElementById('chessBoard');
             if(!boardElement) return;
             boardElement.innerHTML = '';
-            
             const boardState = chessGame.board();
             const moves = chessGame.moves({ verbose: true });
             
-            // Generate standard squares 8x8 matrix grid
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     const squareDiv = document.createElement('div');
@@ -978,21 +848,12 @@
                     
                     const piece = boardState[r][c];
                     if (piece) {
-                        squareDiv.innerText = pieceUnicode[piece.type === 'p' && piece.color === 'w' ? 'P' : 
-                                                            piece.type === 'p' && piece.color === 'b' ? 'p' :
-                                                            piece.color === 'w' ? piece.type.toUpperCase() : piece.type.toLowerCase()];
+                        squareDiv.innerText = pieceUnicode[piece.color === 'w' ? piece.type.toUpperCase() : piece.type.toLowerCase()];
                     }
-
-                    if (selectedSquare === squareId) {
-                        squareDiv.classList.add('selected-sq');
+                    if (selectedSquare === squareId) squareDiv.classList.add('selected-sq');
+                    if (selectedSquare && moves.some(m => m.from === selectedSquare && m.to === squareId)) {
+                        squareDiv.classList.add('highlight-sq');
                     }
-
-                    // Highlights available dots for validation rules
-                    if (selectedSquare) {
-                        const isHighlight = moves.some(m => m.from === selectedSquare && m.to === squareId);
-                        if (isHighlight) squareDiv.classList.add('highlight-sq');
-                    }
-
                     squareDiv.onclick = () => handleSquareClick(squareId);
                     boardElement.appendChild(squareDiv);
                 }
@@ -1002,66 +863,100 @@
 
         function handleSquareClick(squareId) {
             if (chessGame.turn() !== 'w' || chessGame.game_over()) return;
-
             const move = chessGame.moves({ square: selectedSquare, verbose: true }).find(m => m.to === squareId);
 
             if (move) {
                 chessGame.move({ from: selectedSquare, to: squareId, promotion: 'q' });
                 selectedSquare = null;
                 renderBoard();
-                
                 if (!chessGame.game_over()) {
-                    document.getElementById('chessStatus').innerText = "AI is thinking...";
-                    document.getElementById('turnIndicator').innerText = "AI's MOVE";
-                    setTimeout(triggerSmartAIMove, 400);
+                    document.getElementById('chessStatus').innerText = "AI Calculation...";
+                    document.getElementById('turnIndicator').innerText = "AI THINKING";
+                    setTimeout(triggerProAIMove, 250);
                 }
             } else {
                 const piece = chessGame.get(squareId);
-                if (piece && piece.color === 'w') {
-                    selectedSquare = squareId;
-                    renderBoard();
-                } else {
-                    selectedSquare = null;
-                    renderBoard();
-                }
+                if (piece && piece.color === 'w') { selectedSquare = squareId; renderBoard(); }
+                else { selectedSquare = null; renderBoard(); }
             }
         }
 
-        // --- SMART AI BRAIN (MINIMAX MECHANICS) ---
-        // Generates positional value calculation algorithms to evaluate board layout matrices
-        function triggerSmartAIMove() {
+        // --- PRO MINMAX WITH ALPHA-BETA PRUNING (DEPTH 3) ---
+        function triggerProAIMove() {
             if (chessGame.game_over()) return;
+            let moves = chessGame.moves();
+            let bestMove = null;
+            let bestValue = -99999;
+            let alpha = -100000;
+            let beta = 100000;
 
-            const moves = chessGame.moves();
-            // Tactical Evaluation fallback strategy
-            let bestMove = moves[Math.floor(Math.random() * moves.length)];
-            let bestValue = -9999;
+            // Sort moves roughly to make pruning faster
+            moves.sort(() => 0.5 - Math.random());
 
-            // Simple tactical depth 1 calculation scanning for instant advantage takes
-            for(let i = 0; i < moves.length; i++) {
+            for (let i = 0; i < moves.length; i++) {
                 chessGame.move(moves[i]);
-                let boardVal = evaluateCurrentMatrix(chessGame.board());
+                let value = minMaxAlphaBeta(2, alpha, beta, false); // Depth 3 Total (0, 1, 2)
                 chessGame.undo();
-                if(boardVal > bestValue) {
-                    bestValue = boardVal;
+                if (value > bestValue) {
+                    bestValue = value;
                     bestMove = moves[i];
                 }
+                alpha = Math.max(alpha, value);
             }
 
-            chessGame.move(bestMove);
+            chessGame.move(bestMove || moves[0]);
             renderBoard();
         }
 
-        function evaluateCurrentMatrix(board) {
+        function minMaxAlphaBeta(depth, alpha, beta, isMaximizing) {
+            if (depth === 0 || chessGame.game_over()) {
+                return evaluateBoardAdvanced(chessGame.board());
+            }
+            let moves = chessGame.moves();
+            if (isMaximizing) {
+                let maxEval = -99999;
+                for (let i = 0; i < moves.length; i++) {
+                    chessGame.move(moves[i]);
+                    let ev = minMaxAlphaBeta(depth - 1, alpha, beta, false);
+                    chessGame.undo();
+                    maxEval = Math.max(maxEval, ev);
+                    alpha = Math.max(alpha, ev);
+                    if (beta <= alpha) break; // Pruning
+                }
+                return maxEval;
+            } else {
+                let minEval = 99999;
+                for (let i = 0; i < moves.length; i++) {
+                    chessGame.move(moves[i]);
+                    let ev = minMaxAlphaBeta(depth - 1, alpha, beta, true);
+                    chessGame.undo();
+                    minEval = Math.min(minEval, ev);
+                    beta = Math.min(beta, ev);
+                    if (beta <= alpha) break; // Pruning
+                }
+                return minEval;
+            }
+        }
+
+        function evaluateBoardAdvanced(board) {
             let totalValue = 0;
-            const values = { p: 10, r: 50, n: 30, b: 30, q: 90, k: 9000 };
+            const baseValues = { p: 100, r: 500, n: 320, b: 330, q: 900, k: 20000 };
+            
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     if (board[r][c]) {
-                        let p = board[r][c];
-                        let val = values[p.type];
-                        // Positive for AI pieces (black), negative for player (white)
-                        totalValue += (p.color === 'b') ? val : -val;
+                        let piece = board[r][c];
+                        let type = piece.type;
+                        let val = baseValues[type];
+                        
+                        // Add positional strategic matrix bonus
+                        if (piece.color === 'b') {
+                            val += positionalValues[type][r][c];
+                            totalValue += val;
+                        } else {
+                            val += positionalValues[type][7 - r][c]; // Mirror for white
+                            totalValue -= val;
+                        }
                     }
                 }
             }
@@ -1075,39 +970,31 @@
 
             if (chessGame.in_checkmate()) {
                 statusEl.innerText = chessGame.turn() === 'w' ? "AI Won! Checkmate." : "You Won! Checkmate.";
-                turnEl.innerText = "GAME OVER";
+                turnEl.innerText = "OVER";
             } else if (chessGame.in_draw()) {
-                statusEl.innerText = "Match Draw!";
-                turnEl.innerText = "GAME OVER";
+                statusEl.innerText = "Match Draw!"; turnEl.innerText = "OVER";
             } else if (chessGame.in_check()) {
-                statusEl.innerText = chessGame.turn() === 'w' ? "You are in CHECK!" : "AI is in CHECK!";
-                turnEl.innerText = chessGame.turn() === 'w' ? "WHITE'S MOVE" : "AI's MOVE";
+                statusEl.innerText = "CHECK!";
+                statusEl.style.color = "#ff3366";
             } else {
-                statusEl.innerText = chessGame.turn() === 'w' ? "Your Turn (White)" : "AI thinking...";
-                turnEl.innerText = chessGame.turn() === 'w' ? "WHITE'S MOVE" : "AI's MOVE";
+                statusEl.innerText = chessGame.turn() === 'w' ? "Your Move" : "AI Thinking...";
+                statusEl.style.color = "var(--neon-green)";
+                turnEl.innerText = chessGame.turn() === 'w' ? "WHITE (YOU)" : "BLACK (AI)";
             }
         }
 
         function resetChessMatch() {
-            if(chessGame) {
-                chessGame.reset();
-                selectedSquare = null;
-                renderBoard();
-            }
+            if(chessGame) { chessGame.reset(); selectedSquare = null; renderBoard(); }
         }
 
-        // 3. OVERLAY FRAME CLOSING DECK
+        // --- CLOSING PROTOCOLS ---
         function closeGameModal() {
             modal.style.display = 'none';
-            modalBody.innerHTML = ''; // Safely destroys session logs immediately
+            clearInterval(snakeLoop);
+            modalBody.innerHTML = ''; 
         }
 
-        // Close on window backdrop container click
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeGameModal();
-            }
-        }
+        window.onclick = function(event) { if (event.target == modal) closeGameModal(); }
     </script>
 </body>
 </html>
