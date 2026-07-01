@@ -21,6 +21,7 @@
             --bg-dark: #040407;
             --card-bg: #09090d;
             --neon-green: #00ff99;
+            --neon-red: #ff3366;
             --neon-glow: rgba(0, 255, 153, 0.25);
             --neon-pulse: rgba(0, 255, 153, 0.5);
             --insta-color: #e1306c;
@@ -393,29 +394,34 @@
         .modal-title { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; color: #fff; }
         .close-modal { background: none; border: none; color: var(--text-gray); font-size: 2rem; cursor: pointer; transition: color 0.3s; }
         .close-modal:hover { color: #ff3366; }
-        #modalGameBody { background: #09090d; overflow-y: auto; display: flex; justify-content: center; align-items: center; padding: 10px; min-height: 400px;}
+        #modalGameBody { background: #09090d; overflow-y: auto; display: flex; justify-content: center; align-items: center; padding: 15px; min-height: 450px;}
 
-        /* --- PRO SNAKE INTERFACE --- */
-        .snake-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; max-width: 400px; }
-        .snake-canvas { background: #020204; border: 3px solid #1a1a24; box-shadow: 0 0 20px rgba(0,0,0,0.8); border-radius: 10px; width: 100%; aspect-ratio: 1; max-width: 340px; }
+        /* --- PRO UPGRADED SNAKE INTERFACE (BIGGER SCREEN) --- */
+        .snake-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; max-width: 440px; }
+        .snake-canvas { background: #040408; border: 3px solid #1a1a26; box-shadow: 0 0 30px rgba(0, 255, 153, 0.15); border-radius: 12px; width: 100%; max-width: 400px; aspect-ratio: 1; }
         .game-controls-bar { display: flex; justify-content: space-between; width: 100%; background: #0e0e14; padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem;}
         
-        /* Mobile D-Pad Control Controller */
-        .dpad-container { display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 8px; margin-top: 5px; justify-content: center; }
-        .dpad-btn { background: #14141f; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; }
+        /* Mobile Controls */
+        .dpad-container { display: grid; grid-template-columns: repeat(3, 55px); grid-template-rows: repeat(3, 55px); gap: 8px; margin-top: 5px; justify-content: center; }
+        .dpad-btn { background: #14141f; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 1.3rem; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; }
         .dpad-btn:active { background: var(--neon-green); color: #000; }
 
-        /* --- PRO CHESS INTERFACE --- */
+        /* --- PRO CHESS INTERFACE (SOLID NEON COLORS) --- */
         .chess-container { display: grid; grid-template-columns: 1fr 240px; gap: 20px; padding: 15px; width: 100%; }
         @media (max-width: 768px) { .chess-container { grid-template-columns: 1fr; padding: 5px; } }
         .chess-board-wrapper { width: 100%; max-width: 380px; margin: 0 auto; }
         .chessboard { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 4px solid #1a1a24; aspect-ratio: 1; width: 100%; }
-        .square { display: flex; justify-content: center; align-items: center; font-size: calc(3vw + 12px); cursor: pointer; user-select: none; position: relative; }
-        @media (min-width: 850px) { .square { font-size: 34px; } }
-        .light-sq { background-color: #e2e4e6; color: #111; }
-        .dark-sq { background-color: #3b506d; color: #fff; }
-        .selected-sq { background-color: rgba(0, 255, 153, 0.5) !important; }
-        .highlight-sq::after { content: ''; width: 12px; height: 12px; background: rgba(0, 255, 153, 0.7); border-radius: 50%; position: absolute; }
+        .square { display: flex; justify-content: center; align-items: center; font-size: calc(4vw + 14px); cursor: pointer; user-select: none; position: relative; font-weight: bold; }
+        @media (min-width: 850px) { .square { font-size: 36px; } }
+        .light-sq { background-color: #1e2530; }
+        .dark-sq { background-color: #0f131a; }
+        
+        /* Opponent Wise Uniform Solid Coloring */
+        .player-piece { color: var(--neon-green) !important; text-shadow: 0 0 10px rgba(0, 255, 153, 0.6); }
+        .ai-piece { color: var(--neon-red) !important; text-shadow: 0 0 10px rgba(255, 51, 102, 0.6); }
+
+        .selected-sq { background-color: rgba(0, 255, 153, 0.25) !important; box-shadow: inset 0 0 10px var(--neon-green); }
+        .highlight-sq::after { content: ''; width: 14px; height: 14px; background: rgba(0, 255, 153, 0.6); border-radius: 50%; position: absolute; }
         .chess-sidebar { display: flex; flex-direction: column; justify-content: space-between; background: #0e0e14; padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.03); gap: 15px;}
         .status-header { font-weight: 700; font-size: 0.85rem; color: var(--text-gray); text-transform: uppercase; }
         .status-text { font-size: 1.05rem; color: var(--neon-green); font-weight: 800; }
@@ -618,9 +624,9 @@
         const modalBody = document.getElementById('modalGameBody');
         let snakeLoop = null;
 
-        // --- PRO NATIVE SNAKE ENGINE (MOBILE + PC ADVANCED) ---
+        // --- ADVANCED NATIVE SNAKE ENGINE (BIGGER SCREEN, CYBER GRID, STRICT DEATHS) ---
         function openSnakeGame() {
-            modalTitle.innerText = "Snake Game Pro - Touch & Keyboard";
+            modalTitle.innerText = "Snake Game Pro - Cyber Grid Edition";
             let localHigh = localStorage.getItem('snake_high') || 0;
             modalBody.innerHTML = `
                 <div class="snake-wrapper">
@@ -628,7 +634,7 @@
                         <div>Score: <span id="snakeScore" style="color:var(--neon-green)">0</span></div>
                         <div>High: <span id="snakeHigh" style="color:#ffc300">${localHigh}</span></div>
                     </div>
-                    <canvas id="snakeCanvas" class="snake-canvas" width="340" height="340"></canvas>
+                    <canvas id="snakeCanvas" class="snake-canvas" width="400" height="400"></canvas>
                     <div class="dpad-container">
                         <div></div><div class="dpad-btn" id="dpad-up">▲</div><div></div>
                         <div class="dpad-btn" id="dpad-left">◀</div><div></div><div class="dpad-btn" id="dpad-right">▶</div>
@@ -645,13 +651,13 @@
             const canvas = document.getElementById('snakeCanvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
-            const grid = 17;
+            const grid = 20; // Perfect block mapping for 400x400 size
             let score = 0;
             let highScore = localStorage.getItem('snake_high') || 0;
-            let gameSpeed = 110;
+            let gameSpeed = 130; // Perfect Starting Speed
 
-            let snake = { x: 136, y: 136, dx: grid, dy: 0, cells: [{x:136,y:136},{x:119,y:136}], maxCells: 4 };
-            let apple = { x: 238, y: 238 };
+            let snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [{x:160,y:160},{x:140,y:160}], maxCells: 3 };
+            let apple = { x: 280, y: 280 };
 
             function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
             function generateApple() {
@@ -661,27 +667,46 @@
             }
 
             function gameTick() {
-                ctx.clearRect(0,0,canvas.width,canvas.height);
+                // Background Cyberpunk Grid Drawing
+                ctx.fillStyle = '#05050a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = 'rgba(0, 255, 153, 0.04)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < canvas.width; i += grid) {
+                    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+                }
+
                 snake.x += snake.dx; snake.y += snake.dy;
 
-                if (snake.x < 0) snake.x = canvas.width - grid;
-                else if (snake.x >= canvas.width) snake.x = 0;
-                if (snake.y < 0) snake.y = canvas.height - grid;
-                else if (snake.y >= canvas.height) snake.y = 0;
+                // STRICT BORDER COLLISION - HIT BORDER = DEAD
+                if (snake.x < 0 || snake.x >= canvas.width || snake.y < 0 || snake.y >= canvas.height) {
+                    triggerGameOver();
+                    return;
+                }
 
                 snake.cells.unshift({x: snake.x, y: snake.y});
                 if (snake.cells.length > snake.maxCells) snake.cells.pop();
 
-                // Draw Apple
+                // Draw Apple (Glowing Red Pulse Sphere)
+                ctx.shadowBlur = 10; ctx.shadowColor = '#ff3366';
                 ctx.fillStyle = '#ff3366'; ctx.beginPath();
                 ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/2 - 2, 0, 2*Math.PI); ctx.fill();
 
-                // Draw Snake
-                ctx.fillStyle = '#00ff99';
+                // Draw Snake (Neon Cyberpunk Design)
                 snake.cells.forEach((cell, index) => {
-                    ctx.shadowBlur = index === 0 ? 8 : 0; ctx.shadowColor = '#00ff99';
+                    if (index === 0) {
+                        // Head style
+                        ctx.shadowBlur = 15; ctx.shadowColor = '#00ff99';
+                        ctx.fillStyle = '#ffffff'; 
+                    } else {
+                        // Body Gradient Glow look
+                        ctx.shadowBlur = 0;
+                        ctx.fillStyle = 'var(--neon-green)';
+                    }
                     ctx.fillRect(cell.x + 1, cell.y + 1, grid - 2, grid - 2);
 
+                    // Eat Apple Engine logic
                     if (cell.x === apple.x && cell.y === apple.y) {
                         snake.maxCells++; score += 10;
                         document.getElementById('snakeScore').innerText = score;
@@ -690,20 +715,27 @@
                             document.getElementById('snakeHigh').innerText = highScore;
                         }
                         generateApple();
-                        // Speed scaling mechanics
-                        if(gameSpeed > 50) { clearInterval(snakeLoop); gameSpeed -= 2; snakeLoop = setInterval(gameTick, gameSpeed); }
+                        // Speed Scaling Setup
+                        if(gameSpeed > 60) { clearInterval(snakeLoop); gameSpeed -= 3; snakeLoop = setInterval(gameTick, gameSpeed); }
                     }
 
+                    // STRICT SELF-TOUCH COLLISION - HIT BODY = DEAD
                     for (let i = index + 1; i < snake.cells.length; i++) {
                         if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                            document.getElementById('snakeScore').innerText = "Game Over!";
-                            setTimeout(initSnakeGame, 1200); clearInterval(snakeLoop);
+                            triggerGameOver();
+                            return;
                         }
                     }
                 });
             }
 
-            // Keyboard Map
+            function triggerGameOver() {
+                clearInterval(snakeLoop);
+                document.getElementById('snakeScore').innerText = "WASTED! Restarting...";
+                setTimeout(initSnakeGame, 1500);
+            }
+
+            // Keyboard Mapping Controls
             window.onkeydown = function(e) {
                 if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; e.preventDefault(); }
                 else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; e.preventDefault(); }
@@ -711,13 +743,13 @@
                 else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; e.preventDefault(); }
             };
 
-            // Mobile D-Pad Bindings
+            // Mobile D-Pad Control Buttons Binding
             document.getElementById('dpad-up').onclick = () => { if(snake.dy === 0){ snake.dy = -grid; snake.dx = 0; } };
             document.getElementById('dpad-down').onclick = () => { if(snake.dy === 0){ snake.dy = grid; snake.dx = 0; } };
             document.getElementById('dpad-left').onclick = () => { if(snake.dx === 0){ snake.dx = -grid; snake.dy = 0; } };
             document.getElementById('dpad-right').onclick = () => { if(snake.dx === 0){ snake.dx = grid; snake.dy = 0; } };
 
-            // Swipe Gestures Logic
+            // Swipe Control Engine
             let touchStartX = 0, touchStartY = 0;
             canvas.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; e.preventDefault(); }, {passive:false});
             canvas.addEventListener('touchmove', e => {
@@ -735,15 +767,17 @@
 
             snakeLoop = setInterval(gameTick, gameSpeed);
         }
-        // --- PRO CHESS AI ENGINE (ALPHA-BETA MINMAX DEPTH 3) ---
+        // --- PRO CHESS AI ENGINE (PROFESSIONAL BLACK & WHITE 3D THEME) ---
         let chessGame = null;
         let selectedSquare = null;
+        
+        // Professional Unicode Pieces (Standard Clear Chess Symbols)
         const pieceUnicode = {
             'p': '♟', 'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚',
-            'P': '♙', 'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔'
+            'P': '♟', 'R': '♜', 'N': '♞', 'B': '♝', 'Q': '♛', 'K': '♚'
         };
 
-        // Advanced Evaluation Matrix for Pro AI
+        // Advanced Tactical Evaluation Matrix for AI (Depth 3 Alpha-Beta)
         const positionalValues = {
             p: [
                 [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
@@ -752,7 +786,7 @@
                 [0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
                 [0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
                 [0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
-                [0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
+                [0.5,  1.0,  1.0, -2.0, -2.0,  1.0,  1.0,  0.5],
                 [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
             ],
             n: [
@@ -808,19 +842,19 @@
         };
 
         function openChessGame() {
-            modalTitle.innerText = "Chess Pro AI - AlphaBeta Deep Engine";
+            modalTitle.innerText = "Grandmaster Arena - Classic 3D";
             modalBody.innerHTML = `
-                <div class="chess-container">
-                    <div class="chess-board-wrapper">
-                        <div id="chessBoard" class="chessboard"></div>
+                <div class="chess-container" style="perspective: 1000px;">
+                    <div class="chess-board-wrapper" style="transform: rotateX(12deg) rotateY(0deg); box-shadow: 0 25px 50px rgba(0,0,0,0.6); border: 12px solid #2d2d2d; border-radius: 6px;">
+                        <div id="chessBoard" class="chessboard" style="background: #1e1e1e; gap: 0;"></div>
                     </div>
-                    <div class="chess-sidebar">
+                    <div class="chess-sidebar" style="background: #181818; border-left: 2px solid #333;">
                         <div>
-                            <div class="status-header">Match Core</div>
-                            <div id="chessStatus" class="status-text">Your Move</div>
-                            <div id="turnIndicator" class="turn-indicator">WHITE (YOU)</div>
+                            <div class="status-header" style="color: #aaa; text-transform: uppercase; font-size: 11px;">Match Core</div>
+                            <div id="chessStatus" class="status-text" style="color: #fff; font-size: 20px; font-weight:700;">Your Move</div>
+                            <div id="turnIndicator" class="turn-indicator" style="color: #ffffff; font-weight: 600;">WHITE (YOU)</div>
                         </div>
-                        <button onclick="resetChessMatch()" class="action-btn" style="background:#ff3366; color:#fff; box-shadow:none;">RESET</button>
+                        <button onclick="resetChessMatch()" class="action-btn" style="background:#cc0000; color:#fff; font-weight: bold; border-radius: 4px; box-shadow: none;">RESET BOARD</button>
                     </div>
                 </div>
             `;
@@ -843,17 +877,42 @@
                     const rowRanks = ['8','7','6','5','4','3','2','1'];
                     const squareId = colFiles[c] + rowRanks[r];
                     
-                    squareDiv.className = `square ${(r + c) % 2 === 0 ? 'light-sq' : 'dark-sq'}`;
+                    // Professional Tournament Colors (Cream and Matte Dark Slate)
+                    const isLight = (r + c) % 2 === 0;
+                    squareDiv.className = 'square';
+                    squareDiv.style.width = '100%';
+                    squareDiv.style.height = '100%';
+                    squareDiv.style.display = 'flex';
+                    squareDiv.style.alignItems = 'center';
+                    squareDiv.style.justifyContent = 'center';
+                    squareDiv.style.fontSize = '36px';
+                    squareDiv.style.cursor = 'pointer';
+                    squareDiv.style.transition = 'all 0.15s ease';
+                    squareDiv.style.background = isLight ? '#f0d9b5' : '#b58863';
                     squareDiv.dataset.square = squareId;
                     
                     const piece = boardState[r][c];
                     if (piece) {
-                        squareDiv.innerText = pieceUnicode[piece.color === 'w' ? piece.type.toUpperCase() : piece.type.toLowerCase()];
+                        squareDiv.innerText = pieceUnicode[piece.type];
+                        // Standard Solid Pure Colors (No filters, shadows or neon tints to keep colors constant)
+                        if (piece.color === 'w') {
+                            squareDiv.style.color = '#ffffff'; 
+                            squareDiv.style.textShadow = '0px 2px 4px rgba(0,0,0,0.4), 0 0 1px #000';
+                        } else {
+                            squareDiv.style.color = '#1a1a1a';
+                            squareDiv.style.textShadow = '0px 2px 3px rgba(255,255,255,0.2)';
+                        }
                     }
-                    if (selectedSquare === squareId) squareDiv.classList.add('selected-sq');
+                    
+                    // Selected and Highlight Overlays
+                    if (selectedSquare === squareId) {
+                        squareDiv.style.background = '#bac466'; 
+                    }
                     if (selectedSquare && moves.some(m => m.from === selectedSquare && m.to === squareId)) {
-                        squareDiv.classList.add('highlight-sq');
+                        squareDiv.style.background = isLight ? '#d4d673' : '#b1b447';
+                        squareDiv.style.boxShadow = 'inset 0 0 10px rgba(0,0,0,0.2)';
                     }
+                    
                     squareDiv.onclick = () => handleSquareClick(squareId);
                     boardElement.appendChild(squareDiv);
                 }
@@ -870,8 +929,9 @@
                 selectedSquare = null;
                 renderBoard();
                 if (!chessGame.game_over()) {
-                    document.getElementById('chessStatus').innerText = "AI Calculation...";
-                    document.getElementById('turnIndicator').innerText = "AI THINKING";
+                    document.getElementById('chessStatus').innerText = "AI Thinking...";
+                    document.getElementById('turnIndicator').innerText = "BLACK (AI)";
+                    document.getElementById('turnIndicator').style.color = "#aaa";
                     setTimeout(triggerProAIMove, 250);
                 }
             } else {
@@ -881,7 +941,6 @@
             }
         }
 
-        // --- PRO MINMAX WITH ALPHA-BETA PRUNING (DEPTH 3) ---
         function triggerProAIMove() {
             if (chessGame.game_over()) return;
             let moves = chessGame.moves();
@@ -890,12 +949,11 @@
             let alpha = -100000;
             let beta = 100000;
 
-            // Sort moves roughly to make pruning faster
             moves.sort(() => 0.5 - Math.random());
 
             for (let i = 0; i < moves.length; i++) {
                 chessGame.move(moves[i]);
-                let value = minMaxAlphaBeta(2, alpha, beta, false); // Depth 3 Total (0, 1, 2)
+                let value = minMaxAlphaBeta(2, alpha, beta, false);
                 chessGame.undo();
                 if (value > bestValue) {
                     bestValue = value;
@@ -920,8 +978,8 @@
                     let ev = minMaxAlphaBeta(depth - 1, alpha, beta, false);
                     chessGame.undo();
                     maxEval = Math.max(maxEval, ev);
-                    alpha = Math.max(alpha, ev);
-                    if (beta <= alpha) break; // Pruning
+                    alpha = Math.max(alpha, maxEval);
+                    if (beta <= alpha) break;
                 }
                 return maxEval;
             } else {
@@ -932,7 +990,7 @@
                     chessGame.undo();
                     minEval = Math.min(minEval, ev);
                     beta = Math.min(beta, ev);
-                    if (beta <= alpha) break; // Pruning
+                    if (beta <= alpha) break;
                 }
                 return minEval;
             }
@@ -949,12 +1007,11 @@
                         let type = piece.type;
                         let val = baseValues[type];
                         
-                        // Add positional strategic matrix bonus
                         if (piece.color === 'b') {
                             val += positionalValues[type][r][c];
                             totalValue += val;
                         } else {
-                            val += positionalValues[type][7 - r][c]; // Mirror for white
+                            val += positionalValues[type][7 - r][c];
                             totalValue -= val;
                         }
                     }
@@ -970,16 +1027,19 @@
 
             if (chessGame.in_checkmate()) {
                 statusEl.innerText = chessGame.turn() === 'w' ? "AI Won! Checkmate." : "You Won! Checkmate.";
-                turnEl.innerText = "OVER";
+                turnEl.innerText = "MATCH OVER";
+                turnEl.style.color = "#ff3333";
             } else if (chessGame.in_draw()) {
-                statusEl.innerText = "Match Draw!"; turnEl.innerText = "OVER";
+                statusEl.innerText = "Match Draw!"; turnEl.innerText = "MATCH OVER";
+                turnEl.style.color = "#aaa";
             } else if (chessGame.in_check()) {
                 statusEl.innerText = "CHECK!";
-                statusEl.style.color = "#ff3366";
+                statusEl.style.color = "#ff3333";
             } else {
                 statusEl.innerText = chessGame.turn() === 'w' ? "Your Move" : "AI Thinking...";
-                statusEl.style.color = "var(--neon-green)";
+                statusEl.style.color = "#ffffff";
                 turnEl.innerText = chessGame.turn() === 'w' ? "WHITE (YOU)" : "BLACK (AI)";
+                turnEl.style.color = chessGame.turn() === 'w' ? "#ffffff" : "#aaa";
             }
         }
 
