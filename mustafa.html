@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mustafa Adventure | Pro Engine</title>
     <style>
-        /* Mobile Responsive CSS Base */
-        body { margin: 0; background: #000; overflow: hidden; touch-action: none; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background: #000; overflow: hidden; touch-action: none; font-family: sans-serif; }
         #gameCanvas { display: block; width: 100vw; height: 100vh; background: linear-gradient(#2c3e50, #000); }
-        .ui-layer { position: absolute; top: 10px; left: 10px; color: #fff; pointer-events: none; }
+        .ui-layer { position: absolute; top: 10px; left: 10px; color: #fff; pointer-events: none; font-size: 20px; }
     </style>
 </head>
 <body>
@@ -17,134 +16,72 @@
     <canvas id="gameCanvas"></canvas>
 
     <script>
-        // CORE ENGINE INITIALIZATION
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         let gameActive = true;
 
-        // Canvas Responsive Resize
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        // 1. Setup
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+
+        // 2. Game Objects
+        const GameState = { cameraX: 0 };
+        const platforms = [
+            { x: 0, y: 350, w: 2000, h: 50 },
+            { x: 300, y: 250, w: 200, h: 20 },
+            { x: 600, y: 180, w: 200, h: 20 }
+        ];
+        const player = { x: 100, y: 100, w: 40, h: 40, vx: 0, vy: 0, speed: 5, jumpStrength: -12, grounded: false, color: '#00ff99' };
+        const keys = { right: false, left: false, up: false };
+
+        // 3. Inputs
+        window.addEventListener('keydown', e => {
+            if(e.code === 'ArrowRight') keys.right = true;
+            if(e.code === 'ArrowLeft') keys.left = true;
+            if(e.code === 'Space' && player.grounded) { player.vy = player.jumpStrength; player.grounded = false; }
+        });
+        window.addEventListener('keyup', e => {
+            if(e.code === 'ArrowRight') keys.right = false;
+            if(e.code === 'ArrowLeft') keys.left = false;
+        });
+
+        // 4. Functions
+        function updatePlayer() {
+            player.vx = keys.right ? player.speed : (keys.left ? -player.speed : 0);
+            player.vy += 0.6;
+            player.x += player.vx;
+            player.y += player.vy;
+
+            player.grounded = false;
+            platforms.forEach(p => {
+                if (player.x < p.x + p.w && player.x + player.w > p.x && player.y + player.h > p.y && player.y + player.h < p.y + p.h + player.vy) {
+                    player.y = p.y - player.h;
+                    player.vy = 0;
+                    player.grounded = true;
+                }
+            });
         }
-        window.onresize = resize;
-        resize();
 
-        // Game State Object
-        // 3. PLAYER OBJECT & PHYSICS
-const player = {
-    x: 100, y: 100, w: 40, h: 40,
-    vx: 0, vy: 0, speed: 5,
-    jumpStrength: -12, grounded: false,
-    color: '#00ff99'
-};
+        function updateCamera() { if (player.x > canvas.width / 2) GameState.cameraX = player.x - canvas.width / 2; }
 
-// Controls
-const keys = { right: false, left: false, up: false };
-window.addEventListener('keydown', e => {
-    if(e.code === 'ArrowRight') keys.right = true;
-    if(e.code === 'ArrowLeft') keys.left = true;
-    if(e.code === 'Space' && player.grounded) keys.up = true;
-});
-window.addEventListener('keyup', e => {
-    if(e.code === 'ArrowRight') keys.right = false;
-    if(e.code === 'ArrowLeft') keys.left = false;
-});
-
-// Update Player Physics
-function updatePlayer() {
-    // Left/Right Movement
-    if(keys.right) player.vx = player.speed;
-    else if(keys.left) player.vx = -player.speed;
-    else player.vx = 0;
-
-    // Gravity & Jump
-    if(keys.up) { player.vy = player.jumpStrength; player.grounded = false; keys.up = false; }
-    player.vy += 0.6; // Gravity constant
-    
-    player.x += player.vx;
-    player.y += player.vy;
-
-    // Ground Collision (Platform detection)
-    player.grounded = false;
-    platforms.forEach(p => {
-        if (player.x < p.x + p.w && player.x + player.w > p.x &&
-            player.y + player.h > p.y && player.y + player.h < p.y + p.h + player.vy) {
-            player.y = p.y - player.h;
-            player.vy = 0;
-            player.grounded = true;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffcc00';
+            platforms.forEach(p => ctx.fillRect(p.x - GameState.cameraX, p.y, p.w, p.h));
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x - GameState.cameraX, player.y, player.w, player.h);
         }
-    });
-}
 
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x - GameState.cameraX, player.y, player.w, player.h);
-}
-        const GameState = {
-            score: 0,
-            level: 1,
-            cameraX: 0,
-            paused: false
-        };
-
-      function gameLoop() {
+        // 5. Loop
+        function gameLoop() {
             if (!gameActive) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            updatePlayer(); // Physics calculate karega
-            updateCamera(); // Camera move karega
-            drawWorld();    // Platforms draw karega
-            drawPlayer();   // Player ko screen pe dikhayega
-            
-            requestAnimationFrame(gameLoop);
-        }
-            
-            // 1. Clear Screen
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 2. Logic updates (Yahan naya code call karein)
-            // ... (Part 1 ka code yahan hoga) ...
-
-// Yahan PASTE karein (Part 2 ka code)
-const platforms = [
-    { x: 0, y: 350, w: 2000, h: 50 },
-    { x: 300, y: 250, w: 200, h: 20 },
-    { x: 600, y: 180, w: 200, h: 20 }
-];
-
-function drawWorld() {
-    ctx.fillStyle = '#ffcc00';
-    platforms.forEach(p => {
-        ctx.fillRect(p.x - GameState.cameraX, p.y, p.w, p.h);
-    });
-}
-
-function updateCamera() {
-    if (player && player.x > canvas.width / 2) {
-        GameState.cameraX = player.x - canvas.width / 2;
-    }
-}
-
-// Ab apne main Game Loop mein inhein call karein
-function gameLoop() {
-    if (!gameActive) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    updateCamera(); // Camera update karein
-    drawWorld();    // Duniya draw karein
-
-    requestAnimationFrame(gameLoop);
-}
-            updateCamera(); // Camera position update karega
-            drawWorld();    // Platforms draw karega
-            
+            updatePlayer();
+            updateCamera();
+            draw();
             requestAnimationFrame(gameLoop);
         }
 
-        // Start Engine
         gameLoop();
-        console.log("Part 1: Core Engine Loaded Successfully");
     </script>
 </body>
 </html>
