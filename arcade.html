@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Player | Zafar Games</title>
+    <style>
+        body { margin: 0; background: #000; display: flex; flex-direction: column; height: 100vh; }
+        .top-bar { padding: 10px; background: #111; display: flex; align-items: center; }
+        .back-btn { color: #00ff99; text-decoration: none; font-weight: bold; font-size: 18px; }
+        #gameFrame { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">← Back to Menu</a>
+    </div>
+    <iframe id="gameFrame" src=""></iframe>
 
+    <script>
+        // URL se link uthane ka logic
+        const params = new URLSearchParams(window.location.search);
+        const gameUrl = params.get('url');
+        document.getElementById('gameFrame').src = gameUrl;
+    </script>
+</body>
+</html>
