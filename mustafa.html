@@ -448,7 +448,10 @@ player.y+player.h>e.y
 
 // Jump On Enemy
 
-if(player.dy>0 && player.y+player.h<e.y+20){
+if(
+player.dy > 0 &&
+player.y + player.h < e.y + 30
+){
 
 e.dead=true;
 
