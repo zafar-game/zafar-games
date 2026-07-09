@@ -110,6 +110,7 @@ keys[e.key]=false;
 });
  
 function update(){
+ console.log(player.ground);
 let breakCollision=false;
 player.dx=0;
 
@@ -130,9 +131,9 @@ player.dx=player.speed;
 player.x+=player.dx;
  
 player.dy+=gravity;
- 
+player.ground = false;
 player.y+=player.dy;
- player.ground = false;
+
 if(player.y+player.h>=500){
  
 player.y=500-player.h;
