@@ -28,7 +28,63 @@ margin:auto;
 background:linear-gradient(#55c8ff,#dff8ff);
  
 }
- 
+#controls{
+
+display:none;
+
+position:fixed;
+
+left:0;
+
+bottom:20px;
+
+width:100%;
+
+justify-content:space-between;
+
+padding:20px;
+
+pointer-events:none;
+
+}
+
+#controls div{
+
+width:75px;
+
+height:75px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.2);
+
+color:white;
+
+font-size:40px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+pointer-events:auto;
+
+user-select:none;
+
+backdrop-filter:blur(5px);
+
+}
+
+@media(max-width:900px){
+
+#controls{
+
+display:flex;
+
+}
+
+} 
 </style>
  
 </head>
@@ -36,10 +92,28 @@ background:linear-gradient(#55c8ff,#dff8ff);
 <body>
  
 <canvas id="game" width="1000" height="550"></canvas>
- 
+<div id="controls">
+
+<div id="left">◀</div>
+
+<div id="jump">⬆</div>
+
+<div id="right">▶</div>
+
+</div> 
 <script>
  
 const canvas=document.getElementById("game");
+if(isMobile){
+
+document.body.style.margin="0";
+document.body.style.background="#000";
+
+canvas.style.width="100vw";
+canvas.style.height="100vh";
+canvas.style.touchAction="none";
+
+}
 const ctx=canvas.getContext("2d");
  
 let player={
@@ -67,6 +141,16 @@ ground:false
 const gravity=0.8;
  
 const keys={};
+// =====================
+// Mobile Controls
+// =====================
+
+let mobileLeft = false;
+let mobileRight = false;
+let mobileJump = false;
+
+const isMobile =
+/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
  canvas.addEventListener("click",function(e){
 
 if(!levelComplete) return;
@@ -108,23 +192,41 @@ document.addEventListener("keyup",e=>{
 keys[e.key]=false;
  
 });
- 
+if(isMobile){
+
+document.body.addEventListener("click",()=>{
+
+if(document.documentElement.requestFullscreen){
+
+document.documentElement.requestFullscreen();
+
+}
+
+if(screen.orientation){
+
+screen.orientation.lock("landscape").catch(()=>{});
+
+}
+
+});
+
+} 
 function update(){
  console.log(player.ground);
 let breakCollision=false;
 player.dx=0;
 
-if(keys["ArrowLeft"] || keys["a"]){
+if(keys["ArrowLeft"] || keys["a"] || mobileLeft){
 player.dx=-player.speed;
 }
-if((keys["ArrowUp"] || keys["w"] || keys[" "]) && player.ground){
+if((keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump) && player.ground){
 
     player.dy = player.jump;
     console.log("Jump");  
     player.ground = false;
 
 }
-if(keys["ArrowRight"] || keys["d"]){
+if(keys["ArrowRight"] || keys["d"] || mobileRight){
 player.dx=player.speed;
 }
  
@@ -169,6 +271,60 @@ if(e.x<800) e.dir=1;
 if(e.x>1100) e.dir=-1;
 
 });
+// =====================
+// Enemy Collision
+// =====================
+
+enemies.forEach(e=>{
+
+if(e.dead) return;
+
+if(
+
+player.x < e.x + e.w &&
+player.x + player.w > e.x &&
+player.y < e.y + e.h &&
+player.y + player.h > e.y
+
+){
+
+// Hero upar se gira
+
+if(
+
+player.dy>0 &&
+player.y+player.h < e.y+15
+
+){
+
+e.dead=true;
+
+player.dy=-12;
+
+score+=50;
+
+}else{
+
+lives--;
+
+player.x=120;
+player.y=380;
+
+player.dy=0;
+
+if(lives<=0){
+
+alert("GAME OVER");
+
+location.reload();
+
+}
+
+}
+
+}
+
+}); 
 if(
 player.x + player.w > finishFlag.x &&
 player.x < finishFlag.x + finishFlag.w &&
@@ -247,7 +403,7 @@ let levelComplete=false;
 const enemies=[
 {
 x:900,
-y:460,
+y:465,
 w:40,
 h:40,
 dir:1,
@@ -255,7 +411,7 @@ dead:false
 },
 {
 x:1700,
-y:460,
+y:465,
 w:40,
 h:40,
 dir:-1,
@@ -435,51 +591,7 @@ ctx.lineTo(player.x+33,player.y+55-legSwing);
 ctx.stroke();
 });
  coins.forEach(c=>{
-enemies.forEach(e=>{
 
-if(
-
-player.x<e.x+e.w &&
-player.x+player.w>e.x &&
-player.y<e.y+e.h &&
-player.y+player.h>e.y
-
-){
-
-// Jump On Enemy
-
-if(
-player.dy > 0 &&
-player.y + player.h < e.y + 30
-){
-
-e.dead=true;
-
-player.dy=-12;
-
-score+=50;
-
-}else{
-
-lives--;
-
-player.x=120;
-player.y=380;
-player.dy=0;
-
-if(lives<=0){
-
-alert("GAME OVER");
-
-location.reload();
-
-}
-
-}
-
-}
-
-});
 if(
 !c.collected &&
 player.x+player.w>c.x-10 &&
@@ -716,7 +828,22 @@ draw();
 requestAnimationFrame(game);
 
 }
- 
+if(isMobile){
+
+const left=document.getElementById("left");
+const right=document.getElementById("right");
+const jump=document.getElementById("jump");
+
+left.ontouchstart=()=>mobileLeft=true;
+left.ontouchend=()=>mobileLeft=false;
+
+right.ontouchstart=()=>mobileRight=true;
+right.ontouchend=()=>mobileRight=false;
+
+jump.ontouchstart=()=>mobileJump=true;
+jump.ontouchend=()=>mobileJump=false;
+
+} 
 game();
  
 </script>
