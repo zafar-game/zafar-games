@@ -67,7 +67,36 @@ ground:false
 const gravity=0.8;
  
 const keys={};
- 
+ canvas.addEventListener("click",function(e){
+
+if(!levelComplete) return;
+
+const rect=canvas.getBoundingClientRect();
+
+const mx=e.clientX-rect.left;
+const my=e.clientY-rect.top;
+
+// Restart Button
+if(
+mx>350 &&
+mx<500 &&
+my>320 &&
+my<370
+){
+location.reload();
+}
+
+// Next Level Button
+if(
+mx>540 &&
+mx<740 &&
+my>320 &&
+my<370
+){
+alert("Level 2 Coming Soon...");
+}
+
+});
 document.addEventListener("keydown",e=>{
  
 keys[e.key]=true;
@@ -87,7 +116,15 @@ player.dx=0;
 if(keys["ArrowLeft"]||keys["a"]){
  
 player.dx=-player.speed;
- 
+ if(
+player.x + player.w > finishFlag.x &&
+player.x < finishFlag.x + finishFlag.w &&
+!levelComplete
+){
+
+levelComplete=true;
+
+}
 }
  
 if(keys["ArrowRight"]||keys["d"]){
@@ -193,7 +230,7 @@ const trees=[
  
 let score=0;
  let lives=3;
-
+let levelComplete=false;
 const enemies=[
 {
 x:900,
@@ -427,7 +464,40 @@ ctx.font="20px Arial";
 ctx.fillText("Score : "+score,20,95);
 
 ctx.fillText("Lives : "+lives,20,125);
+if(levelComplete){
 
+ctx.fillStyle="rgba(0,0,0,0.6)";
+ctx.fillRect(cameraX,0,1000,550);
+
+ctx.fillStyle="yellow";
+ctx.font="60px Arial";
+ctx.fillText("LEVEL COMPLETE!",cameraX+250,220);
+
+ctx.font="30px Arial";
+ctx.fillStyle="white";
+ctx.fillText("Congratulations!",cameraX+330,280);
+// Restart Button
+
+ctx.fillStyle="#2196F3";
+
+ctx.fillRect(cameraX+350,320,150,50);
+
+ctx.fillStyle="white";
+
+ctx.font="24px Arial";
+
+ctx.fillText("Restart",cameraX+385,352);
+
+// Next Level Button
+
+ctx.fillStyle="#4CAF50";
+
+ctx.fillRect(cameraX+540,320,200,50);
+
+ctx.fillStyle="white";
+
+ctx.fillText("Next Level",cameraX+565,352);
+}
 ctx.restore();
 }
  
