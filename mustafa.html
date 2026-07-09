@@ -73,13 +73,13 @@ if(!levelComplete) return;
 
 const rect=canvas.getBoundingClientRect();
 
-const mx=e.clientX-rect.left;
+const mx=e.clientX-rect.left+cameraX;
 const my=e.clientY-rect.top;
 
 // Restart Button
 if(
-mx>350 &&
-mx<500 &&
+mx>cameraX+350 &&
+mx<cameraX+500 &&
 my>320 &&
 my<370
 ){
@@ -88,8 +88,8 @@ location.reload();
 
 // Next Level Button
 if(
-mx>540 &&
-mx<740 &&
+mx>cameraX+540 &&
+mx<cameraX+740 &&
 my>320 &&
 my<370
 ){
@@ -112,19 +112,13 @@ keys[e.key]=false;
 function update(){
  
 player.dx=0;
- 
-if(keys["ArrowRight"]||keys["d"]){
- 
-player.dx=player.speed;
- 
+
+if(keys["ArrowLeft"] || keys["a"]){
+player.dx=-player.speed;
 }
- 
-if((keys["ArrowUp"]||keys["w"]||keys[" "])&&player.ground){
- 
-player.dy=player.jump;
- 
-player.ground=false;
- 
+
+if(keys["ArrowRight"] || keys["d"]){
+player.dx=player.speed;
 }
  
 player.x+=player.dx;
@@ -142,23 +136,7 @@ player.dy=0;
 player.ground=true;
  
 }
- if(keys["ArrowLeft"]||keys["a"]){
 
-player.dx=-player.speed;
-if(
-player.x + player.w > finishFlag.x &&
-player.x < finishFlag.x + finishFlag.w &&
-!levelComplete
-){
-
-
-
-levelComplete=true;
-
-
-
-}
-}
  platforms.forEach(p=>{
 
 if(
@@ -184,6 +162,13 @@ if(e.x<800) e.dir=1;
 if(e.x>1100) e.dir=-1;
 
 });
+if(
+player.x + player.w > finishFlag.x &&
+player.x < finishFlag.x + finishFlag.w &&
+!levelComplete
+){
+levelComplete=true;
+}
 }
 let cameraX=0;
  
@@ -268,13 +253,6 @@ w:40,
 h:40,
 dir:-1,
 dead:false
-}
-{
-x:1700,
-y:460,
-w:40,
-h:40,
-dir:-1
 }
 ];
   const finishFlag={
@@ -698,9 +676,13 @@ ctx.restore();
  
 function game(){
 
+if(!levelComplete){
+
 update();
 
 collectCoins();
+
+}
 
 draw();
 
