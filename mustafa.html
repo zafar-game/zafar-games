@@ -119,7 +119,31 @@ player.dy=0;
 player.ground=true;
  
 }
- 
+ platforms.forEach(p=>{
+
+if(
+player.x+player.w>p.x &&
+player.x<p.x+p.w &&
+player.y+player.h>=p.y &&
+player.y+player.h<=p.y+20 &&
+player.dy>=0
+){
+
+player.y=p.y-player.h;
+player.dy=0;
+player.ground=true;
+
+}
+
+});enemies.forEach(e=>{
+
+e.x+=2*e.dir;
+
+if(e.x<800) e.dir=1;
+
+if(e.x>1100) e.dir=-1;
+
+});
 }
 let cameraX=0;
  
@@ -131,7 +155,29 @@ const coins=[
 {x:1300,y:450,collected:false},
 {x:1500,y:380,collected:false}
 ];
- 
+ function collectCoins(){
+
+coins.forEach(c=>{
+
+if(!c.collected){
+
+if(
+player.x < c.x+10 &&
+player.x+player.w > c.x-10 &&
+player.y < c.y+10 &&
+player.y+player.h > c.y-10
+){
+
+c.collected=true;
+score+=10;
+
+}
+
+}
+
+});
+
+}
 const platforms=[
 {x:700,y:430,w:150,h:20},
 {x:1050,y:360,w:150,h:20},
@@ -146,7 +192,25 @@ const trees=[
 ];
  
 let score=0;
-function draw(){cameraX=player.x-250;
+ let lives=3;
+
+const enemies=[
+{
+x:900,
+y:460,
+w:40,
+h:40,
+dir:1
+},
+{
+x:1700,
+y:460,
+w:40,
+h:40,
+dir:-1
+}
+];
+function draw(){cameraX+=(player.x-250-cameraX)*0.08;
  
 ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.save();
@@ -154,7 +218,7 @@ ctx.save();
 ctx.translate(-cameraX,0);
 ctx.fillStyle="#79d45d";
  
-ctx.fillRect(0,500,1000,50);
+ctx.fillRect(0,500,5000,50);
 // Trees
  
 trees.forEach(tree=>{
@@ -172,7 +236,19 @@ ctx.arc(tree.x+10,390,40,0,Math.PI*2);
 ctx.fill();
  
 });
- 
+ ctx.fillStyle="#888";
+
+ctx.fillRect(1900,430,80,70);
+
+ctx.fillStyle="#444";
+
+ctx.fillRect(1920,390,40,40);
+
+ctx.fillStyle="#222";
+
+ctx.fillRect(1910,450,20,50);
+
+ctx.fillRect(1950,450,20,50);
 // Platforms
  
 ctx.fillStyle="#704214";
@@ -182,7 +258,82 @@ platforms.forEach(p=>{
 ctx.fillRect(p.x,p.y,p.w,p.h);
  
 });
- 
+                ctx.fillStyle="red";
+
+enemies.forEach(e=>{
+
+ctx.beginPath();
+
+ctx.arc(e.x+20,e.y+20,20,0,Math.PI*2);
+
+ctx.fill();
+
+ctx.fillStyle="#fff";
+
+ctx.beginPath();
+
+ctx.arc(e.x+12,e.y+15,3,0,Math.PI*2);
+
+ctx.fill();
+
+ctx.beginPath();
+
+ctx.arc(e.x+28,e.y+15,3,0,Math.PI*2);
+
+ctx.fill();
+
+ctx.fillStyle="red";
+
+});
+ coins.forEach(c=>{
+enemies.forEach(e=>{
+
+if(
+
+player.x<e.x+e.w &&
+
+player.x+player.w>e.x &&
+
+player.y<e.y+e.h &&
+
+player.y+player.h>e.y
+
+){
+
+lives--;
+
+player.x=120;
+
+player.y=380;
+
+player.dy=0;
+
+if(lives<=0){
+
+alert("GAME OVER");
+
+location.reload();
+
+}
+
+}
+
+});
+if(
+!c.collected &&
+player.x+player.w>c.x-10 &&
+player.x<c.x+10 &&
+player.y+player.h>c.y-10 &&
+player.y<c.y+10
+){
+
+c.collected=true;
+
+score+=10;
+
+}
+
+});
 // Coins
  
 coins.forEach(c=>{
@@ -202,7 +353,7 @@ ctx.fill();
 });
 ctx.fillStyle="#7b4a1b";
  
-ctx.fillRect(0,495,1000,5);
+ctx.fillRect(0,495,5000,5);
  
 ctx.fillStyle="#00aaff";
  
@@ -235,17 +386,33 @@ ctx.fillText("Mustafa Adventure - Part 1",20,35);
 ctx.font="18px Arial";
  
 ctx.fillText("Move : ← →   Jump : SPACE",20,65);
- 
+                ctx.fillStyle="white";
+
+ctx.font="20px Arial";
+
+ctx.fillText("Score : "+score,20,95);
+
+ctx.fillText("Lives : "+lives,20,125);
+                ctx.fillStyle="white";
+
+ctx.font="20px Arial";
+
+ctx.fillText("Score : "+score,20,95);
+
+ctx.fillText("Lives : "+lives,20,125);
+ ctx.fillText("Score : "+score,20,95);
 }
  
 function game(){
- 
+
 update();
- 
+
+collectCoins();
+
 draw();
- 
+
 requestAnimationFrame(game);
- 
+
 }
  
 game();
