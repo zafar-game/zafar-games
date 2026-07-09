@@ -173,7 +173,7 @@ player.ground=true;
 }
 
 });enemies.forEach(e=>{
-
+if(e.dead) return;
 e.x+=2*e.dir;
 
 if(e.x<800) e.dir=1;
@@ -220,7 +220,25 @@ const platforms=[
 {x:1050,y:360,w:150,h:20},
 {x:1450,y:300,w:180,h:20}
 ];
- 
+ const clouds=[
+{x:150,y:80},
+{x:500,y:120},
+{x:900,y:70},
+{x:1400,y:100},
+{x:2000,y:90},
+{x:2600,y:60},
+{x:3200,y:110}
+];
+
+const mountains=[
+{x:0,h:180},
+{x:450,h:240},
+{x:900,h:190},
+{x:1400,h:260},
+{x:1900,h:200},
+{x:2500,h:230},
+{x:3100,h:170}
+];
 const trees=[
 {x:300},
 {x:900},
@@ -259,9 +277,46 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 ctx.save();
  
 ctx.translate(-cameraX,0);
+ctx.fillStyle="#87CEEB";
+ctx.fillRect(cameraX,0,5000,500);                
 ctx.fillStyle="#79d45d";
  
 ctx.fillRect(0,500,5000,50);
+// Mountains
+
+ctx.fillStyle="#8ea5b8";
+
+mountains.forEach(m=>{
+
+ctx.beginPath();
+
+ctx.moveTo(m.x,500);
+
+ctx.lineTo(m.x+170,500-m.h);
+
+ctx.lineTo(m.x+340,500);
+
+ctx.closePath();
+
+ctx.fill();
+
+});
+
+// Clouds
+
+ctx.fillStyle="white";
+
+clouds.forEach(c=>{
+
+let cx=c.x-cameraX*0.25;
+
+ctx.beginPath();
+ctx.arc(cx,80,22,0,Math.PI*2);
+ctx.arc(cx+20,70,24,0,Math.PI*2);
+ctx.arc(cx+45,82,20,0,Math.PI*2);
+ctx.fill();
+
+});
 // Trees
  
 trees.forEach(tree=>{
@@ -302,30 +357,67 @@ ctx.fillRect(p.x,p.y,p.w,p.h);
  
 });
                 ctx.fillStyle="red";
-
 enemies.forEach(e=>{
+if(e.dead) return;
+let bounce=Math.sin(Date.now()*0.01+e.x)*3;
+
+// Body
+ctx.fillStyle="#7dff3a";
 
 ctx.beginPath();
-
-ctx.arc(e.x+20,e.y+20,20,0,Math.PI*2);
-
+ctx.arc(e.x+20,e.y+20+bounce,20,0,Math.PI*2);
 ctx.fill();
 
+// Belly
+ctx.fillStyle="#c8ff88";
+
+ctx.beginPath();
+ctx.arc(e.x+20,e.y+25+bounce,12,0,Math.PI*2);
+ctx.fill();
+
+// Eyes
 ctx.fillStyle="#fff";
 
 ctx.beginPath();
-
-ctx.arc(e.x+12,e.y+15,3,0,Math.PI*2);
-
+ctx.arc(e.x+13,e.y+14+bounce,4,0,Math.PI*2);
 ctx.fill();
 
 ctx.beginPath();
-
-ctx.arc(e.x+28,e.y+15,3,0,Math.PI*2);
-
+ctx.arc(e.x+27,e.y+14+bounce,4,0,Math.PI*2);
 ctx.fill();
 
-ctx.fillStyle="red";
+// Pupils
+ctx.fillStyle="#000";
+
+ctx.beginPath();
+ctx.arc(e.x+13,e.y+14+bounce,1.5,0,Math.PI*2);
+ctx.fill();
+
+ctx.beginPath();
+ctx.arc(e.x+27,e.y+14+bounce,1.5,0,Math.PI*2);
+ctx.fill();
+
+// Mouth
+ctx.strokeStyle="#000";
+ctx.lineWidth=2;
+
+ctx.beginPath();
+ctx.arc(e.x+20,e.y+24+bounce,7,0,Math.PI);
+ctx.stroke();
+
+// Legs
+ctx.strokeStyle="#222";
+ctx.lineWidth=3;
+
+ctx.beginPath();
+ctx.moveTo(e.x+12,e.y+38+bounce);
+ctx.lineTo(e.x+10,e.y+46+bounce);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(e.x+28,e.y+38+bounce);
+ctx.lineTo(e.x+30,e.y+46+bounce);
+ctx.stroke();
 
 });
  coins.forEach(c=>{
@@ -334,21 +426,28 @@ enemies.forEach(e=>{
 if(
 
 player.x<e.x+e.w &&
-
 player.x+player.w>e.x &&
-
 player.y<e.y+e.h &&
-
 player.y+player.h>e.y
 
 ){
 
+// Jump On Enemy
+
+if(player.dy>0 && player.y+player.h<e.y+20){
+
+e.dead=true;
+
+player.dy=-12;
+
+score+=50;
+
+}else{
+
 lives--;
 
 player.x=120;
-
 player.y=380;
-
 player.dy=0;
 
 if(lives<=0){
@@ -356,6 +455,8 @@ if(lives<=0){
 alert("GAME OVER");
 
 location.reload();
+
+}
 
 }
 
@@ -401,48 +502,134 @@ ctx.lineTo(finishFlag.x+20,finishFlag.y+60);
 ctx.closePath();
 
 ctx.fill();               
-// Coins
- 
+// Animated Coins
+
 coins.forEach(c=>{
- 
+
 if(!c.collected){
- 
-ctx.fillStyle="gold";
- 
+
+let glow=8+Math.sin(Date.now()*0.008+c.x)*3;
+
+let up=Math.sin(Date.now()*0.004+c.x)*5;
+
+// Glow
+
 ctx.beginPath();
- 
-ctx.arc(c.x,c.y,10,0,Math.PI*2);
- 
+
+ctx.fillStyle="rgba(255,255,0,0.25)";
+
+ctx.arc(c.x,c.y+up,glow+10,0,Math.PI*2);
+
 ctx.fill();
- 
+
+// Coin
+
+ctx.beginPath();
+
+ctx.fillStyle="#FFD700";
+
+ctx.arc(c.x,c.y+up,10,0,Math.PI*2);
+
+ctx.fill();
+
+// Inner Circle
+
+ctx.beginPath();
+
+ctx.fillStyle="#FFF176";
+
+ctx.arc(c.x,c.y+up,6,0,Math.PI*2);
+
+ctx.fill();
+
+// Shine
+
+ctx.fillStyle="white";
+
+ctx.beginPath();
+
+ctx.arc(c.x-3,c.y-3+up,2,0,Math.PI*2);
+
+ctx.fill();
+
 }
- 
+
 });
 ctx.fillStyle="#7b4a1b";
  
 ctx.fillRect(0,495,5000,5);
  
-ctx.fillStyle="#00aaff";
- 
-ctx.fillRect(player.x,player.y,player.w,player.h);
- 
-ctx.fillStyle="#fff";
- 
+// ===== MUSTAFA CHARACTER =====
+
+let walk=Math.sin(Date.now()*0.015)*8;
+
+// Head
+ctx.fillStyle="#ffd39b";
+
 ctx.beginPath();
- 
-ctx.arc(player.x+15,player.y+20,4,0,Math.PI*2);
- 
+
+ctx.arc(player.x+22,player.y+12,12,0,Math.PI*2);
+
 ctx.fill();
- 
+
+// Hair
+ctx.fillStyle="#111";
+
 ctx.beginPath();
- 
-ctx.arc(player.x+30,player.y+20,4,0,Math.PI*2);
- 
+
+ctx.arc(player.x+22,player.y+7,12,Math.PI,0);
+
 ctx.fill();
- 
+
+// Eyes
 ctx.fillStyle="#000";
- 
-ctx.fillRect(player.x+15,player.y+38,15,3);
+
+ctx.beginPath();
+
+ctx.arc(player.x+18,player.y+11,2,0,Math.PI*2);
+
+ctx.fill();
+
+ctx.beginPath();
+
+ctx.arc(player.x+26,player.y+11,2,0,Math.PI*2);
+
+ctx.fill();
+
+// Body
+ctx.fillStyle="#1e88e5";
+
+ctx.fillRect(player.x+12,player.y+24,20,25);
+
+// Arms
+
+ctx.strokeStyle="#ffd39b";
+ctx.lineWidth=4;
+
+ctx.beginPath();
+ctx.moveTo(player.x+12,player.y+30);
+ctx.lineTo(player.x+2,player.y+40+walk/4);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(player.x+32,player.y+30);
+ctx.lineTo(player.x+42,player.y+40-walk/4);
+ctx.stroke();
+
+// Legs
+
+ctx.strokeStyle="#222";
+ctx.lineWidth=5;
+
+ctx.beginPath();
+ctx.moveTo(player.x+17,player.y+49);
+ctx.lineTo(player.x+12,player.y+62+walk);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(player.x+27,player.y+49);
+ctx.lineTo(player.x+32,player.y+62-walk);
+ctx.stroke();
  
 ctx.fillStyle="#fff";
  
