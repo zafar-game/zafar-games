@@ -210,6 +210,12 @@ h:40,
 dir:-1
 }
 ];
+  const finishFlag={
+x:2500,
+y:340,
+w:20,
+h:160
+};
 function draw(){cameraX+=(player.x-250-cameraX)*0.08;
  
 ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -334,6 +340,30 @@ score+=10;
 }
 
 });
+ // Finish Flag
+
+ctx.fillStyle="#777";
+
+ctx.fillRect(
+finishFlag.x,
+finishFlag.y,
+finishFlag.w,
+finishFlag.h
+);
+
+ctx.fillStyle="red";
+
+ctx.beginPath();
+
+ctx.moveTo(finishFlag.x+20,finishFlag.y);
+
+ctx.lineTo(finishFlag.x+90,finishFlag.y+30);
+
+ctx.lineTo(finishFlag.x+20,finishFlag.y+60);
+
+ctx.closePath();
+
+ctx.fill();               
 // Coins
  
 coins.forEach(c=>{
