@@ -110,13 +110,19 @@ keys[e.key]=false;
 });
  
 function update(){
- 
+let breakCollision=false;
 player.dx=0;
 
 if(keys["ArrowLeft"] || keys["a"]){
 player.dx=-player.speed;
 }
+if((keys["ArrowUp"] || keys["w"] || keys[" "]) && player.ground){
 
+    player.dy = player.jump;
+    console.log("Jump");  
+    player.ground = false;
+
+}
 if(keys["ArrowRight"] || keys["d"]){
 player.dx=player.speed;
 }
@@ -126,7 +132,7 @@ player.x+=player.dx;
 player.dy+=gravity;
  
 player.y+=player.dy;
- 
+ player.ground = false;
 if(player.y+player.h>=500){
  
 player.y=500-player.h;
@@ -150,7 +156,7 @@ player.dy>=0
 player.y=p.y-player.h;
 player.dy=0;
 player.ground=true;
-
+breakCollision = true;
 }
 
 });enemies.forEach(e=>{
@@ -396,19 +402,36 @@ ctx.arc(e.x+20,e.y+24+bounce,7,0,Math.PI);
 ctx.stroke();
 
 // Legs
+
+let legSwing = Math.sin(Date.now()*0.015) * 4; // Pehle 8 tha, ab 4
+
 ctx.strokeStyle="#222";
-ctx.lineWidth=3;
+ctx.lineWidth=5;
+
+// Left Leg
+ctx.beginPath();
+ctx.moveTo(player.x+17,player.y+47);
+ctx.lineTo(player.x+15,player.y+55+legSwing);
+ctx.stroke();
+
+// Right Leg
+ctx.beginPath();
+ctx.moveTo(player.x+27,player.y+47);
+ctx.lineTo(player.x+29,player.y+55-legSwing);
+ctx.stroke();
+// Feet
+
+ctx.lineWidth=4;
 
 ctx.beginPath();
-ctx.moveTo(e.x+12,e.y+38+bounce);
-ctx.lineTo(e.x+10,e.y+46+bounce);
+ctx.moveTo(player.x+13,player.y+55+legSwing);
+ctx.lineTo(player.x+19,player.y+55+legSwing);
 ctx.stroke();
 
 ctx.beginPath();
-ctx.moveTo(e.x+28,e.y+38+bounce);
-ctx.lineTo(e.x+30,e.y+46+bounce);
+ctx.moveTo(player.x+27,player.y+55-legSwing);
+ctx.lineTo(player.x+33,player.y+55-legSwing);
 ctx.stroke();
-
 });
  coins.forEach(c=>{
 enemies.forEach(e=>{
