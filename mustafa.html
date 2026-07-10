@@ -179,6 +179,27 @@ ground:false
 const gravity=0.8;
  
 const keys={};
+// ==========================
+// MOBILE JOYSTICK
+// ==========================
+
+let mobileMode = false;
+
+let joyActive = false;
+let joyTouchId = null;
+
+let joyBaseX = 110;
+let joyBaseY = 440;
+
+let joyKnobX = joyBaseX;
+let joyKnobY = joyBaseY;
+
+let mobileLeft = false;
+let mobileRight = false;
+let mobileJump = false;
+
+const JOY_RADIUS = 45;
+const KNOB_RADIUS = 22; 
 // =====================
 // Mobile Controls
 // =====================
@@ -228,6 +249,104 @@ document.addEventListener("keyup",e=>{
 keys[e.key]=false;
  
 });
+// ==========================
+// MOBILE TOUCH CONTROLS
+// ==========================
+
+if("ontouchstart" in window){
+
+mobileMode = true;
+
+canvas.addEventListener("touchstart",function(e){
+
+e.preventDefault();
+
+for(const touch of e.changedTouches){
+
+// LEFT HALF = JOYSTICK
+if(touch.clientX < window.innerWidth/2){
+
+joyActive = true;
+joyTouchId = touch.identifier;
+
+joyBaseX = touch.clientX;
+joyBaseY = touch.clientY;
+
+joyKnobX = joyBaseX;
+joyKnobY = joyBaseY;
+
+}else{
+
+// RIGHT HALF = JUMP
+mobileJump = true;
+
+}
+
+}
+
+},{passive:false});
+
+canvas.addEventListener("touchmove",function(e){
+
+e.preventDefault();
+
+for(const touch of e.touches){
+
+if(touch.identifier===joyTouchId){
+
+let dx = touch.clientX - joyBaseX;
+
+if(dx>40){
+
+mobileRight = true;
+mobileLeft = false;
+
+}else if(dx<-40){
+
+mobileLeft = true;
+mobileRight = false;
+
+}else{
+
+mobileLeft = false;
+mobileRight = false;
+
+}
+
+joyKnobX = touch.clientX;
+joyKnobY = touch.clientY;
+
+}
+
+}
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(e){
+
+e.preventDefault();
+
+for(const touch of e.changedTouches){
+
+if(touch.identifier===joyTouchId){
+
+joyActive=false;
+
+mobileLeft=false;
+mobileRight=false;
+
+joyKnobX=joyBaseX;
+joyKnobY=joyBaseY;
+
+}
+
+}
+
+mobileJump=false;
+
+},{passive:false});
+
+} 
 if(isMobile){
 
 document.body.addEventListener("click",()=>{
@@ -250,23 +369,42 @@ screen.orientation.lock("landscape").catch(()=>{});
 function update(){
  console.log(player.ground);
 let breakCollision=false;
-player.dx=0;
+player.dx = 0;
 
-if(keys["ArrowLeft"] || keys["a"] || mobileLeft){
-player.dx=-player.speed;
-}
+// LEFT
 if(
-    (keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump)
-    && player.ground
+keys["ArrowLeft"] ||
+keys["a"] ||
+mobileLeft
+){
+player.dx = -player.speed;
+}
+
+// RIGHT
+if(
+keys["ArrowRight"] ||
+keys["d"] ||
+mobileRight
+){
+player.dx = player.speed;
+}
+
+// JUMP
+if(
+(
+keys["ArrowUp"] ||
+keys["w"] ||
+keys[" "] ||
+mobileJump
+)
+&&
+player.ground
 ){
 
-    player.dy = player.jump;
-    player.ground = false;
-    mobileJump = false;
+player.dy = player.jump;
+player.ground = false;
+mobileJump = false;
 
-}
-if(keys["ArrowRight"] || keys["d"] || mobileRight){
-player.dx=player.speed;
 }
  
 player.x+=player.dx;
@@ -849,6 +987,35 @@ ctx.fillStyle="white";
 
 ctx.fillText("Next Level",cameraX+565,352);
 }
+// =========================
+// MOBILE JOYSTICK
+// =========================
+
+if(isMobile){
+
+// Outer Circle
+ctx.globalAlpha=0.35;
+ctx.fillStyle="#000";
+
+ctx.beginPath();
+ctx.arc(cameraX+90,460,55,0,Math.PI*2);
+ctx.fill();
+
+// Inner Circle
+ctx.fillStyle="#fff";
+
+let knobX=cameraX+90;
+
+if(mobileLeft) knobX-=20;
+if(mobileRight) knobX+=20;
+
+ctx.beginPath();
+ctx.arc(knobX,460,25,0,Math.PI*2);
+ctx.fill();
+
+ctx.globalAlpha=1;
+
+}                
 ctx.restore();
 }
  
