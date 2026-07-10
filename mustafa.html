@@ -104,6 +104,10 @@ display:flex;
 <script>
  
 const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+ const isMobile =
+/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 if(isMobile){
 
 document.body.style.margin="0";
@@ -114,8 +118,7 @@ canvas.style.height="100vh";
 canvas.style.touchAction="none";
 
 }
-const ctx=canvas.getContext("2d");
- 
+
 let player={
  
 x:120,
@@ -149,8 +152,6 @@ let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
 
-const isMobile =
-/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
  canvas.addEventListener("click",function(e){
 
 if(!levelComplete) return;
@@ -219,11 +220,14 @@ player.dx=0;
 if(keys["ArrowLeft"] || keys["a"] || mobileLeft){
 player.dx=-player.speed;
 }
-if((keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump) && player.ground){
+if(
+    (keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump)
+    && player.ground
+){
 
     player.dy = player.jump;
-    console.log("Jump");  
     player.ground = false;
+    mobileJump = false;
 
 }
 if(keys["ArrowRight"] || keys["d"] || mobileRight){
