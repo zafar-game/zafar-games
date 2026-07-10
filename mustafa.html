@@ -183,6 +183,23 @@ const keys={};
 // MOBILE JOYSTICK
 // ==========================
 
+const isMobile =
+/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+let joyActive=false;
+
+let joyStartX=0;
+let joyStartY=0;
+let joyBaseX=90;
+let joyBaseY=460;
+let joyDX=0;
+
+let jumpTouchId=null;
+let joyTouchId=null; 
+// ==========================
+// MOBILE JOYSTICK
+// ==========================
+
 let mobileMode = false;
 
 let joyActive = false;
@@ -197,7 +214,21 @@ let joyKnobY = joyBaseY;
 let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
+// =========================
+// JOYSTICK VARIABLES
+// =========================
 
+let joyActive = false;
+
+let joyCenterX = 90;
+let joyCenterY = 460;
+
+let joyKnobX = joyCenterX;
+let joyKnobY = joyCenterY;
+
+let joyDX = 0;
+
+let joyTouchId = null;
 const JOY_RADIUS = 45;
 const KNOB_RADIUS = 22; 
 // =====================
@@ -249,6 +280,99 @@ document.addEventListener("keyup",e=>{
 keys[e.key]=false;
  
 });
+// ==========================
+// TOUCH CONTROLS
+// ==========================
+
+if(isMobile){
+
+canvas.addEventListener("touchstart",e=>{
+
+for(const touch of e.changedTouches){
+
+// LEFT HALF = JOYSTICK
+
+if(touch.clientX < window.innerWidth/2){
+
+joyActive=true;
+
+joyTouchId=touch.identifier;
+
+joyStartX=touch.clientX;
+joyStartY=touch.clientY;
+
+joyBaseX=touch.clientX;
+joyBaseY=touch.clientY;
+
+}
+
+// RIGHT HALF = JUMP
+
+else{
+
+jumpTouchId=touch.identifier;
+
+if(player.ground){
+
+player.dy=player.jump;
+player.ground=false;
+
+}
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+canvas.addEventListener("touchmove",e=>{
+
+for(const touch of e.changedTouches){
+
+if(touch.identifier===joyTouchId){
+
+let dx=touch.clientX-joyStartX;
+let dy=touch.clientY-joyStartY;
+dx=Math.max(-40,Math.min(40,dx));
+dy=Math.max(-40,Math.min(40,dy));
+
+joyDX=(dx/40)*player.speed;
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+canvas.addEventListener("touchend",e=>{
+
+for(const touch of e.changedTouches){
+
+if(touch.identifier===joyTouchId){
+
+joyDX=0;
+
+joyActive=false;
+
+joyTouchId=null;
+
+}
+
+if(touch.identifier===jumpTouchId){
+
+jumpTouchId=null;
+
+}
+
+}
+
+},{passive:false});
+
+} 
 // ==========================
 // MOBILE TOUCH CONTROLS
 // ==========================
@@ -372,21 +496,20 @@ let breakCollision=false;
 player.dx = 0;
 
 // LEFT
-if(
-keys["ArrowLeft"] ||
-keys["a"] ||
-mobileLeft
-){
-player.dx = -player.speed;
+// Keyboard Controls
+
+if(keys["ArrowLeft"] || keys["a"]){
+    player.dx = -player.speed;
 }
 
-// RIGHT
-if(
-keys["ArrowRight"] ||
-keys["d"] ||
-mobileRight
-){
-player.dx = player.speed;
+if(keys["ArrowRight"] || keys["d"]){
+    player.dx = player.speed;
+}
+
+// Mobile Joystick
+
+if(isMobile){
+    player.dx = joyDX;
 }
 
 // JUMP
@@ -993,29 +1116,25 @@ ctx.fillText("Next Level",cameraX+565,352);
 
 if(isMobile){
 
-// Outer Circle
+// Base
 ctx.globalAlpha=0.35;
 ctx.fillStyle="#000";
 
 ctx.beginPath();
-ctx.arc(cameraX+90,460,55,0,Math.PI*2);
+ctx.arc(cameraX+joyBaseX,joyBaseY,55,0,Math.PI*2);
 ctx.fill();
 
-// Inner Circle
+// Knob
+ctx.globalAlpha=0.8;
 ctx.fillStyle="#fff";
 
-let knobX=cameraX+90;
-
-if(mobileLeft) knobX-=20;
-if(mobileRight) knobX+=20;
-
 ctx.beginPath();
-ctx.arc(knobX,460,25,0,Math.PI*2);
+ctx.arc(cameraX+joyBaseX+joyDX*6,joyBaseY,25,0,Math.PI*2);
 ctx.fill();
 
 ctx.globalAlpha=1;
 
-}                
+}              
 ctx.restore();
 }
  
