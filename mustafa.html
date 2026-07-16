@@ -1,1 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+ 
+<title>Mustafa Adventure</title>
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes"> 
+<style>
+ 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+ 
+body{
+ 
+background:#000;
+overflow:hidden;
+font-family:Arial;
+}
+ 
+canvas{
+ 
+display:block;
+margin:auto;
+background:linear-gradient(#55c8ff,#dff8ff);
+ 
+}
+html,body{
+
+width:100%;
+height:100%;
+overflow:hidden;
+touch-action:none;
+
+}
+
+canvas{
+
+width:100vw;
+height:100vh;
+
+} 
+
+</style>
+ 
+</head>
+ 
+<body>
+ 
+<canvas id="game" width="1000" height="550"></canvas>
+ 
+<script>
+ 
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+async function startFullscreen(){
+
+try{
+
+await document.documentElement.requestFullscreen();
+
+}catch(e){}
+
+if(screen.orientation){
+
+try{
+
+await screen.orientation.lock("landscape");
+
+}catch(e){}
+
+}
+
+}
+ const isMobile =
+/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+if(isMobile){
+
+document.body.style.margin="0";
+document.body.style.background="#000";
+
+canvas.style.width="100vw";
+canvas.style.height="100vh";
+canvas.style.touchAction="none";
+
+}
+
+let player={
+ 
+x:120,
+ 
+y:380,
+ 
+w:45,
+ 
+h:60,
+ 
+dx:0,
+ 
+dy:0,
+ 
+speed:6,
+ 
+jump:-15,
+ 
+ground:false
+ 
+};
+ 
+const gravity=0.8;
+ 
+const keys={};
+// ==========================
+// MOBILE JOYSTICK
+// ==========================
+
+
+let joyActive=false;
+
+let joyStartX=0;
+let joyStartY=0;
+let joyBaseX=90;
+let joyBaseY=460;
+let joyDX=0;
+
+let jumpTouchId=null;
+let joyTouchId=null; 
+// ==========================
+// MOBILE JOYSTICK
+// ==========================
+
+let mobileMode = false;
+
+
+let joyKnobX = joyBaseX;
+let joyKnobY = joyBaseY;
+
+let mobileLeft = false;
+let mobileRight = false;
+let mobileJump = false;
+
+// =====================
+// Mobile Controls
+// =====================
+
+ canvas.addEventListener("click",function(e){
+startFullscreen();
+if(!levelComplete) return;
+
+const rect=canvas.getBoundingClientRect();
+
+const mx=e.clientX-rect.left+cameraX;
+const my=e.clientY-rect.top;
+
+// Restart Button
+if(
+mx>cameraX+350 &&
+mx<cameraX+500 &&
+my>320 &&
+my<370
+){
+location.reload();
+}
+
+// Next Level Button
+if(
+mx>cameraX+540 &&
+mx<cameraX+740 &&
+my>320 &&
+my<370
+){
+alert("Level 2 Coming Soon...");
+}
+
+});
+document.addEventListener("keydown",e=>{
+ 
+keys[e.key]=true;
+ 
+});
+ 
+document.addEventListener("keyup",e=>{
+ 
+keys[e.key]=false;
+ 
+});
+// ==========================
+// MOBILE TOUCH CONTROLS
+// ==========================
+
+if(isMobile){
+
+canvas.addEventListener("touchstart",function(e){
+
+startFullscreen();
+
+for(const touch of e.changedTouches){
+
+// LEFT SIDE = JOYSTICK
+if(touch.clientX < window.innerWidth/2){
+
+joyActive=true;
+joyTouchId=touch.identifier;
+
+joyStartX=touch.clientX;
+joyBaseX=touch.clientX;
+joyBaseY=touch.clientY;
+
+}
+
+// RIGHT SIDE = JUMP
+else{
+
+if(player.ground){
+
+player.dy=player.jump;
+player.ground=false;
+
+}
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+canvas.addEventListener("touchmove",function(e){
+
+for(const touch of e.touches){
+
+if(touch.identifier===joyTouchId){
+
+let dx=touch.clientX-joyStartX;
+
+dx=Math.max(-60,Math.min(60,dx));
+
+joyDX=(dx/60)*player.speed;
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(e){
+
+joyDX=0;
+
+joyActive=false;
+
+joyTouchId=null;
+
+e.preventDefault();
+
+},{passive:false});
+
+}
+function update(){
+ console.log(player.ground);
+let breakCollision=false;
+player.dx = 0;
+
+// LEFT
+// Keyboard Controls
+
+if(keys["ArrowLeft"] || keys["a"]){
+    player.dx = -player.speed;
+}
+
+if(keys["ArrowRight"] || keys["d"]){
+    player.dx = player.speed;
+}
+
+// Mobile Joystick
+
+if(isMobile){
+
+player.dx=joyDX;
+
+}
+
+// JUMP
+if(
+(
+keys["ArrowUp"] ||
+keys["w"] ||
+keys[" "] ||
+mobileJump
+)
+&&
+player.ground
+){
+
+player.dy = player.jump;
+player.ground = false;
+mobileJump = false;
+
+}
+ 
+player.x+=player.dx;
+ 
+player.dy+=gravity;
+player.ground = false;
+player.y+=player.dy;
+
+if(player.y+player.h>=500){
+ 
+player.y=500-player.h;
+ 
+player.dy=0;
+ 
+player.ground=true;
+ 
+}
+
+ platforms.forEach(p=>{
+
+if(
+player.x+player.w>p.x &&
+player.x<p.x+p.w &&
+player.y+player.h>=p.y &&
+player.y+player.h<=p.y+20 &&
+player.dy>=0
+){
+
+player.y=p.y-player.h;
+player.dy=0;
+player.ground=true;
+breakCollision = true;
+}
+
+});enemies.forEach(e=>{
+if(e.dead) return;
+e.x+=2*e.dir;
+
+if(e.x<800) e.dir=1;
+
+if(e.x>1100) e.dir=-1;
+
+});
+// =====================
+// Enemy Collision
+// =====================
+
+enemies.forEach(e=>{
+
+if(e.dead) return;
+
+if(
+
+player.x < e.x + e.w &&
+player.x + player.w > e.x &&
+player.y < e.y + e.h &&
+player.y + player.h > e.y
+
+){
+
+// Hero upar se gira
+
+if(
+
+player.dy>0 &&
+player.y+player.h < e.y+15
+
+){
+
+e.dead=true;
+
+player.dy=-12;
+
+score+=50;
+
+}else{
+
+lives--;
+
+player.x=120;
+player.y=380;
+
+player.dy=0;
+
+if(lives<=0){
+
+alert("GAME OVER");
+
+location.reload();
+
+}
+
+}
+
+}
+
+}); 
+if(
+player.x + player.w > finishFlag.x &&
+player.x < finishFlag.x + finishFlag.w &&
+!levelComplete
+){
+levelComplete=true;
+}
+}
+let cameraX=0;
+ 
+const coins=[
+{x:500,y:450,collected:false},
+{x:650,y:450,collected:false},
+{x:820,y:450,collected:false},
+{x:980,y:450,collected:false},
+{x:1300,y:450,collected:false},
+{x:1500,y:380,collected:false}
+];
+ function collectCoins(){
+
+coins.forEach(c=>{
+
+if(!c.collected){
+
+if(
+player.x < c.x+10 &&
+player.x+player.w > c.x-10 &&
+player.y < c.y+10 &&
+player.y+player.h > c.y-10
+){
+
+c.collected=true;
+score+=10;
+
+}
+
+}
+
+});
+
+}
+const platforms=[
+{x:700,y:430,w:150,h:20},
+{x:1050,y:360,w:150,h:20},
+{x:1450,y:300,w:180,h:20}
+];
+ const clouds=[
+{x:150,y:80},
+{x:500,y:120},
+{x:900,y:70},
+{x:1400,y:100},
+{x:2000,y:90},
+{x:2600,y:60},
+{x:3200,y:110}
+];
+
+const mountains=[
+{x:0,h:180},
+{x:450,h:240},
+{x:900,h:190},
+{x:1400,h:260},
+{x:1900,h:200},
+{x:2500,h:230},
+{x:3100,h:170}
+];
+const trees=[
+{x:300},
+{x:900},
+{x:1700},
+{x:2300}
+];
+ 
+let score=0;
+ let lives=3;
+let levelComplete=false;
+const enemies=[
+{
+x:900,
+y:465,
+w:40,
+h:40,
+dir:1,
+dead:false
+},
+{
+x:1700,
+y:465,
+w:40,
+h:40,
+dir:-1,
+dead:false
+}
+];
+  const finishFlag={
+x:2500,
+y:340,
+w:20,
+h:160
+};
+function draw(){cameraX+=(player.x-250-cameraX)*0.08;
+ 
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.save();
+ 
+ctx.translate(-cameraX,0);
+ctx.fillStyle="#87CEEB";
+ctx.fillRect(cameraX,0,5000,500);                
+ctx.fillStyle="#79d45d";
+ 
+ctx.fillRect(0,500,5000,50);
+// Mountains
+
+ctx.fillStyle="#8ea5b8";
+
+mountains.forEach(m=>{
+
+ctx.beginPath();
+
+ctx.moveTo(m.x,500);
+
+ctx.lineTo(m.x+170,500-m.h);
+
+ctx.lineTo(m.x+340,500);
+
+ctx.closePath();
+
+ctx.fill();
+
+});
+
+// Clouds
+
+ctx.fillStyle="white";
+
+clouds.forEach(c=>{
+
+let cx=c.x-cameraX*0.25;
+
+ctx.beginPath();
+ctx.arc(cx,80,22,0,Math.PI*2);
+ctx.arc(cx+20,70,24,0,Math.PI*2);
+ctx.arc(cx+45,82,20,0,Math.PI*2);
+ctx.fill();
+
+});
+// Trees
+ 
+trees.forEach(tree=>{
+ 
+ctx.fillStyle="#7a4516";
+ 
+ctx.fillRect(tree.x,410,20,90);
+ 
+ctx.fillStyle="#0c8f2d";
+ 
+ctx.beginPath();
+ 
+ctx.arc(tree.x+10,390,40,0,Math.PI*2);
+ 
+ctx.fill();
+ 
+});
+ ctx.fillStyle="#888";
+
+ctx.fillRect(1900,430,80,70);
+
+ctx.fillStyle="#444";
+
+ctx.fillRect(1920,390,40,40);
+
+ctx.fillStyle="#222";
+
+ctx.fillRect(1910,450,20,50);
+
+ctx.fillRect(1950,450,20,50);
+// Platforms
+ 
+ctx.fillStyle="#704214";
+ 
+platforms.forEach(p=>{
+ 
+ctx.fillRect(p.x,p.y,p.w,p.h);
+ 
+});
+                ctx.fillStyle="red";
+enemies.forEach(e=>{
+if(e.dead) return;
+let bounce=Math.sin(Date.now()*0.01+e.x)*3;
+
+// Body
+ctx.fillStyle="#7dff3a";
+
+ctx.beginPath();
+ctx.arc(e.x+20,e.y+20+bounce,20,0,Math.PI*2);
+ctx.fill();
+
+// Belly
+ctx.fillStyle="#c8ff88";
+
+ctx.beginPath();
+ctx.arc(e.x+20,e.y+25+bounce,12,0,Math.PI*2);
+ctx.fill();
+
+// Eyes
+ctx.fillStyle="#fff";
+
+ctx.beginPath();
+ctx.arc(e.x+13,e.y+14+bounce,4,0,Math.PI*2);
+ctx.fill();
+
+ctx.beginPath();
+ctx.arc(e.x+27,e.y+14+bounce,4,0,Math.PI*2);
+ctx.fill();
+
+// Pupils
+ctx.fillStyle="#000";
+
+ctx.beginPath();
+ctx.arc(e.x+13,e.y+14+bounce,1.5,0,Math.PI*2);
+ctx.fill();
+
+ctx.beginPath();
+ctx.arc(e.x+27,e.y+14+bounce,1.5,0,Math.PI*2);
+ctx.fill();
+
+// Mouth
+ctx.strokeStyle="#000";
+ctx.lineWidth=2;
+
+ctx.beginPath();
+ctx.arc(e.x+20,e.y+24+bounce,7,0,Math.PI);
+ctx.stroke();
+
+// Legs
+
+let legSwing = Math.sin(Date.now()*0.015) * 4; // Pehle 8 tha, ab 4
+
+ctx.strokeStyle="#222";
+ctx.lineWidth=5;
+
+// Left Leg
+ctx.beginPath();
+ctx.moveTo(player.x+17,player.y+47);
+ctx.lineTo(player.x+15,player.y+55+legSwing);
+ctx.stroke();
+
+// Right Leg
+ctx.beginPath();
+ctx.moveTo(player.x+27,player.y+47);
+ctx.lineTo(player.x+29,player.y+55-legSwing);
+ctx.stroke();
+// Feet
+
+ctx.lineWidth=4;
+
+ctx.beginPath();
+ctx.moveTo(player.x+13,player.y+55+legSwing);
+ctx.lineTo(player.x+19,player.y+55+legSwing);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(player.x+27,player.y+55-legSwing);
+ctx.lineTo(player.x+33,player.y+55-legSwing);
+ctx.stroke();
+});
+ coins.forEach(c=>{
+
+if(
+!c.collected &&
+player.x+player.w>c.x-10 &&
+player.x<c.x+10 &&
+player.y+player.h>c.y-10 &&
+player.y<c.y+10
+){
+
+c.collected=true;
+
+score+=10;
+
+}
+
+});
+ // Finish Flag
+
+ctx.fillStyle="#777";
+
+ctx.fillRect(
+finishFlag.x,
+finishFlag.y,
+finishFlag.w,
+finishFlag.h
+);
+
+ctx.fillStyle="red";
+
+ctx.beginPath();
+
+ctx.moveTo(finishFlag.x+20,finishFlag.y);
+
+ctx.lineTo(finishFlag.x+90,finishFlag.y+30);
+
+ctx.lineTo(finishFlag.x+20,finishFlag.y+60);
+
+ctx.closePath();
+
+ctx.fill();               
+// Animated Coins
+
+coins.forEach(c=>{
+
+if(!c.collected){
+
+let glow=8+Math.sin(Date.now()*0.008+c.x)*3;
+
+let up=Math.sin(Date.now()*0.004+c.x)*5;
+
+// Glow
+
+ctx.beginPath();
+
+ctx.fillStyle="rgba(255,255,0,0.25)";
+
+ctx.arc(c.x,c.y+up,glow+10,0,Math.PI*2);
+
+ctx.fill();
+
+// Coin
+
+ctx.beginPath();
+
+ctx.fillStyle="#FFD700";
+
+ctx.arc(c.x,c.y+up,10,0,Math.PI*2);
+
+ctx.fill();
+
+// Inner Circle
+
+ctx.beginPath();
+
+ctx.fillStyle="#FFF176";
+
+ctx.arc(c.x,c.y+up,6,0,Math.PI*2);
+
+ctx.fill();
+
+// Shine
+
+ctx.fillStyle="white";
+
+ctx.beginPath();
+
+ctx.arc(c.x-3,c.y-3+up,2,0,Math.PI*2);
+
+ctx.fill();
+
+}
+
+});
+ctx.fillStyle="#7b4a1b";
+ 
+ctx.fillRect(0,495,5000,5);
+ 
+// ===== MUSTAFA CHARACTER =====
+
+let walk=Math.sin(Date.now()*0.015)*8;
+
+// Head
+ctx.fillStyle="#ffd39b";
+
+ctx.beginPath();
+
+ctx.arc(player.x+22,player.y+12,12,0,Math.PI*2);
+
+ctx.fill();
+
+// Hair
+ctx.fillStyle="#111";
+
+ctx.beginPath();
+
+ctx.arc(player.x+22,player.y+7,12,Math.PI,0);
+
+ctx.fill();
+
+// Eyes
+ctx.fillStyle="#000";
+
+ctx.beginPath();
+
+ctx.arc(player.x+18,player.y+11,2,0,Math.PI*2);
+
+ctx.fill();
+
+ctx.beginPath();
+
+ctx.arc(player.x+26,player.y+11,2,0,Math.PI*2);
+
+ctx.fill();
+
+// Body
+ctx.fillStyle="#1e88e5";
+
+ctx.fillRect(player.x+12,player.y+24,20,25);
+
+// Arms
+
+ctx.strokeStyle="#ffd39b";
+ctx.lineWidth=4;
+
+ctx.beginPath();
+ctx.moveTo(player.x+12,player.y+30);
+ctx.lineTo(player.x+2,player.y+40+walk/4);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(player.x+32,player.y+30);
+ctx.lineTo(player.x+42,player.y+40-walk/4);
+ctx.stroke();
+
+// Legs
+
+ctx.strokeStyle="#222";
+ctx.lineWidth=5;
+
+ctx.beginPath();
+ctx.moveTo(player.x+17,player.y+49);
+ctx.lineTo(player.x+12,player.y+62+walk);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(player.x+27,player.y+49);
+ctx.lineTo(player.x+32,player.y+62-walk);
+ctx.stroke();
+ 
+ctx.fillStyle="#fff";
+ 
+ctx.font="18px Arial";
+ 
+ctx.fillStyle="#fff";
+
+ctx.font="24px Arial";
+ctx.fillText("Mustafa Adventure - Part 1",20,35);
+
+ctx.font="18px Arial";
+ctx.fillText("Move : ← →   Jump : SPACE",20,65);
+
+ctx.font="20px Arial";
+ctx.fillText("Score : "+score,20,95);
+
+ctx.fillText("Lives : "+lives,20,125);
+if(levelComplete){
+
+ctx.fillStyle="rgba(0,0,0,0.6)";
+ctx.fillRect(cameraX,0,1000,550);
+
+ctx.fillStyle="yellow";
+ctx.font="60px Arial";
+ctx.fillText("LEVEL COMPLETE!",cameraX+250,220);
+
+ctx.font="30px Arial";
+ctx.fillStyle="white";
+ctx.fillText("Congratulations!",cameraX+330,280);
+// Restart Button
+
+ctx.fillStyle="#2196F3";
+
+ctx.fillRect(cameraX+350,320,150,50);
+
+ctx.fillStyle="white";
+
+ctx.font="24px Arial";
+
+ctx.fillText("Restart",cameraX+385,352);
+
+// Next Level Button
+
+ctx.fillStyle="#4CAF50";
+
+ctx.fillRect(cameraX+540,320,200,50);
+
+ctx.fillStyle="white";
+
+ctx.fillText("Next Level",cameraX+565,352);
+}
+// =========================
+// MOBILE JOYSTICK
+// =========================
+
+if(isMobile){
+
+// Base
+ctx.globalAlpha=0.35;
+ctx.fillStyle="#000";
+
+ctx.beginPath();
+ctx.arc(cameraX+joyBaseX,joyBaseY,55,0,Math.PI*2);
+ctx.fill();
+
+// Knob
+ctx.globalAlpha=0.8;
+ctx.fillStyle="#fff";
+
+ctx.beginPath();
+ctx.arc(cameraX+joyBaseX+(joyDX/player.speed)*30,joyBaseY,25,0,Math.PI*2);
+ctx.fill();
+
+ctx.globalAlpha=1;
+
+}              
+ctx.restore();
+}
+ 
+function game(){
+
+if(!levelComplete){
+
+update();
+
+collectCoins();
+
+}
+
+draw();
+
+requestAnimationFrame(game);
+
+}
+
+game();
+ 
+</script>
+ 
+</body>
+</html>
 
