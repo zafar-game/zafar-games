@@ -115,34 +115,106 @@ ground:false
 const gravity=0.8;
  
 const keys={};
-// ==========================
-// MOBILE JOYSTICK
-// ==========================
+// =====================
+// MOBILE CONTROL
+// =====================
 
+let joyActive = false;
 
-let joyActive=false;
+let joyStartX = 0;
+let joyStartY = 0;
 
-let joyStartX=0;
-let joyStartY=0;
-let joyBaseX=90;
-let joyBaseY=460;
-let joyDX=0;
+let joyBaseX = 120;
+let joyBaseY = 420;
 
-let jumpTouchId=null;
-let joyTouchId=null; 
-// ==========================
-// MOBILE JOYSTICK
-// ==========================
+let joyDX = 0;
 
-let mobileMode = false;
+let joyTouchId = null;
 
-
-let joyKnobX = joyBaseX;
-let joyKnobY = joyBaseY;
-
-let mobileLeft = false;
-let mobileRight = false;
 let mobileJump = false;
+if(isMobile){
+
+canvas.addEventListener("touchstart",function(e){
+
+startFullscreen();
+
+for(const touch of e.changedTouches){
+
+// LEFT SIDE = JOYSTICK
+
+if(touch.clientX < window.innerWidth/2){
+
+joyActive=true;
+
+joyTouchId=touch.identifier;
+
+joyStartX=touch.clientX;
+
+joyStartY=touch.clientY;
+
+joyBaseX=touch.clientX;
+
+joyBaseY=touch.clientY;
+
+}
+
+// RIGHT SIDE = JUMP
+
+else{
+
+if(player.ground){
+
+mobileJump=true;
+player.dy=player.jump;
+player.ground=false;
+}
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+
+canvas.addEventListener("touchmove",function(e){
+
+for(const touch of e.touches){
+
+if(touch.identifier===joyTouchId){
+
+let dx=touch.clientX-joyStartX;
+
+dx=Math.max(-50,Math.min(50,dx));
+
+joyDX=(dx/50)*player.speed;
+
+}
+
+}
+
+e.preventDefault();
+
+},{passive:false});
+
+
+canvas.addEventListener("touchend",function(e){
+
+joyDX=0;
+
+joyActive=false;
+
+joyTouchId=null;
+
+mobileJump=false;
+
+e.preventDefault();
+
+},{passive:false});
+
+}
+
 
 // =====================
 // Mobile Controls
@@ -189,81 +261,7 @@ document.addEventListener("keyup",e=>{
 keys[e.key]=false;
  
 });
-// ==========================
-// MOBILE TOUCH CONTROLS
-// ==========================
 
-if(isMobile){
-
-canvas.addEventListener("touchstart",function(e){
-
-startFullscreen();
-
-for(const touch of e.changedTouches){
-
-// LEFT SIDE = JOYSTICK
-if(touch.clientX < window.innerWidth/2){
-
-joyActive=true;
-joyTouchId=touch.identifier;
-
-joyStartX=touch.clientX;
-joyBaseX=touch.clientX;
-joyBaseY=touch.clientY;
-
-}
-
-// RIGHT SIDE = JUMP
-else{
-
-if(player.ground){
-
-player.dy=player.jump;
-player.ground=false;
-
-}
-
-}
-
-}
-
-e.preventDefault();
-
-},{passive:false});
-
-canvas.addEventListener("touchmove",function(e){
-
-for(const touch of e.touches){
-
-if(touch.identifier===joyTouchId){
-
-let dx=touch.clientX-joyStartX;
-
-dx=Math.max(-60,Math.min(60,dx));
-
-joyDX=(dx/60)*player.speed;
-
-}
-
-}
-
-e.preventDefault();
-
-},{passive:false});
-
-canvas.addEventListener("touchend",function(e){
-
-joyDX=0;
-
-joyActive=false;
-
-joyTouchId=null;
-
-e.preventDefault();
-
-},{passive:false});
-
-}
 function update(){
  console.log(player.ground);
 let breakCollision=false;
@@ -283,9 +281,7 @@ if(keys["ArrowRight"] || keys["d"]){
 // Mobile Joystick
 
 if(isMobile){
-
 player.dx=joyDX;
-
 }
 
 // JUMP
@@ -893,6 +889,15 @@ ctx.fillText("Next Level",cameraX+565,352);
 if(isMobile){
 
 // Base
+ctx.fillStyle="white";
+ctx.font="18px Arial";
+ctx.fillText("JUMP",cameraX+850,450);
+
+ctx.beginPath();
+ctx.arc(cameraX+900,420,45,0,Math.PI*2);
+ctx.strokeStyle="white";
+ctx.lineWidth=4;
+ctx.stroke(); 
 ctx.globalAlpha=0.35;
 ctx.fillStyle="#000";
 
