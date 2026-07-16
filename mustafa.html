@@ -190,36 +190,31 @@ keys[e.key]=false;
  
 });
 // ==========================
-// TOUCH CONTROLS
+// MOBILE TOUCH CONTROLS
 // ==========================
 
 if(isMobile){
 
-canvas.addEventListener("touchstart",e=>{
+canvas.addEventListener("touchstart",function(e){
+
+startFullscreen();
 
 for(const touch of e.changedTouches){
 
-// LEFT HALF = JOYSTICK
-
+// LEFT SIDE = JOYSTICK
 if(touch.clientX < window.innerWidth/2){
 
 joyActive=true;
-
 joyTouchId=touch.identifier;
 
 joyStartX=touch.clientX;
-joyStartY=touch.clientY;
-
 joyBaseX=touch.clientX;
 joyBaseY=touch.clientY;
 
 }
 
-// RIGHT HALF = JUMP
-
+// RIGHT SIDE = JUMP
 else{
-
-jumpTouchId=touch.identifier;
 
 if(player.ground){
 
@@ -236,18 +231,17 @@ e.preventDefault();
 
 },{passive:false});
 
-canvas.addEventListener("touchmove",e=>{
+canvas.addEventListener("touchmove",function(e){
 
-for(const touch of e.changedTouches){
+for(const touch of e.touches){
 
 if(touch.identifier===joyTouchId){
 
 let dx=touch.clientX-joyStartX;
-let dy=touch.clientY-joyStartY;
-dx=Math.max(-40,Math.min(40,dx));
-dy=Math.max(-40,Math.min(40,dy));
 
-joyDX=(dx/40)*player.speed;
+dx=Math.max(-60,Math.min(60,dx));
+
+joyDX=(dx/60)*player.speed;
 
 }
 
@@ -257,11 +251,7 @@ e.preventDefault();
 
 },{passive:false});
 
-canvas.addEventListener("touchend",e=>{
-
-for(const touch of e.changedTouches){
-
-if(touch.identifier===joyTouchId){
+canvas.addEventListener("touchend",function(e){
 
 joyDX=0;
 
@@ -269,38 +259,11 @@ joyActive=false;
 
 joyTouchId=null;
 
-}
-
-if(touch.identifier===jumpTouchId){
-
-jumpTouchId=null;
-
-}
-
-}
+e.preventDefault();
 
 },{passive:false});
 
-} 
-if(isMobile){
-
-document.body.addEventListener("click",()=>{
-
-if(document.documentElement.requestFullscreen){
-
-document.documentElement.requestFullscreen();
-
 }
-
-if(screen.orientation){
-
-screen.orientation.lock("landscape").catch(()=>{});
-
-}
-
-});
-
-} 
 function update(){
  console.log(player.ground);
 let breakCollision=false;
@@ -320,7 +283,9 @@ if(keys["ArrowRight"] || keys["d"]){
 // Mobile Joystick
 
 if(isMobile){
-    player.dx = joyDX;
+
+player.dx=joyDX;
+
 }
 
 // JUMP
@@ -940,7 +905,7 @@ ctx.globalAlpha=0.8;
 ctx.fillStyle="#fff";
 
 ctx.beginPath();
-ctx.arc(cameraX+joyBaseX+joyDX*6,joyBaseY,25,0,Math.PI*2);
+ctx.arc(cameraX+joyBaseX+(joyDX/player.speed)*30,joyBaseY,25,0,Math.PI*2);
 ctx.fill();
 
 ctx.globalAlpha=1;
