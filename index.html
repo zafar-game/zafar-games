@@ -1101,6 +1101,42 @@
 
         document.addEventListener("DOMContentLoaded", () => { showGlobalLeaderboard(); });
         function triggerGlobalSave(finalScore) { handleGameOverLeaderboard(finalScore); }
+    // --- EMERGENCY MOBILE PATCH ---
+// Ye code purane touch controls ko override kar dega
+window.addEventListener('touchstart', function(e) {
+    if (e.target.tagName !== 'CANVAS') return;
+    
+    let touch = e.touches[0];
+    let width = window.innerWidth;
+
+    // Left side: Movement
+    if (touch.clientX < width / 2) {
+        joyActive = true;
+        joyStartX = touch.clientX;
+    } 
+    // Right side: Jump
+    else {
+        if (player.ground) {
+            player.dy = player.jump;
+            player.ground = false;
+        }
+    }
+}, {passive: false});
+
+window.addEventListener('touchmove', function(e) {
+    if (!joyActive) return;
+    let touch = e.touches[0];
+    let dx = touch.clientX - joyStartX;
+    // Speed control
+    joyDX = (dx / 50) * player.speed;
+    player.dx = joyDX; 
+}, {passive: false});
+
+window.addEventListener('touchend', function(e) {
+    joyActive = false;
+    joyDX = 0;
+    player.dx = 0;
+}, {passive: false});
     </script>
 </body>
 </html>
