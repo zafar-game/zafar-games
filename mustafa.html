@@ -31,37 +31,39 @@ height:100vh;
 touch-action:none;
 } 
 
-/* Always Visible Mobile Touch Buttons CSS */
+/* Big Mobile Touch Buttons & Rotate Button CSS */
 .ctrl-btn {
 position: absolute;
-background: rgba(0, 0, 0, 0.5);
+background: rgba(0, 0, 0, 0.6);
 border: 3px solid white;
 color: white;
-font-size: 28px;
+font-size: 32px;
 font-weight: bold;
-border-radius: 15px;
+border-radius: 18px;
 display: flex;
 align-items: center;
 justify-content: center;
 z-index: 100;
 user-select: none;
 -webkit-user-select: none;
-box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+box-shadow: 0 4px 15px rgba(0,0,0,0.6);
 }
 
-#btn-left { left: 20px; bottom: 20px; width: 80px; height: 80px; }
-#btn-right { left: 115px; bottom: 20px; width: 80px; height: 80px; }
-#btn-jump { right: 20px; bottom: 20px; width: 130px; height: 80px; background: rgba(0, 180, 0, 0.7); }
+#btn-left { left: 20px; bottom: 20px; width: 90px; height: 90px; }
+#btn-right { left: 130px; bottom: 20px; width: 90px; height: 90px; }
+#btn-jump { right: 20px; bottom: 20px; width: 140px; height: 90px; background: rgba(0, 200, 0, 0.8); }
+#btn-rotate { top: 15px; right: 15px; width: 110px; height: 45px; font-size: 16px; background: rgba(220, 50, 50, 0.8); border-radius: 8px; z-index: 101; }
 </style>
 </head>
  
 <body>
 <canvas id="game" width="1000" height="550"></canvas>
 
-<!-- Permanent Touch Controls -->
+<!-- Touch Controls & Rotate Button -->
 <button class="ctrl-btn" id="btn-left">←</button>
 <button class="ctrl-btn" id="btn-right">→</button>
 <button class="ctrl-btn" id="btn-jump">JUMP</button>
+<button class="ctrl-btn" id="btn-rotate">🔄 ROTATE</button>
  
 <script>
 const canvas=document.getElementById("game");
@@ -86,24 +88,39 @@ let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
 
-// Direct Event Listeners for Touch & Mouse
 const bLeft = document.getElementById("btn-left");
 const bRight = document.getElementById("btn-right");
 const bJump = document.getElementById("btn-jump");
+const bRotate = document.getElementById("btn-rotate");
 
-// Left Button Events
+// Rotate Screen Logic
+bRotate.addEventListener("click", ()=>{
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen().then(() => {
+if (screen.orientation && screen.orientation.lock) {
+screen.orientation.lock("landscape").catch(err => {});
+}
+}).catch(err => {});
+} else {
+if (document.exitFullscreen) {
+document.exitFullscreen();
+}
+}
+});
+
+// Left Button
 bLeft.addEventListener("touchstart", (e)=>{ mobileLeft = true; e.preventDefault(); });
 bLeft.addEventListener("touchend", (e)=>{ mobileLeft = false; e.preventDefault(); });
 bLeft.addEventListener("mousedown", ()=>{ mobileLeft = true; });
 bLeft.addEventListener("mouseup", ()=>{ mobileLeft = false; });
 
-// Right Button Events
+// Right Button
 bRight.addEventListener("touchstart", (e)=>{ mobileRight = true; e.preventDefault(); });
 bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault(); });
 bRight.addEventListener("mousedown", ()=>{ mobileRight = true; });
 bRight.addEventListener("mouseup", ()=>{ mobileRight = false; });
 
-// Jump Button Events
+// Jump Button
 bJump.addEventListener("touchstart", (e)=>{
 if(player.ground){
 player.dy = player.jump;
@@ -174,6 +191,23 @@ player.dy >= 0
 player.y = p.y - player.h;
 player.dy = 0;
 player.ground = true;
+}
+});
+
+// Coin Collection Check (Fixed Collision)
+coins.forEach(c=>{
+if(!c.collected){
+let up = Math.sin(Date.now() * 0.004 + c.x) * 5;
+let coinY = c.y + up;
+if(
+player.x + player.w > c.x - 15 &&
+player.x < c.x + 15 &&
+player.y + player.h > coinY - 15 &&
+player.y < coinY + 15
+){
+c.collected = true;
+score += 10;
+}
 }
 });
 
