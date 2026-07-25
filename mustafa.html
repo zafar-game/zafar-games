@@ -3,152 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Super Mario Bros - Part 1</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;overflow:hidden;font-family:'Courier New', monospace;width:100vw;height:100vh;touch-action:none;}
-canvas{display:block;margin:auto;background:linear-gradient(#5c94fc,#c7f0ff);width:100vw;height:100vh;touch-action:none;}
-
-.ctrl-btn {
-position: absolute;
-background: rgba(0, 0, 0, 0.45);
-border: 2px solid rgba(255, 255, 255, 0.8);
-color: white;
-font-size: 26px;
-font-weight: bold;
-border-radius: 16px;
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 100;
-user-select: none;
--webkit-user-select: none;
-backdrop-filter: blur(4px);
-}
-
-#btn-left { left: 15px; bottom: 15px; width: 75px; height: 75px; }
-#btn-right { left: 100px; bottom: 15px; width: 75px; height: 75px; }
-#btn-jump { right: 20px; bottom: 50px; width: 110px; height: 75px; background: rgba(0, 180, 0, 0.75); }
-#btn-rotate { top: 15px; right: 15px; width: 100px; height: 40px; font-size: 15px; background: rgba(220, 50, 50, 0.85); border-radius: 8px; z-index: 101; }
-</style>
-</head>
-<body>
-<canvas id="game" width="1000" height="550"></canvas>
-
-<button class="ctrl-btn" id="btn-left">←</button>
-<button class="ctrl-btn" id="btn-right">→</button>
-<button class="ctrl-btn" id="btn-jump">JUMP</button>
-<button class="ctrl-btn" id="btn-rotate">🔄 ROTATE</button>
-
-<script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-ctx.imageSmoothingEnabled = false;
-
-// Player Setup
-let player = {
-x: 100, y: 380, w: 40, h: 48, baseH: 48,
-dx: 0, dy: 0, maxSpeed: 5.2, acceleration: 0.35,
-friction: 0.82, jumpForce: -13.5, gravity: 0.52,
-gravityFall: 0.78, ground: false, big: false,
-invincibleTimer: 0, checkpointX: 100, checkpointY: 380,
-facing: 1, animFrame: 0
-};
-
-const keys = {};
-let particles = [];
-let screenShakeTimer = 0;
-let cameraX = 0;
-let score = 0;
-let coinsCollected = 0;
-let lives = 3;
-let levelComplete = false;
-
-function addParticles(x, y, color, count=8) {
-for(let i=0; i<count; i++) {
-particles.push({
-x: x, y: y, vx: (Math.random() - 0.5) * 6,
-vy: (Math.random() - 0.5) * 6,
-radius: Math.random() * 3 + 1, color: color, life: 25
-});
-}
-}
-
-let mobileLeft = false, mobileRight = false, mobileJump = false;
-const bLeft = document.getElementById("btn-left");
-const bRight = document.getElementById("btn-right");
-const bJump = document.getElementById("btn-jump");
-const bRotate = document.getElementById("btn-rotate");
-
-bRotate.addEventListener("click", ()=>{
-if (!document.fullscreenElement) {
-document.documentElement.requestFullscreen().catch(err => {});
-} else {
-if (document.exitFullscreen) document.exitFullscreen();
-}
-});
-
-bLeft.addEventListener("touchstart", (e)=>{ mobileLeft = true; e.preventDefault(); });
-bLeft.addEventListener("touchend", (e)=>{ mobileLeft = false; e.preventDefault(); });
-bLeft.addEventListener("mousedown", ()=>{ mobileLeft = true; });
-bLeft.addEventListener("mouseup", ()=>{ mobileLeft = false; });
-
-bRight.addEventListener("touchstart", (e)=>{ mobileRight = true; e.preventDefault(); });
-bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault(); });
-bRight.addEventListener("mousedown", ()=>{ mobileRight = true; });
-bRight.addEventListener("mouseup", ()=>{ mobileRight = false; });
-
-function triggerJump(){
-if(player.ground){
-player.dy = player.jumpForce;
-player.ground = false;
-addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
-}
-}
-
-bJump.addEventListener("touchstart", (e)=>{ triggerJump(); mobileJump = false; e.preventDefault(); });
-bJump.addEventListener("mousedown", ()=>{ triggerJump(); });
-
-document.addEventListener("keydown", e=>{
-keys[e.key]=true;
-if((e.key === "ArrowUp" || e.key === "w" || e.key === " ") && player.ground) triggerJump();
-});
-document.addEventListener("keyup", e=>{ keys[e.key]=false; });
-
-function drawPixelMario(x, y, facing, isBig, animFrame) {
-ctx.save();
-ctx.translate(x, y);
-if(facing < 0) { ctx.translate(40, 0); ctx.scale(-1, 1); }
-const hat = "#e52521", skin = "#ffccaa", shirt = "#e52521", overalls = "#0000ff";
-let ps = 4;
-let matrix = [
-"  HHHHHH  ", " HHHHHHHHH ", " HHHSSSHHS ", "  SSSSS    ",
-"  HSSHS    ", "  SSSSSS   ", "   SSSS    ", "  RRRRRRR  ",
-" RRRBRRRRR ", " RRRBBBRRR ", "  BBBBBBB  ", "  B  BB  B "
-];
-if(animFrame % 2 === 1) matrix[11] = " B B  B B ";
-for(let r=0; r<matrix.length; r++) {
-for(let c=0; c<matrix[r].length; c++) {
-let char = matrix[r][c];
-if(char === 'H') ctx.fillStyle = hat;
-else if(char === 'S') ctx.fillStyle = skin;
-else if(char === 'R') ctx.fillStyle = shirt;
-else if(char === 'B') ctx.fillStyle = overalls;
-else continue;
-ctx.fillRect(c * ps, r * ps, ps, ps);
-}
-}
-ctx.restore();
-}
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Super Mario Bros - Part 2</title>
+<title>Super Mario Bros - Complete Game</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;overflow:hidden;font-family:'Courier New', monospace;width:100vw;height:100vh;touch-action:none;}
@@ -278,6 +133,7 @@ if(player.ground){
 player.dy = player.jumpForce;
 player.ground = false;
 addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
+playSound('jump');
 }
 }
 
@@ -289,6 +145,32 @@ keys[e.key]=true;
 if((e.key === "ArrowUp" || e.key === "w" || e.key === " ") && player.ground) triggerJump();
 });
 document.addEventListener("keyup", e=>{ keys[e.key]=false; });
+
+function drawPixelMario(x, y, facing, isBig, animFrame) {
+ctx.save();
+ctx.translate(x, y);
+if(facing < 0) { ctx.translate(40, 0); ctx.scale(-1, 1); }
+const hat = "#e52521", skin = "#ffccaa", shirt = "#e52521", overalls = "#0000ff";
+let ps = 4;
+let matrix = [
+"  HHHHHH  ", " HHHHHHHHH ", " HHHSSSHHS ", "  SSSSS    ",
+"  HSSHS    ", "  SSSSSS   ", "   SSSS    ", "  RRRRRRR  ",
+" RRRBRRRRR ", " RRRBBBRRR ", "  BBBBBBB  ", "  B  BB  B "
+];
+if(animFrame % 2 === 1) matrix[11] = " B B  B B ";
+for(let r=0; r<matrix.length; r++) {
+for(let c=0; c<matrix[r].length; c++) {
+let char = matrix[r][c];
+if(char === 'H') ctx.fillStyle = hat;
+else if(char === 'S') ctx.fillStyle = skin;
+else if(char === 'R') ctx.fillStyle = shirt;
+else if(char === 'B') ctx.fillStyle = overalls;
+else continue;
+ctx.fillRect(c * ps, r * ps, ps, ps);
+}
+}
+ctx.restore();
+}
 
 function drawWorldObjects() {
 // Question Blocks
@@ -332,10 +214,7 @@ ctx.fillRect(m.x + 8, m.y + 4, 4, 4);
 ctx.fillRect(m.x + 20, m.y + 4, 4, 4);
 });
 }
-</script>
-</body>
-</html>
-<script>
+
 // ===== PART 3: ENEMIES, SOUND SYNTHESIZER & GAME LOOP =====
 
 // Authentic NES Sound Synthesizer
@@ -633,8 +512,8 @@ ctx.beginPath(); ctx.moveTo(s.x + i, 500); ctx.lineTo(s.x + i + 6, 500 - s.h); c
 }
 });
 
-// Draw World Objects from Part 2
-if(typeof drawWorldObjects === 'function') drawWorldObjects();
+// Draw World Objects
+drawWorldObjects();
 
 // Draw Goomba Enemies
 enemies.forEach(e=>{
@@ -739,3 +618,5 @@ requestAnimationFrame(gameLoop);
 
 gameLoop();
 </script>
+</body>
+</html>
