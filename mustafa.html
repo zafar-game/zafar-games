@@ -30,11 +30,39 @@ width:100vw;
 height:100vh;
 touch-action:none;
 } 
+
+/* Mobile Touch Buttons CSS Overlay */
+.ctrl-btn {
+position: absolute;
+background: rgba(255, 255, 255, 0.4);
+border: 2px solid white;
+color: white;
+font-size: 24px;
+font-weight: bold;
+border-radius: 12px;
+display: none;
+z-index: 10;
+user-select: none;
+-webkit-user-select: none;
+}
+
+#btn-left { left: 20px; bottom: 20px; width: 70px; height: 70px; }
+#btn-right { left: 105px; bottom: 20px; width: 70px; height: 70px; }
+#btn-jump { right: 20px; bottom: 20px; width: 110px; height: 70px; background: rgba(0, 200, 0, 0.5); }
+
+@media(pointer: coarse) {
+.ctrl-btn { display: flex; align-items: center; justify-content: center; }
+}
 </style>
 </head>
  
 <body>
 <canvas id="game" width="1000" height="550"></canvas>
+
+<!-- HTML Touch Controls for Mobile -->
+<button class="ctrl-btn" id="btn-left">←</button>
+<button class="ctrl-btn" id="btn-right">→</button>
+<button class="ctrl-btn" id="btn-jump">JUMP</button>
  
 <script>
 const canvas=document.getElementById("game");
@@ -57,64 +85,30 @@ ground:false
 const gravity=0.8;
 const keys={};
 
-// =====================
-// MOBILE ON-SCREEN BUTTONS STATE
-// =====================
 let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
 
-// Double Tap for Fullscreen / Rotation trigger
-let lastTap = 0;
-canvas.addEventListener("touchend", function(e){
-let currentTime = new Date().getTime();
-let tapLength = currentTime - lastTap;
-if (tapLength < 300 && tapLength > 0) {
-// Double tap detected
-if (!document.fullscreenElement) {
-document.documentElement.requestFullscreen().catch(err=>{});
-} else {
-if (document.exitFullscreen) {
-document.exitFullscreen();
-}
-}
-}
-lastTap = currentTime;
-});
+// HTML Buttons Event Listeners (Works 100% on Mobile)
+const bLeft = document.getElementById("btn-left");
+const bRight = document.getElementById("btn-right");
+const bJump = document.getElementById("btn-jump");
 
 if(isMobile){
-canvas.addEventListener("touchstart", function(e){
-for(const touch of e.changedTouches){
-const rect = canvas.getBoundingClientRect();
-const x = touch.clientX - rect.left;
-const y = touch.clientY - rect.top;
+bLeft.addEventListener("touchstart", (e)=>{ mobileLeft = true; e.preventDefault(); });
+bLeft.addEventListener("touchend", (e)=>{ mobileLeft = false; e.preventDefault(); });
 
-// Layout for touch buttons on mobile screen
-// Left side bottom: Left & Right arrows, Right side: Jump
-if(y > canvas.height * 0.65){
-if(x < canvas.width * 0.2){
-mobileLeft = true;
-mobileRight = false;
-} else if(x >= canvas.width * 0.2 && x < canvas.width * 0.4){
-mobileRight = true;
-mobileLeft = false;
-} else if(x > canvas.width * 0.75){
+bRight.addEventListener("touchstart", (e)=>{ mobileRight = true; e.preventDefault(); });
+bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault(); });
+
+bJump.addEventListener("touchstart", (e)=>{
 if(player.ground){
 mobileJump = true;
 player.dy = player.jump;
 player.ground = false;
 }
-}
-}
-}
 e.preventDefault();
-}, {passive: false});
-
-canvas.addEventListener("touchend", function(e){
-mobileLeft = false;
-mobileRight = false;
-e.preventDefault();
-}, {passive: false});
+});
 }
 
 canvas.addEventListener("click", function(e){
@@ -439,7 +433,7 @@ ctx.beginPath();
 ctx.arc(player.x + 18, player.y + 11, 2, 0, Math.PI * 2);
 ctx.fill();
 ctx.beginPath();
-ctx.arc(player.x + 26, player.y + 11, 2, 0, Math.PI * 2);
+ctx.arc(player.x + 26, player.y+11, 2, 0, Math.PI * 2);
 ctx.fill();
 
 // Body
@@ -511,31 +505,6 @@ ctx.fillRect(cameraX + 540, 320, 200, 50);
 ctx.fillStyle = "white";
 ctx.fillText("Next Level", cameraX + 565, 352);
 }
-
-// =========================
-// MOBILE ON-SCREEN BUTTONS UI RENDER
-// =========================
-if(isMobile){
-ctx.fillStyle = "rgba(255,255,255,0.3)";
-// Left Button
-ctx.fillRect(cameraX + 50, 440, 70, 70);
-ctx.fillStyle = "white";
-ctx.font = "30px Arial";
-ctx.fillText("←", cameraX + 70, 485);
-
-// Right Button
-ctx.fillStyle = "rgba(255,255,255,0.3)";
-ctx.fillRect(cameraX + 140, 440, 70, 70);
-ctx.fillStyle = "white";
-ctx.fillText("→", cameraX + 160, 485);
-
-// Jump Button
-ctx.fillStyle = "rgba(255,255,255,0.3)";
-ctx.fillRect(cameraX + 780, 435, 150, 75);
-ctx.fillStyle = "white";
-ctx.font = "24px Arial";
-ctx.fillText("JUMP ⬆", cameraX + 810, 480);
-}              
 
 ctx.restore();
 }
