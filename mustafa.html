@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Mustafa Adventure</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -58,39 +58,47 @@ const gravity=0.8;
 const keys={};
 
 // =====================
-// MOBILE TOUCH & JOYSTICK VARIABLES
+// MOBILE ON-SCREEN BUTTONS STATE
 // =====================
-let joyActive = false;
-let joyStartX = 0;
-let joyStartY = 0;
-let joyBaseX = 150;
-let joyBaseY = 420;
-let joyDX = 0;
-let joyTouchId = null;
+let mobileLeft = false;
+let mobileRight = false;
 let mobileJump = false;
+
+// Double Tap for Fullscreen / Rotation trigger
+let lastTap = 0;
+canvas.addEventListener("touchend", function(e){
+let currentTime = new Date().getTime();
+let tapLength = currentTime - lastTap;
+if (tapLength < 300 && tapLength > 0) {
+// Double tap detected
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen().catch(err=>{});
+} else {
+if (document.exitFullscreen) {
+document.exitFullscreen();
+}
+}
+}
+lastTap = currentTime;
+});
 
 if(isMobile){
 canvas.addEventListener("touchstart", function(e){
-// Fullscreen trigger on touch
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen().catch(err=>{});
-}
-
 for(const touch of e.changedTouches){
 const rect = canvas.getBoundingClientRect();
-const touchX = touch.clientX - rect.left;
+const x = touch.clientX - rect.left;
+const y = touch.clientY - rect.top;
 
-// LEFT SIDE = JOYSTICK
-if(touchX < canvas.width / 2){
-joyActive = true;
-joyTouchId = touch.identifier;
-joyStartX = touchX;
-joyStartY = touch.clientY - rect.top;
-joyBaseX = joyStartX;
-joyBaseY = joyStartY;
-}
-// RIGHT SIDE = JUMP
-else{
+// Layout for touch buttons on mobile screen
+// Left side bottom: Left & Right arrows, Right side: Jump
+if(y > canvas.height * 0.65){
+if(x < canvas.width * 0.2){
+mobileLeft = true;
+mobileRight = false;
+} else if(x >= canvas.width * 0.2 && x < canvas.width * 0.4){
+mobileRight = true;
+mobileLeft = false;
+} else if(x > canvas.width * 0.75){
 if(player.ground){
 mobileJump = true;
 player.dy = player.jump;
@@ -98,30 +106,13 @@ player.ground = false;
 }
 }
 }
-e.preventDefault();
-}, {passive: false});
-
-canvas.addEventListener("touchmove", function(e){
-for(const touch of e.touches){
-if(touch.identifier === joyTouchId){
-const rect = canvas.getBoundingClientRect();
-const touchX = touch.clientX - rect.left;
-let dx = touchX - joyStartX;
-dx = Math.max(-50, Math.min(50, dx));
-joyDX = (dx / 50) * player.speed;
-}
 }
 e.preventDefault();
 }, {passive: false});
 
 canvas.addEventListener("touchend", function(e){
-for(const touch of e.changedTouches){
-if(touch.identifier === joyTouchId){
-joyDX = 0;
-joyActive = false;
-joyTouchId = null;
-}
-}
+mobileLeft = false;
+mobileRight = false;
 e.preventDefault();
 }, {passive: false});
 }
@@ -133,12 +124,9 @@ const rect=canvas.getBoundingClientRect();
 const mx=e.clientX-rect.left+cameraX;
 const my=e.clientY-rect.top;
 
-// Restart Button
 if(mx>cameraX+350 && mx<cameraX+500 && my>320 && my<370){
 location.reload();
 }
-
-// Next Level Button
 if(mx>cameraX+540 && mx<cameraX+740 && my>320 && my<370){
 alert("Level 2 Coming Soon...");
 }
@@ -150,15 +138,11 @@ document.addEventListener("keyup", e=>{ keys[e.key]=false; });
 function update(){
 player.dx = 0;
 
-if(keys["ArrowLeft"] || keys["a"]){
+if(keys["ArrowLeft"] || keys["a"] || mobileLeft){
 player.dx = -player.speed;
 }
-if(keys["ArrowRight"] || keys["d"]){
+if(keys["ArrowRight"] || keys["d"] || mobileRight){
 player.dx = player.speed;
-}
-
-if(isMobile){
-player.dx = joyDX;
 }
 
 if((keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump) && player.ground){
@@ -241,24 +225,10 @@ const coins=[
 {x:820,y:450,collected:false},
 {x:980,y:450,collected:false},
 {x:1300,y:450,collected:false},
-{x:1500,y:380,collected:false}
+{x:1500,y:380,collected:false},
+{x:1800,y:450,collected:false},
+{x:2100,y:380,collected:false}
 ];
-
-function collectCoins(){
-coins.forEach(c=>{
-if(!c.collected){
-if(
-player.x < c.x+10 &&
-player.x+player.w > c.x-10 &&
-player.y < c.y+10 &&
-player.y+player.h > c.y-10
-){
-c.collected=true;
-score+=10;
-}
-}
-});
-}
 
 const platforms=[
 {x:700,y:430,w:150,h:20},
@@ -543,36 +513,28 @@ ctx.fillText("Next Level", cameraX + 565, 352);
 }
 
 // =========================
-// MOBILE JOYSTICK & CONTROLS UI RENDER
+// MOBILE ON-SCREEN BUTTONS UI RENDER
 // =========================
 if(isMobile){
-// Jump Button UI on Right Side
+ctx.fillStyle = "rgba(255,255,255,0.3)";
+// Left Button
+ctx.fillRect(cameraX + 50, 440, 70, 70);
 ctx.fillStyle = "white";
-ctx.font = "18px Arial";
-ctx.fillText("JUMP (Tap Right)", cameraX + 800, 450);
+ctx.font = "30px Arial";
+ctx.fillText("←", cameraX + 70, 485);
 
-ctx.beginPath();
-ctx.arc(cameraX + 880, 420, 45, 0, Math.PI * 2);
-ctx.strokeStyle = "white";
-ctx.lineWidth = 4;
-ctx.stroke(); 
+// Right Button
+ctx.fillStyle = "rgba(255,255,255,0.3)";
+ctx.fillRect(cameraX + 140, 440, 70, 70);
+ctx.fillStyle = "white";
+ctx.fillText("→", cameraX + 160, 485);
 
-// Joystick Base UI on Left Side
-if(joyActive){
-ctx.globalAlpha = 0.35;
-ctx.fillStyle = "#000";
-ctx.beginPath();
-ctx.arc(cameraX + joyBaseX, joyBaseY, 55, 0, Math.PI * 2);
-ctx.fill();
-
-// Knob
-ctx.globalAlpha = 0.8;
-ctx.fillStyle = "#fff";
-ctx.beginPath();
-ctx.arc(cameraX + joyBaseX + (joyDX / player.speed) * 30, joyBaseY, 25, 0, Math.PI * 2);
-ctx.fill();
-ctx.globalAlpha = 1;
-}
+// Jump Button
+ctx.fillStyle = "rgba(255,255,255,0.3)";
+ctx.fillRect(cameraX + 780, 435, 150, 75);
+ctx.fillStyle = "white";
+ctx.font = "24px Arial";
+ctx.fillText("JUMP ⬆", cameraX + 810, 480);
 }              
 
 ctx.restore();
@@ -581,7 +543,6 @@ ctx.restore();
 function game(){
 if(!levelComplete){
 update();
-collectCoins();
 }
 draw();
 requestAnimationFrame(game);
