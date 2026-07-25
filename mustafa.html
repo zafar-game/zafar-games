@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Mustafa Adventure - Extended Level 1</title>
+<title>Mustafa Adventure - Top Notch Edition</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes"> 
 <style>
@@ -16,7 +16,7 @@ box-sizing:border-box;
 body{
 background:#000;
 overflow:hidden;
-font-family:Arial;
+font-family:Arial, sans-serif;
 width:100vw;
 height:100vh;
 touch-action:none;
@@ -33,25 +33,26 @@ touch-action:none;
 
 .ctrl-btn {
 position: absolute;
-background: rgba(0, 0, 0, 0.5);
-border: 2px solid white;
+background: rgba(0, 0, 0, 0.45);
+border: 2px solid rgba(255, 255, 255, 0.8);
 color: white;
 font-size: 26px;
 font-weight: bold;
-border-radius: 14px;
+border-radius: 16px;
 display: flex;
 align-items: center;
 justify-content: center;
 z-index: 100;
 user-select: none;
 -webkit-user-select: none;
-box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+backdrop-filter: blur(4px);
 }
 
 #btn-left { left: 15px; bottom: 15px; width: 75px; height: 75px; }
 #btn-right { left: 100px; bottom: 15px; width: 75px; height: 75px; }
-#btn-jump { right: 20px; bottom: 50px; width: 110px; height: 75px; background: rgba(0, 180, 0, 0.7); }
-#btn-rotate { top: 15px; right: 15px; width: 100px; height: 40px; font-size: 15px; background: rgba(220, 50, 50, 0.8); border-radius: 8px; z-index: 101; }
+#btn-jump { right: 20px; bottom: 50px; width: 110px; height: 75px; background: rgba(0, 180, 0, 0.75); }
+#btn-rotate { top: 15px; right: 15px; width: 100px; height: 40px; font-size: 15px; background: rgba(220, 50, 50, 0.85); border-radius: 8px; z-index: 101; }
 </style>
 </head>
  
@@ -66,6 +67,44 @@ box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 <script>
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
+
+// Web Audio API for Sound Effects
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(type) {
+if (!audioCtx) return;
+if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+const osc = audioCtx.createOscillator();
+const gainNode = audioCtx.createGain();
+osc.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+
+let now = audioCtx.currentTime;
+if (type === 'jump') {
+osc.type = 'sine';
+osc.frequency.setValueAtTime(150, now);
+osc.frequency.exponentialRampToValueAtTime(400, now + 0.15);
+gainNode.gain.setValueAtTime(0.2, now);
+gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+osc.start(now);
+osc.stop(now + 0.15);
+} else if (type === 'coin') {
+osc.type = 'triangle';
+osc.frequency.setValueAtTime(600, now);
+osc.frequency.setValueAtTime(900, now + 0.08);
+gainNode.gain.setValueAtTime(0.2, now);
+gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+osc.start(now);
+osc.stop(now + 0.2);
+} else if (type === 'hit') {
+osc.type = 'sawtooth';
+osc.frequency.setValueAtTime(120, now);
+osc.frequency.exponentialRampToValueAtTime(40, now + 0.2);
+gainNode.gain.setValueAtTime(0.3, now);
+gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+osc.start(now);
+osc.stop(now + 0.2);
+}
+}
 
 let player={
 x:120,
@@ -83,6 +122,22 @@ checkpointY: 380
  
 const gravity=0.8;
 const keys={};
+let particles = [];
+let screenShakeTimer = 0;
+
+function addParticles(x, y, color, count=10) {
+for(let i=0; i<count; i++) {
+particles.push({
+x: x,
+y: y,
+vx: (Math.random() - 0.5) * 8,
+vy: (Math.random() - 0.5) * 8,
+radius: Math.random() * 4 + 2,
+color: color,
+life: 30
+});
+}
+}
 
 let mobileLeft = false;
 let mobileRight = false;
@@ -121,6 +176,8 @@ bJump.addEventListener("touchstart", (e)=>{
 if(player.ground){
 player.dy = player.jump;
 player.ground = false;
+playSound('jump');
+addParticles(player.x + 22, player.y + 60, "#ffffff", 8);
 }
 e.preventDefault();
 });
@@ -128,6 +185,8 @@ bJump.addEventListener("mousedown", ()=>{
 if(player.ground){
 player.dy = player.jump;
 player.ground = false;
+playSound('jump');
+addParticles(player.x + 22, player.y + 60, "#ffffff", 8);
 }
 });
 
@@ -151,6 +210,8 @@ document.addEventListener("keyup", e=>{ keys[e.key]=false; });
 
 function respawnPlayer(){
 lives--;
+screenShakeTimer = 15;
+playSound('hit');
 player.x = player.checkpointX;
 player.y = player.checkpointY;
 player.dy = 0;
@@ -174,6 +235,8 @@ if((keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump) && player.ground){
 player.dy = player.jump;
 player.ground = false;
 mobileJump = false;
+playSound('jump');
+addParticles(player.x + 22, player.y + 60, "#ffffff", 8);
 }
  
 player.x += player.dx;
@@ -187,7 +250,6 @@ player.dy = 0;
 player.ground = true;
 }
 
-// Normal Platforms
 platforms.forEach(p=>{
 if(
 player.x + player.w > p.x &&
@@ -202,7 +264,6 @@ player.ground = true;
 }
 });
 
-// Moving Platforms update & collision
 movingPlatforms.forEach(mp=>{
 mp.x += mp.dir * mp.speed;
 if(mp.x < mp.minX || mp.x > mp.maxX) mp.dir *= -1;
@@ -217,11 +278,10 @@ player.dy >= 0
 player.y = mp.y - player.h;
 player.dy = 0;
 player.ground = true;
-player.x += mp.dir * mp.speed; // carry player along moving platform
+player.x += mp.dir * mp.speed;
 }
 });
 
-// Spikes Collision (Hazards)
 spikes.forEach(s=>{
 if(
 player.x + player.w > s.x + 5 &&
@@ -232,16 +292,15 @@ respawnPlayer();
 }
 });
 
-// Checkpoints
 checkpoints.forEach(cp=>{
 if(!cp.reached && player.x > cp.x){
 cp.reached = true;
 player.checkpointX = cp.x;
 player.checkpointY = 380;
+addParticles(cp.x + 10, 420, "#00FF00", 15);
 }
 });
 
-// Coin Collection Check
 coins.forEach(c=>{
 if(!c.collected){
 let up = Math.sin(Date.now() * 0.004 + c.x) * 5;
@@ -254,11 +313,12 @@ player.y < coinY + 15
 ){
 c.collected = true;
 score += 10;
+playSound('coin');
+addParticles(c.x, coinY, "#FFD700", 12);
 }
 }
 });
 
-// Hearts Collection (Extra Life)
 hearts.forEach(h=>{
 if(!h.collected){
 if(
@@ -269,11 +329,12 @@ player.y < h.y + 15
 ){
 h.collected = true;
 lives++;
+playSound('coin');
+addParticles(h.x, h.y, "#FF0000", 15);
 }
 }
 });
 
-// Ground Enemies
 enemies.forEach(e=>{
 if(e.dead) return;
 e.x += 2 * e.dir;
@@ -290,13 +351,14 @@ if(player.dy > 0 && player.y + player.h < e.y + 15){
 e.dead = true;
 player.dy = -12;
 score += 50;
+playSound('jump');
+addParticles(e.x + 20, e.y + 20, "#7dff3a", 15);
 }else{
 respawnPlayer();
 }
 }
 }); 
 
-// Flying Enemies
 flyingEnemies.forEach(fe=>{
 if(fe.dead) return;
 fe.x += 2.5 * fe.dir;
@@ -314,11 +376,23 @@ if(player.dy > 0 && player.y + player.h < fe.y + 15){
 fe.dead = true;
 player.dy = -12;
 score += 80;
+playSound('jump');
+addParticles(fe.x + 15, fe.y + 15, "#E74C3C", 15);
 }else{
 respawnPlayer();
 }
 }
 });
+
+// Update Particles
+particles.forEach(p => {
+p.x += p.vx;
+p.y += p.vy;
+p.life--;
+});
+particles = particles.filter(p => p.life > 0);
+
+if(screenShakeTimer > 0) screenShakeTimer--;
 
 if(
 player.x + player.w > finishFlag.x &&
@@ -331,7 +405,6 @@ levelComplete = true;
 
 let cameraX = 0;
 
-// Extended Game Elements
 const coins=[
 {x:500,y:450,collected:false},
 {x:650,y:450,collected:false},
@@ -440,6 +513,12 @@ cameraX += (player.x - 250 - cameraX) * 0.08;
  
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 ctx.save();
+
+// Screen Shake Offset
+if(screenShakeTimer > 0) {
+ctx.translate((Math.random()-0.5)*10, (Math.random()-0.5)*10);
+}
+
 ctx.translate(-cameraX, 0);
 
 ctx.fillStyle = "#87CEEB";
@@ -479,7 +558,7 @@ ctx.arc(tree.x + 10, 390, 40, 0, Math.PI * 2);
 ctx.fill();
 });
 
-// Checkpoint Flag Poles
+// Checkpoints
 checkpoints.forEach(cp=>{
 ctx.fillStyle = "#555";
 ctx.fillRect(cp.x, 380, 8, 120);
@@ -492,7 +571,7 @@ ctx.closePath();
 ctx.fill();
 });
 
-// Spikes Drawing
+// Spikes
 ctx.fillStyle = "#c0392b";
 spikes.forEach(s=>{
 for(let i=0; i<s.w; i+=12){
@@ -517,7 +596,7 @@ movingPlatforms.forEach(mp=>{
 ctx.fillRect(mp.x, mp.y, mp.w, mp.h);
 });
 
-// Ground Enemies Drawing
+// Ground Enemies
 enemies.forEach(e=>{
 if(e.dead) return;
 let bounce = Math.sin(Date.now() * 0.01 + e.x) * 3;
@@ -547,22 +626,15 @@ ctx.fill();
 ctx.beginPath();
 ctx.arc(e.x + 27, e.y + 14 + bounce, 1.5, 0, Math.PI * 2);
 ctx.fill();
-
-ctx.strokeStyle = "#000";
-ctx.lineWidth = 2;
-ctx.beginPath();
-ctx.arc(e.x + 20, e.y + 24 + bounce, 7, 0, Math.PI);
-ctx.stroke();
 });
 
-// Flying Enemies Drawing
+// Flying Enemies
 flyingEnemies.forEach(fe=>{
 if(fe.dead) return;
 ctx.fillStyle = "#E74C3C";
 ctx.beginPath();
 ctx.arc(fe.x + 17, fe.y + 15, 16, 0, Math.PI * 2);
 ctx.fill();
-// Wings
 ctx.fillStyle = "#F1C40F";
 let wing = Math.sin(Date.now() * 0.03) * 10;
 ctx.fillRect(fe.x - 5, fe.y + 5 + wing, 10, 8);
@@ -581,7 +653,7 @@ ctx.lineTo(finishFlag.x + 20, finishFlag.y + 60);
 ctx.closePath();
 ctx.fill();               
 
-// Animated Coins
+// Coins
 coins.forEach(c=>{
 if(!c.collected){
 let glow = 8 + Math.sin(Date.now() * 0.008 + c.x) * 3;
@@ -601,15 +673,10 @@ ctx.beginPath();
 ctx.fillStyle = "#FFF176";
 ctx.arc(c.x, c.y + up, 6, 0, Math.PI * 2);
 ctx.fill();
-
-ctx.fillStyle = "white";
-ctx.beginPath();
-ctx.arc(c.x - 3, c.y - 3 + up, 2, 0, Math.PI * 2);
-ctx.fill();
 }
 });
 
-// Hearts Drawing
+// Hearts
 hearts.forEach(h=>{
 if(!h.collected){
 ctx.fillStyle = "#FF0000";
@@ -622,25 +689,30 @@ ctx.fill();
 }
 });
 
+// Particles
+particles.forEach(p => {
+ctx.fillStyle = p.color;
+ctx.beginPath();
+ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+ctx.fill();
+});
+
 ctx.fillStyle = "#7b4a1b";
 ctx.fillRect(0, 495, 5500, 5);
  
 // ===== MUSTAFA CHARACTER =====
 let walk = Math.sin(Date.now() * 0.015) * 8;
 
-// Head
 ctx.fillStyle = "#ffd39b";
 ctx.beginPath();
 ctx.arc(player.x + 22, player.y + 12, 12, 0, Math.PI * 2);
 ctx.fill();
 
-// Hair
 ctx.fillStyle = "#111";
 ctx.beginPath();
 ctx.arc(player.x + 22, player.y + 7, 12, Math.PI, 0);
 ctx.fill();
 
-// Eyes
 ctx.fillStyle = "#000";
 ctx.beginPath();
 ctx.arc(player.x + 18, player.y + 11, 2, 0, Math.PI * 2);
@@ -649,11 +721,9 @@ ctx.beginPath();
 ctx.arc(player.x + 26, player.y+11, 2, 0, Math.PI * 2);
 ctx.fill();
 
-// Body
 ctx.fillStyle = "#1e88e5";
 ctx.fillRect(player.x + 12, player.y + 24, 20, 25);
 
-// Arms
 ctx.strokeStyle = "#ffd39b";
 ctx.lineWidth = 4;
 ctx.beginPath();
@@ -666,10 +736,8 @@ ctx.moveTo(player.x + 32, player.y + 30);
 ctx.lineTo(player.x + 42, player.y + 40 - walk/4);
 ctx.stroke();
 
-// Legs & Feet
 ctx.strokeStyle = "#222";
 ctx.lineWidth = 5;
-
 ctx.beginPath();
 ctx.moveTo(player.x + 17, player.y + 49);
 ctx.lineTo(player.x + 12, player.y + 62 + walk);
@@ -680,20 +748,27 @@ ctx.moveTo(player.x + 27, player.y + 49);
 ctx.lineTo(player.x + 32, player.y + 62 - walk);
 ctx.stroke();
 
-// UI Text
-ctx.font = "24px Arial";
+// HUD UI & Progress Bar
+ctx.font = "bold 22px Arial";
 ctx.fillStyle = "#fff";
-ctx.fillText("Mustafa Adventure - Extended Level 1", cameraX + 20, 35);
+ctx.fillText("Mustafa Adventure - Top-Notch", cameraX + 20, 35);
 
-ctx.font = "18px Arial";
-ctx.fillText("Move : ← →   Jump : SPACE", cameraX + 20, 65);
+ctx.font = "16px Arial";
+ctx.fillText("Score : " + score, cameraX + 20, 65);
+ctx.fillText("Lives : " + lives, cameraX + 20, 90);
 
-ctx.font = "20px Arial";
-ctx.fillText("Score : " + score, cameraX + 20, 95);
-ctx.fillText("Lives : " + lives, cameraX + 20, 125);
+// Level Progress Bar Background
+ctx.fillStyle = "rgba(0,0,0,0.3)";
+ctx.fillRect(cameraX + 20, 105, 200, 12);
+// Progress Fill
+let progress = Math.min(player.x / finishFlag.x, 1);
+ctx.fillStyle = "#2ECC71";
+ctx.fillRect(cameraX + 20, 105, 200 * progress, 12);
+ctx.strokeStyle = "#fff";
+ctx.strokeRect(cameraX + 20, 105, 200, 12);
 
 if(levelComplete){
-ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillStyle = "rgba(0,0,0,0.7)";
 ctx.fillRect(cameraX, 0, 1000, 550);
 
 ctx.fillStyle = "yellow";
@@ -702,7 +777,7 @@ ctx.fillText("LEVEL COMPLETE!", cameraX + 250, 220);
 
 ctx.font = "30px Arial";
 ctx.fillStyle = "white";
-ctx.fillText("Congratulations!", cameraX + 330, 280);
+ctx.fillText("Top Notch Score: " + score, cameraX + 350, 280);
 
 ctx.fillStyle = "#2196F3";
 ctx.fillRect(cameraX + 350, 320, 150, 50);
