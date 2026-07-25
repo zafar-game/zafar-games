@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Super Mustafa - Authentic Mario Animations</title>
+<title>Super Mario - Official NES Edition</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;overflow:hidden;font-family:'Courier New', monospace;width:100vw;height:100vh;touch-action:none;}
@@ -43,8 +43,9 @@ backdrop-filter: blur(4px);
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+ctx.imageSmoothingEnabled = false; // Keep Pixel Art Crisp & Sharp
 
-// Professional Web Audio Synthesizer (Mario Sound FX)
+// Authentic NES Sound Synthesizer
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
 if (!audioCtx) return;
@@ -58,10 +59,10 @@ let now = audioCtx.currentTime;
 if (type === 'jump') {
 osc.type = 'square';
 osc.frequency.setValueAtTime(150, now);
-osc.frequency.exponentialRampToValueAtTime(450, now + 0.1);
+osc.frequency.exponentialRampToValueAtTime(450, now + 0.12);
 gainNode.gain.setValueAtTime(0.12, now);
-gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-osc.start(now); osc.stop(now + 0.1);
+gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+osc.start(now); osc.stop(now + 0.12);
 } else if (type === 'coin') {
 osc.type = 'triangle';
 osc.frequency.setValueAtTime(987.77, now);
@@ -85,7 +86,7 @@ o.stop(now + idx * 0.06 + 0.08);
 } else if (type === 'stomp') {
 osc.type = 'sawtooth';
 osc.frequency.setValueAtTime(220, now);
-osc.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+osc.frequency.exponentialRampToValueAtTime(70, now + 0.1);
 gainNode.gain.setValueAtTime(0.2, now);
 gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
 osc.start(now); osc.stop(now + 0.1);
@@ -99,21 +100,21 @@ osc.start(now); osc.stop(now + 0.25);
 }
 }
 
-// Player Object
+// Fixed Jump Physics for both Mobile & PC
 let player = {
 x: 100,
 y: 380,
-w: 36,
+w: 40,
 h: 48,
 baseH: 48,
 dx: 0,
 dy: 0,
 maxSpeed: 5.2,
-acceleration: 0.3,
-friction: 0.84,
-jumpForce: -13.2,
+acceleration: 0.35,
+friction: 0.82,
+jumpForce: -13.5,
 gravity: 0.52,
-gravityFall: 0.8,
+gravityFall: 0.78,
 ground: false,
 big: false,
 invincibleTimer: 0,
@@ -176,23 +177,17 @@ bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault
 bRight.addEventListener("mousedown", ()=>{ mobileRight = true; });
 bRight.addEventListener("mouseup", ()=>{ mobileRight = false; });
 
-bJump.addEventListener("touchstart", (e)=>{
+function triggerJump(){
 if(player.ground){
 player.dy = player.jumpForce;
 player.ground = false;
 playSound('jump');
 addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
 }
-e.preventDefault();
-});
-bJump.addEventListener("mousedown", ()=>{
-if(player.ground){
-player.dy = player.jumpForce;
-player.ground = false;
-playSound('jump');
-addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
 }
-});
+
+bJump.addEventListener("touchstart", (e)=>{ triggerJump(); mobileJump = false; e.preventDefault(); });
+bJump.addEventListener("mousedown", ()=>{ triggerJump(); });
 
 canvas.addEventListener("click", function(e){
 if(!levelComplete) return;
@@ -203,7 +198,12 @@ if(mx>cameraX+350 && mx<cameraX+500 && my>320 && my<370) location.reload();
 if(mx>cameraX+540 && mx<cameraX+740 && my>320 && my<370) alert("Level 2 Coming Soon...");
 });
 
-document.addEventListener("keydown", e=>{ keys[e.key]=true; });
+document.addEventListener("keydown", e=>{
+keys[e.key]=true;
+if((e.key === "ArrowUp" || e.key === "w" || e.key === " ") && player.ground) {
+triggerJump();
+}
+});
 document.addEventListener("keyup", e=>{ keys[e.key]=false; });
 
 function damagePlayer(){
@@ -292,20 +292,12 @@ if(!moving){
 player.dx *= player.friction;
 if(Math.abs(player.dx) < 0.1) player.dx = 0;
 } else {
-player.animFrame += 0.2;
+player.animFrame += 0.25;
 }
 
 let jumpKeyHeld = keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump;
 if(!player.ground && player.dy < 0 && !jumpKeyHeld) {
 player.dy *= 0.6;
-}
-
-if(jumpKeyHeld && player.ground){
-player.dy = player.jumpForce;
-player.ground = false;
-mobileJump = false;
-playSound('jump');
-addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
 }
 
 if(player.dy < 0) player.dy += player.gravity;
@@ -480,6 +472,91 @@ playSound('powerup');
 }
 }
 
+// Draw Detailed Pixel Mario Sprite Matrix
+function drawPixelMario(x, y, facing, isBig, animFrame) {
+ctx.save();
+ctx.translate(x, y);
+if(facing < 0) {
+ctx.translate(40, 0);
+ctx.scale(-1, 1);
+}
+
+// Color Palette Constants
+const hat = "#e52521";
+const skin = "#ffccaa";
+const hair = "#652b12";
+const shirt = "#e52521";
+const overalls = "#0000ff";
+const buttons = "#f8b800";
+const shoes = "#8b4513";
+
+let ps = 4; // Pixel scale size
+
+if(!isBig) {
+// Small Mario (10x12 pixel grid)
+let matrix = [
+"  HHHHHH  ",
+" HHHHHHHHH ",
+" HHHSSSHHS ",
+"  SSSSS    ",
+"  HSSHS    ",
+"  SSSSSS   ",
+"   SSSS    ",
+"  RRRRRRR  ",
+" RRRBRRRRR ",
+" RRRBBBRRR ",
+"  BBBBBBB  ",
+"  B  BB  B "
+];
+
+// Alternate walking legs frame
+if(animFrame % 2 === 1) {
+matrix[11] = " B B  B B ";
+}
+
+for(let r=0; r<matrix.length; r++) {
+for(let c=0; c<matrix[r].length; c++) {
+let char = matrix[r][c];
+if(char === 'H') ctx.fillStyle = hat;
+else if(char === 'S') ctx.fillStyle = skin;
+else if(char === 'R') ctx.fillStyle = shirt;
+else if(char === 'B') ctx.fillStyle = overalls;
+else continue;
+ctx.fillRect(c * ps, r * ps, ps, ps);
+}
+}
+} else {
+// Super Big Mario
+let matrix = [
+"    HHHHHH    ",
+"   HHHHHHHH   ",
+"   HHHSSSHHS  ",
+"    SSSSS     ",
+"    HSSHS     ",
+"    SSSSSS    ",
+"     SSSS     ",
+"   RRRRRRRR   ",
+"  RRRBRRRRRR  ",
+"  RRRBBBRRRR  ",
+"   BBBBBBBB   ",
+"   B BB  BB B ",
+"   B B    B B "
+];
+for(let r=0; r<matrix.length; r++) {
+for(let c=0; c<matrix[r].length; c++) {
+let char = matrix[r][c];
+if(char === 'H') ctx.fillStyle = hat;
+else if(char === 'S') ctx.fillStyle = skin;
+else if(char === 'R') ctx.fillStyle = shirt;
+else if(char === 'B') ctx.fillStyle = overalls;
+else continue;
+ctx.fillRect(c * 3.2, r * 3.2, 3.2, 3.2);
+}
+}
+}
+ctx.restore();
+}
+
 function draw(){
 let targetCameraX = player.x - 320;
 cameraX += (targetCameraX - cameraX) * 0.12;
@@ -587,7 +664,7 @@ ctx.fillRect(m.x + 8, m.y + 4, 4, 4);
 ctx.fillRect(m.x + 20, m.y + 4, 4, 4);
 });
 
-// ===== AUTHENTIC GOOMBA ANIMATED SPRITES =====
+// Authentic Goomba Sprite Rendering
 enemies.forEach(e=>{
 if(e.dead){
 if(e.squash < 40){
@@ -597,12 +674,10 @@ ctx.fillRect(e.x, e.y + 24, e.w, 12);
 return;
 }
 let frame = Math.floor(e.animTimer) % 2;
-ctx.fillStyle = "#9c4a22"; // Goomba brown body
+ctx.fillStyle = "#9c4a22";
 ctx.fillRect(e.x + 4, e.y + 8, 28, 20);
-// Head curve cap
 ctx.fillStyle = "#652b12";
 ctx.fillRect(e.x + 8, e.y + 4, 20, 6);
-// Angry Eyes
 ctx.fillStyle = "#fff";
 ctx.fillRect(e.x + 6, e.y + 12, 8, 8);
 ctx.fillRect(e.x + 22, e.y + 12, 8, 8);
@@ -610,7 +685,6 @@ ctx.fillStyle = "#000";
 let eyeLook = e.dir > 0 ? 4 : 2;
 ctx.fillRect(e.x + eyeLook, e.y + 14, 4, 4);
 ctx.fillRect(e.x + 22 + (e.dir > 0 ? 2 : 0), e.y + 14, 4, 4);
-// Animated Walking Feet (Alternating steps)
 ctx.fillStyle = "#000";
 if(frame === 0) {
 ctx.fillRect(e.x + 2, e.y + 28, 12, 8);
@@ -626,7 +700,7 @@ ctx.fillRect(finishFlag.x, finishFlag.y, finishFlag.w, finishFlag.h);
 ctx.fillStyle = "#00a800";
 ctx.beginPath();
 ctx.moveTo(finishFlag.x + 20, finishFlag.y);
-ctx.lineTo(finishFlag.x + 80, finishFlag.y + 25);
+ctx.lineTo(finishFlag.x + 80, finishLevel = finishFlag.y + 25);
 ctx.lineTo(finishFlag.x + 20, finishFlag.y + 50);
 ctx.closePath();
 ctx.fill();
@@ -639,52 +713,9 @@ ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
 ctx.fillStyle = "#000";
 ctx.fillRect(0, 495, 5000, 5);
 
-// ===== 8-BIT AUTHENTIC MUSTAFA (MARIO) ANIMATION SPRITE =====
+// Draw Official Pixel Mario
 if(player.invincibleTimer % 4 < 2) {
-let fIndex = Math.floor(player.animFrame) % 3;
-let px = player.x;
-let py = player.y;
-
-// Cap & Hat
-ctx.fillStyle = "#e52521";
-ctx.fillRect(px + (player.facing > 0 ? 8 : 4), py, 22, 10);
-ctx.fillStyle = "#ffccaa"; // Face
-ctx.fillRect(px + (player.facing > 0 ? 10 : 6), py + 10, 20, 12);
-ctx.fillStyle = "#5c2800"; // Mustache
-ctx.fillRect(px + (player.facing > 0 ? 14 : 10), py + 16, 12, 4);
-
-// Red Shirt & Blue Overalls
-ctx.fillStyle = "#e52521";
-ctx.fillRect(px + 6, py + 22, player.w - 12, player.big ? 26 : 14);
-ctx.fillStyle = "#0000ff"; // Blue Dungarees
-ctx.fillRect(px + 8, py + (player.big ? 34 : 26), player.w - 16, player.big ? 14 : 10);
-ctx.fillStyle = "#f8b800"; // Yellow buttons
-ctx.fillRect(px + 8, py + (player.big ? 36 : 28), 3, 3);
-ctx.fillRect(px + 22, py + (player.big ? 36 : 28), 3, 3);
-
-// Classic Animated Walking Boots / Legs
-ctx.fillStyle = "#8b4513";
-if(!player.ground) {
-// Jumping pose legs curled
-ctx.fillRect(px + 4, py + player.h - 10, 10, 10);
-ctx.fillRect(px + 22, py + player.h - 10, 10, 10);
-} else if(Math.abs(player.dx) > 0.5) {
-// Walking animation frames
-if(fIndex === 0) {
-ctx.fillRect(px + 2, py + player.h - 10, 12, 10);
-ctx.fillRect(px + 20, py + player.h - 8, 12, 8);
-} else if(fIndex === 1) {
-ctx.fillRect(px + 8, py + player.h - 10, 10, 10);
-ctx.fillRect(px + 18, py + player.h - 10, 10, 10);
-} else {
-ctx.fillRect(px + 4, py + player.h - 8, 12, 8);
-ctx.fillRect(px + 22, py + player.h - 10, 12, 10);
-}
-} else {
-// Standing still shoes
-ctx.fillRect(px + 4, py + player.h - 10, 10, 10);
-ctx.fillRect(px + 22, py + player.h - 10, 10, 10);
-}
+drawPixelMario(player.x, player.y, player.facing, player.big, Math.floor(player.animFrame));
 }
 
 // HUD Interface
