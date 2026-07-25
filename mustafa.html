@@ -407,13 +407,19 @@ finishFlag = {x:4300, y:330, w:20, h:170};
 
 canvas.addEventListener("click", function(e){
 if(!levelComplete) return;
-const rect=canvas.getBoundingClientRect();
-const mx=e.clientX-rect.left+cameraX;
-const my=e.clientY-rect.top;
-if(mx>cameraX+350 && mx<cameraX+500 && my>320 && my<370) {
+const rect = canvas.getBoundingClientRect();
+// Canvas ke andar actual click position nikalne ke liye scale factor use karein
+const scaleX = canvas.width / rect.width;
+const scaleY = canvas.height / rect.height;
+const mx = (e.clientX - rect.left) * scaleX + cameraX;
+const my = (e.clientY - rect.top) * scaleY;
+
+// Replay Button Check
+if(mx > cameraX + 350 && mx < cameraX + 490 && my > 320 && my < 370) {
 loadLevel(currentLevel);
 }
-if(mx>cameraX+540 && mx<cameraX+740 && my>320 && my<370) {
+// Next Level Button Check
+if(mx > cameraX + 530 && mx < cameraX + 690 && my > 320 && my < 370) {
 if(currentLevel < maxLevels) {
 loadLevel(currentLevel + 1);
 } else {
@@ -422,7 +428,7 @@ loadLevel(1);
 }
 }
 });
-
+  
 document.addEventListener("keydown", e=>{
 keys[e.key]=true;
 if((e.key === "ArrowUp" || e.key === "w" || e.key === " ") && player.ground) {
