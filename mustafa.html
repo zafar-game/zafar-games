@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Mustafa Adventure</title>
+<title>Mustafa Adventure - Extended Level 1</title>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes"> 
 <style>
@@ -31,7 +31,6 @@ height:100vh;
 touch-action:none;
 } 
 
-/* Perfect Layout: Left/Right at bottom-left, Jump at bottom-right */
 .ctrl-btn {
 position: absolute;
 background: rgba(0, 0, 0, 0.5);
@@ -59,7 +58,6 @@ box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 <body>
 <canvas id="game" width="1000" height="550"></canvas>
 
-<!-- Smart Position Touch Controls & Rotate Button -->
 <button class="ctrl-btn" id="btn-left">←</button>
 <button class="ctrl-btn" id="btn-right">→</button>
 <button class="ctrl-btn" id="btn-jump">JUMP</button>
@@ -78,7 +76,9 @@ dx:0,
 dy:0,
 speed:6,
 jump:-15,
-ground:false
+ground:false,
+checkpointX: 120,
+checkpointY: 380
 };
  
 const gravity=0.8;
@@ -93,7 +93,6 @@ const bRight = document.getElementById("btn-right");
 const bJump = document.getElementById("btn-jump");
 const bRotate = document.getElementById("btn-rotate");
 
-// Rotate Screen Logic
 bRotate.addEventListener("click", ()=>{
 if (!document.fullscreenElement) {
 document.documentElement.requestFullscreen().then(() => {
@@ -108,19 +107,16 @@ document.exitFullscreen();
 }
 });
 
-// Left Button
 bLeft.addEventListener("touchstart", (e)=>{ mobileLeft = true; e.preventDefault(); });
 bLeft.addEventListener("touchend", (e)=>{ mobileLeft = false; e.preventDefault(); });
 bLeft.addEventListener("mousedown", ()=>{ mobileLeft = true; });
 bLeft.addEventListener("mouseup", ()=>{ mobileLeft = false; });
 
-// Right Button
 bRight.addEventListener("touchstart", (e)=>{ mobileRight = true; e.preventDefault(); });
 bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault(); });
 bRight.addEventListener("mousedown", ()=>{ mobileRight = true; });
 bRight.addEventListener("mouseup", ()=>{ mobileRight = false; });
 
-// Jump Button
 bJump.addEventListener("touchstart", (e)=>{
 if(player.ground){
 player.dy = player.jump;
@@ -153,6 +149,17 @@ alert("Level 2 Coming Soon...");
 document.addEventListener("keydown", e=>{ keys[e.key]=true; });
 document.addEventListener("keyup", e=>{ keys[e.key]=false; });
 
+function respawnPlayer(){
+lives--;
+player.x = player.checkpointX;
+player.y = player.checkpointY;
+player.dy = 0;
+if(lives <= 0){
+alert("GAME OVER");
+location.reload();
+}
+}
+
 function update(){
 player.dx = 0;
 
@@ -180,6 +187,7 @@ player.dy = 0;
 player.ground = true;
 }
 
+// Normal Platforms
 platforms.forEach(p=>{
 if(
 player.x + player.w > p.x &&
@@ -191,6 +199,45 @@ player.dy >= 0
 player.y = p.y - player.h;
 player.dy = 0;
 player.ground = true;
+}
+});
+
+// Moving Platforms update & collision
+movingPlatforms.forEach(mp=>{
+mp.x += mp.dir * mp.speed;
+if(mp.x < mp.minX || mp.x > mp.maxX) mp.dir *= -1;
+
+if(
+player.x + player.w > mp.x &&
+player.x < mp.x + mp.w &&
+player.y + player.h >= mp.y &&
+player.y + player.h <= mp.y + 20 &&
+player.dy >= 0
+){
+player.y = mp.y - player.h;
+player.dy = 0;
+player.ground = true;
+player.x += mp.dir * mp.speed; // carry player along moving platform
+}
+});
+
+// Spikes Collision (Hazards)
+spikes.forEach(s=>{
+if(
+player.x + player.w > s.x + 5 &&
+player.x < s.x + s.w - 5 &&
+player.y + player.h > s.y + 10
+){
+respawnPlayer();
+}
+});
+
+// Checkpoints
+checkpoints.forEach(cp=>{
+if(!cp.reached && player.x > cp.x){
+cp.reached = true;
+player.checkpointX = cp.x;
+player.checkpointY = 380;
 }
 });
 
@@ -211,15 +258,28 @@ score += 10;
 }
 });
 
+// Hearts Collection (Extra Life)
+hearts.forEach(h=>{
+if(!h.collected){
+if(
+player.x + player.w > h.x - 15 &&
+player.x < h.x + 15 &&
+player.y + player.h > h.y - 15 &&
+player.y < h.y + 15
+){
+h.collected = true;
+lives++;
+}
+}
+});
+
+// Ground Enemies
 enemies.forEach(e=>{
 if(e.dead) return;
 e.x += 2 * e.dir;
-if(e.x < e.startX - 100) e.dir = 1;
-if(e.x > e.startX + 100) e.dir = -1;
-});
+if(e.x < e.startX - 120) e.dir = 1;
+if(e.x > e.startX + 120) e.dir = -1;
 
-enemies.forEach(e=>{
-if(e.dead) return;
 if(
 player.x < e.x + e.w &&
 player.x + player.w > e.x &&
@@ -231,17 +291,34 @@ e.dead = true;
 player.dy = -12;
 score += 50;
 }else{
-lives--;
-player.x = 120;
-player.y = 380;
-player.dy = 0;
-if(lives <= 0){
-alert("GAME OVER");
-location.reload();
-}
+respawnPlayer();
 }
 }
 }); 
+
+// Flying Enemies
+flyingEnemies.forEach(fe=>{
+if(fe.dead) return;
+fe.x += 2.5 * fe.dir;
+if(fe.x < fe.startX - 150) fe.dir = 1;
+if(fe.x > fe.startX + 150) fe.dir = -1;
+fe.y = fe.startY + Math.sin(Date.now() * 0.006 + fe.x) * 40;
+
+if(
+player.x < fe.x + fe.w &&
+player.x + player.w > fe.x &&
+player.y < fe.y + fe.h &&
+player.y + player.h > fe.y
+){
+if(player.dy > 0 && player.y + player.h < fe.y + 15){
+fe.dead = true;
+player.dy = -12;
+score += 80;
+}else{
+respawnPlayer();
+}
+}
+});
 
 if(
 player.x + player.w > finishFlag.x &&
@@ -254,6 +331,7 @@ levelComplete = true;
 
 let cameraX = 0;
 
+// Extended Game Elements
 const coins=[
 {x:500,y:450,collected:false},
 {x:650,y:450,collected:false},
@@ -262,13 +340,43 @@ const coins=[
 {x:1300,y:450,collected:false},
 {x:1500,y:380,collected:false},
 {x:1800,y:450,collected:false},
-{x:2100,y:380,collected:false}
+{x:2100,y:380,collected:false},
+{x:2450,y:450,collected:false},
+{x:2700,y:350,collected:false},
+{x:2950,y:450,collected:false},
+{x:3300,y:380,collected:false},
+{x:3600,y:450,collected:false},
+{x:3900,y:360,collected:false}
+];
+
+const hearts=[
+{x:1450,y:240,collected:false},
+{x:3100,y:300,collected:false}
+];
+
+const checkpoints=[
+{x:2000, reached:false}
 ];
 
 const platforms=[
 {x:700,y:430,w:150,h:20},
 {x:1050,y:360,w:150,h:20},
-{x:1450,y:300,w:180,h:20}
+{x:1450,y:300,w:180,h:20},
+{x:2300,y:420,w:160,h:20},
+{x:2650,y:380,w:140,h:20},
+{x:3200,y:410,w:180,h:20},
+{x:3700,y:370,w:150,h:20}
+];
+
+const movingPlatforms=[
+{x:1850,y:360,w:130,h:20,minX:1750,maxX:2050,dir:1,speed:2},
+{x:3450,y:330,w:130,h:20,minX:3350,maxX:3650,dir:-1,speed:2.5}
+];
+
+const spikes=[
+{x:1150,y:475,w:50,h:25},
+{x:2150,y:475,w:60,h:25},
+{x:3050,y:475,w:70,h:25}
 ];
 
 const clouds=[
@@ -278,7 +386,9 @@ const clouds=[
 {x:1400,y:100},
 {x:2000,y:90},
 {x:2600,y:60},
-{x:3200,y:110}
+{x:3200,y:110},
+{x:3800,y:80},
+{x:4300,y:100}
 ];
 
 const mountains=[
@@ -288,14 +398,18 @@ const mountains=[
 {x:1400,h:260},
 {x:1900,h:200},
 {x:2500,h:230},
-{x:3100,h:170}
+{x:3100,h:170},
+{x:3700,h:220},
+{x:4200,h:190}
 ];
 
 const trees=[
 {x:300},
 {x:900},
 {x:1700},
-{x:2300}
+{x:2300},
+{x:3000},
+{x:3800}
 ];
  
 let score=0;
@@ -304,11 +418,18 @@ let levelComplete=false;
 
 const enemies=[
 {x:900,startX:900,y:465,w:40,h:40,dir:1,dead:false},
-{x:1700,startX:1700,y:465,w:40,h:40,dir:-1,dead:false}
+{x:1700,startX:1700,y:465,w:40,h:40,dir:-1,dead:false},
+{x:2800,startX:2800,y:465,w:40,h:40,dir:1,dead:false},
+{x:3500,startX:3500,y:465,w:40,h:40,dir:-1,dead:false}
+];
+
+const flyingEnemies=[
+{x:1350,startX:1350,startY:200,y:200,w:35,h:30,dir:1,dead:false},
+{x:2600,startX:2600,startY:180,y:180,w:35,h:30,dir:-1,dead:false}
 ];
 
 const finishFlag={
-x:2500,
+x:4100,
 y:340,
 w:20,
 h:160
@@ -322,9 +443,9 @@ ctx.save();
 ctx.translate(-cameraX, 0);
 
 ctx.fillStyle = "#87CEEB";
-ctx.fillRect(cameraX, 0, 5000, 500);                
+ctx.fillRect(cameraX, 0, 5500, 500);                
 ctx.fillStyle = "#79d45d";
-ctx.fillRect(0, 500, 5000, 50);
+ctx.fillRect(0, 500, 5500, 50);
 
 // Mountains
 ctx.fillStyle = "#8ea5b8";
@@ -358,13 +479,31 @@ ctx.arc(tree.x + 10, 390, 40, 0, Math.PI * 2);
 ctx.fill();
 });
 
-ctx.fillStyle = "#888";
-ctx.fillRect(1900, 430, 80, 70);
-ctx.fillStyle = "#444";
-ctx.fillRect(1920, 390, 40, 40);
-ctx.fillStyle = "#222";
-ctx.fillRect(1910, 450, 20, 50);
-ctx.fillRect(1950, 450, 20, 50);
+// Checkpoint Flag Poles
+checkpoints.forEach(cp=>{
+ctx.fillStyle = "#555";
+ctx.fillRect(cp.x, 380, 8, 120);
+ctx.fillStyle = cp.reached ? "#00FF00" : "#FF0000";
+ctx.beginPath();
+ctx.moveTo(cp.x + 8, 380);
+ctx.lineTo(cp.x + 45, 400);
+ctx.lineTo(cp.x + 8, 420);
+ctx.closePath();
+ctx.fill();
+});
+
+// Spikes Drawing
+ctx.fillStyle = "#c0392b";
+spikes.forEach(s=>{
+for(let i=0; i<s.w; i+=12){
+ctx.beginPath();
+ctx.moveTo(s.x + i, 500);
+ctx.lineTo(s.x + i + 6, 500 - s.h);
+ctx.lineTo(s.x + i + 12, 500);
+ctx.closePath();
+ctx.fill();
+}
+});
 
 // Platforms
 ctx.fillStyle = "#704214";
@@ -372,7 +511,13 @@ platforms.forEach(p=>{
 ctx.fillRect(p.x, p.y, p.w, p.h);
 });
 
-// Enemies Drawing
+// Moving Platforms
+ctx.fillStyle = "#8E44AD";
+movingPlatforms.forEach(mp=>{
+ctx.fillRect(mp.x, mp.y, mp.w, mp.h);
+});
+
+// Ground Enemies Drawing
 enemies.forEach(e=>{
 if(e.dead) return;
 let bounce = Math.sin(Date.now() * 0.01 + e.x) * 3;
@@ -408,6 +553,20 @@ ctx.lineWidth = 2;
 ctx.beginPath();
 ctx.arc(e.x + 20, e.y + 24 + bounce, 7, 0, Math.PI);
 ctx.stroke();
+});
+
+// Flying Enemies Drawing
+flyingEnemies.forEach(fe=>{
+if(fe.dead) return;
+ctx.fillStyle = "#E74C3C";
+ctx.beginPath();
+ctx.arc(fe.x + 17, fe.y + 15, 16, 0, Math.PI * 2);
+ctx.fill();
+// Wings
+ctx.fillStyle = "#F1C40F";
+let wing = Math.sin(Date.now() * 0.03) * 10;
+ctx.fillRect(fe.x - 5, fe.y + 5 + wing, 10, 8);
+ctx.fillRect(fe.x + 25, fe.y + 5 + wing, 10, 8);
 });
 
 // Finish Flag
@@ -450,8 +609,21 @@ ctx.fill();
 }
 });
 
+// Hearts Drawing
+hearts.forEach(h=>{
+if(!h.collected){
+ctx.fillStyle = "#FF0000";
+ctx.beginPath();
+ctx.arc(h.x - 5, h.y - 5, 8, Math.PI, 0, false);
+ctx.arc(h.x + 5, h.y - 5, 8, Math.PI, 0, false);
+ctx.lineTo(h.x, h.y + 10);
+ctx.closePath();
+ctx.fill();
+}
+});
+
 ctx.fillStyle = "#7b4a1b";
-ctx.fillRect(0, 495, 5000, 5);
+ctx.fillRect(0, 495, 5500, 5);
  
 // ===== MUSTAFA CHARACTER =====
 let walk = Math.sin(Date.now() * 0.015) * 8;
@@ -495,7 +667,6 @@ ctx.lineTo(player.x + 42, player.y + 40 - walk/4);
 ctx.stroke();
 
 // Legs & Feet
-let legSwing = Math.sin(Date.now() * 0.015) * 4;
 ctx.strokeStyle = "#222";
 ctx.lineWidth = 5;
 
@@ -512,7 +683,7 @@ ctx.stroke();
 // UI Text
 ctx.font = "24px Arial";
 ctx.fillStyle = "#fff";
-ctx.fillText("Mustafa Adventure - Part 1", cameraX + 20, 35);
+ctx.fillText("Mustafa Adventure - Extended Level 1", cameraX + 20, 35);
 
 ctx.font = "18px Arial";
 ctx.fillText("Move : ← →   Jump : SPACE", cameraX + 20, 65);
@@ -533,14 +704,12 @@ ctx.font = "30px Arial";
 ctx.fillStyle = "white";
 ctx.fillText("Congratulations!", cameraX + 330, 280);
 
-// Restart Button
 ctx.fillStyle = "#2196F3";
 ctx.fillRect(cameraX + 350, 320, 150, 50);
 ctx.fillStyle = "white";
 ctx.font = "24px Arial";
 ctx.fillText("Restart", cameraX + 385, 352);
 
-// Next Level Button
 ctx.fillStyle = "#4CAF50";
 ctx.fillRect(cameraX + 540, 320, 200, 50);
 ctx.fillStyle = "white";
