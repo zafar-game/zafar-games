@@ -43,9 +43,8 @@ backdrop-filter: blur(4px);
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-ctx.imageSmoothingEnabled = false; // Keep Pixel Art Crisp & Sharp
+ctx.imageSmoothingEnabled = false;
 
-// Authentic NES Sound Synthesizer
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
 if (!audioCtx) return;
@@ -100,28 +99,12 @@ osc.start(now); osc.stop(now + 0.25);
 }
 }
 
-// Fixed Jump Physics for both Mobile & PC
 let player = {
-x: 100,
-y: 380,
-w: 40,
-h: 48,
-baseH: 48,
-dx: 0,
-dy: 0,
-maxSpeed: 5.2,
-acceleration: 0.35,
-friction: 0.82,
-jumpForce: -13.5,
-gravity: 0.52,
-gravityFall: 0.78,
-ground: false,
-big: false,
-invincibleTimer: 0,
-checkpointX: 100,
-checkpointY: 380,
-facing: 1,
-animFrame: 0
+x: 100, y: 380, w: 40, h: 48, baseH: 48, dx: 0, dy: 0,
+maxSpeed: 5.2, acceleration: 0.35, friction: 0.82,
+jumpForce: -13.5, gravity: 0.52, gravityFall: 0.78,
+ground: false, big: false, invincibleTimer: 0,
+checkpointX: 100, checkpointY: 380, facing: 1, animFrame: 0
 };
 
 const keys = {};
@@ -132,6 +115,7 @@ let score = 0;
 let coinsCollected = 0;
 let lives = 3;
 let levelComplete = false;
+let currentLevel = 1;
 
 function addParticles(x, y, color, count=8) {
 for(let i=0; i<count; i++) {
@@ -189,13 +173,126 @@ addParticles(player.x + player.w/2, player.y + player.h, "#ffffff", 6);
 bJump.addEventListener("touchstart", (e)=>{ triggerJump(); mobileJump = false; e.preventDefault(); });
 bJump.addEventListener("mousedown", ()=>{ triggerJump(); });
 
+// Level Configurations
+let qBlocks = [];
+let platforms = [];
+let movingPlatforms = [];
+let spikes = [];
+let checkpoints = [];
+let clouds = [];
+let hills = [];
+let bushes = [];
+let enemies = [];
+let finishFlag = {};
+
+function loadLevel(lvl) {
+currentLevel = lvl;
+levelComplete = false;
+player.x = 100;
+player.y = 380;
+player.dx = 0;
+player.dy = 0;
+player.checkpointX = 100;
+player.checkpointY = 380;
+cameraX = 0;
+
+if(lvl === 1) {
+qBlocks = [
+{x:650, y:310, w:35, h:35, empty:false, type:'coin'},
+{x:730, y:310, w:35, h:35, empty:false, type:'mushroom'},
+{x:1400, y:260, w:35, h:35, empty:false, type:'coin'},
+{x:2500, y:280, w:35, h:35, empty:false, type:'mushroom'}
+];
+platforms = [
+{x:600,y:420,w:200,h:20},
+{x:1050,y:350,w:160,h:20},
+{x:1450,y:290,w:180,h:20},
+{x:2200,y:410,w:150,h:20},
+{x:2600,y:360,w:160,h:20},
+{x:3200,y:400,w:180,h:20}
+];
+movingPlatforms = [
+{x:1750,y:340,w:120,h:20,minX:1650,maxX:1950,dir:1,speed:2},
+{x:3000,y:320,w:120,h:20,minX:2900,maxX:3250,dir:-1,speed:2.4}
+];
+spikes = [
+{x:1150,y:475,w:50,h:25},
+{x:2100,y:475,w:60,h:25},
+{x:2950,y:475,w:70,h:25}
+];
+checkpoints = [{x:1900, reached:false}];
+clouds = [{x:150,y:70},{x:550,y:100},{x:1000,y:60},{x:1500,y:90},{x:2100,y:80},{x:2700,y:60},{x:3300,y:100},{x:3900,y:70}];
+hills = [{x:0,h:160},{x:500,h:220},{x:1100,h:170},{x:1700,h:240},{x:2300,h:190},{x:2900,h:210},{x:3600,h:170}];
+bushes = [{x:250},{x:850},{x:1500},{x:2100},{x:2700},{x:3400}];
+enemies = [
+{x:850,startX:850,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:1600,startX:1600,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0},
+{x:2750,startX:2750,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:3400,startX:3400,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0}
+];
+finishFlag = {x:4000, y:330, w:20, h:170};
+} else if(lvl === 2) {
+// Level 2: Harder platforming, faster moving platforms, more spikes & enemies
+qBlocks = [
+{x:500, y:290, w:35, h:35, empty:false, type:'mushroom'},
+{x:900, y:240, w:35, h:35, empty:false, type:'coin'},
+{x:1600, y:250, w:35, h:35, empty:false, type:'coin'},
+{x:2400, y:220, w:35, h:35, empty:false, type:'mushroom'},
+{x:3300, y:260, w:35, h:35, empty:false, type:'coin'}
+];
+platforms = [
+{x:450,y:390,w:140,h:20},
+{x:850,y:320,w:140,h:20},
+{x:1300,y:340,w:120,h:20},
+{x:1850,y:290,w:150,h:20},
+{x:2350,y:330,w:130,h:20},
+{x:2800,y:370,w:140,h:20},
+{x:3500,y:300,w:160,h:20}
+];
+movingPlatforms = [
+{x:1100,y:300,w:100,h:20,minX:1000,maxX:1250,dir:1,speed:3.2},
+{x:2050,y:280,w:100,h:20,minX:1950,maxX:2250,dir:-1,speed:3.5},
+{x:3100,y:320,w:100,h:20,minX:2950,maxX:3350,dir:1,speed:3.8}
+];
+spikes = [
+{x:650,y:475,w:80,h:25},
+{x:1450,y:475,w:100,h:25},
+{x:2200,y:475,w:90,h:25},
+{x:3050,y:475,w:110,h:25},
+{x:3750,y:475,w:80,h:25}
+];
+checkpoints = [{x:2100, reached:false}];
+clouds = [{x:200,y:60},{x:700,y:90},{x:1200,y:50},{x:1800,y:80},{x:2400,y:70},{x:3000,y:60},{x:3700,y:90}];
+hills = [{x:0,h:180},{x:600,h:250},{x:1300,h:200},{x:2000,h:260},{x:2700,h:220},{x:3400,h:240}];
+bushes = [{x:300},{x:950},{x:1650},{x:2350},{x:3100}];
+enemies = [
+{x:550,startX:550,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:1200,startX:1200,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0},
+{x:1900,startX:1900,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:2650,startX:2650,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0},
+{x:3350,startX:3350,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0}
+];
+finishFlag = {x:4200, y:330, w:20, h:170};
+}
+}
+
 canvas.addEventListener("click", function(e){
 if(!levelComplete) return;
 const rect=canvas.getBoundingClientRect();
 const mx=e.clientX-rect.left+cameraX;
 const my=e.clientY-rect.top;
-if(mx>cameraX+350 && mx<cameraX+500 && my>320 && my<370) location.reload();
-if(mx>cameraX+540 && mx<cameraX+740 && my>320 && my<370) alert("Level 2 Coming Soon...");
+if(mx>cameraX+350 && mx<cameraX+500 && my>320 && my<370) {
+if(currentLevel === 1) loadLevel(1);
+else loadLevel(2);
+}
+if(mx>cameraX+540 && mx<cameraX+740 && my>320 && my<370) {
+if(currentLevel === 1) {
+loadLevel(2);
+} else {
+alert("Congratulations! You completed all levels!");
+loadLevel(1);
+}
+}
 });
 
 document.addEventListener("keydown", e=>{
@@ -230,48 +327,7 @@ location.reload();
 }
 }
 
-const qBlocks = [
-{x:650, y:310, w:35, h:35, empty:false, type:'coin'},
-{x:730, y:310, w:35, h:35, empty:false, type:'mushroom'},
-{x:1400, y:260, w:35, h:35, empty:false, type:'coin'},
-{x:2500, y:280, w:35, h:35, empty:false, type:'mushroom'}
-];
-
 let mushrooms = [];
-
-const platforms = [
-{x:600,y:420,w:200,h:20},
-{x:1050,y:350,w:160,h:20},
-{x:1450,y:290,w:180,h:20},
-{x:2200,y:410,w:150,h:20},
-{x:2600,y:360,w:160,h:20},
-{x:3200,y:400,w:180,h:20}
-];
-
-const movingPlatforms = [
-{x:1750,y:340,w:120,h:20,minX:1650,maxX:1950,dir:1,speed:2},
-{x:3000,y:320,w:120,h:20,minX:2900,maxX:3250,dir:-1,speed:2.4}
-];
-
-const spikes = [
-{x:1150,y:475,w:50,h:25},
-{x:2100,y:475,w:60,h:25},
-{x:2950,y:475,w:70,h:25}
-];
-
-const checkpoints = [{x:1900, reached:false}];
-const clouds = [{x:150,y:70},{x:550,y:100},{x:1000,y:60},{x:1500,y:90},{x:2100,y:80},{x:2700,y:60},{x:3300,y:100},{x:3900,y:70}];
-const hills = [{x:0,h:160},{x:500,h:220},{x:1100,h:170},{x:1700,h:240},{x:2300,h:190},{x:2900,h:210},{x:3600,h:170}];
-const bushes = [{x:250},{x:850},{x:1500},{x:2100},{x:2700},{x:3400}];
-
-const enemies = [
-{x:850,startX:850,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
-{x:1600,startX:1600,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0},
-{x:2750,startX:2750,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
-{x:3400,startX:3400,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0}
-];
-
-const finishFlag = {x:4000, y:330, w:20, h:170};
 
 function update(){
 let moving = false;
@@ -434,7 +490,7 @@ if(e.dead) {
 e.squash++;
 return;
 }
-e.x += 1.5 * e.dir;
+e.x += (currentLevel === 1 ? 1.5 : 2.2) * e.dir;
 e.animTimer += 0.15;
 if(e.x < e.startX - 100) e.dir = 1;
 if(e.x > e.startX + 100) e.dir = -1;
@@ -472,7 +528,6 @@ playSound('powerup');
 }
 }
 
-// Draw Detailed Pixel Mario Sprite Matrix
 function drawPixelMario(x, y, facing, isBig, animFrame) {
 ctx.save();
 ctx.translate(x, y);
@@ -481,19 +536,14 @@ ctx.translate(40, 0);
 ctx.scale(-1, 1);
 }
 
-// Color Palette Constants
 const hat = "#e52521";
 const skin = "#ffccaa";
-const hair = "#652b12";
 const shirt = "#e52521";
 const overalls = "#0000ff";
-const buttons = "#f8b800";
-const shoes = "#8b4513";
 
-let ps = 4; // Pixel scale size
+let ps = 4;
 
 if(!isBig) {
-// Small Mario (10x12 pixel grid)
 let matrix = [
 "  HHHHHH  ",
 " HHHHHHHHH ",
@@ -509,7 +559,6 @@ let matrix = [
 "  B  BB  B "
 ];
 
-// Alternate walking legs frame
 if(animFrame % 2 === 1) {
 matrix[11] = " B B  B B ";
 }
@@ -526,7 +575,6 @@ ctx.fillRect(c * ps, r * ps, ps, ps);
 }
 }
 } else {
-// Super Big Mario
 let matrix = [
 "    HHHHHH    ",
 "   HHHHHHHH   ",
@@ -540,7 +588,7 @@ let matrix = [
 "  RRRBBBRRRR  ",
 "   BBBBBBBB   ",
 "   B BB  BB B ",
-"   B B    B B "
+"   B C    C B "
 ];
 for(let r=0; r<matrix.length; r++) {
 for(let c=0; c<matrix[r].length; c++) {
@@ -569,12 +617,13 @@ ctx.translate((Math.random()-0.5)*8, (Math.random()-0.5)*8);
 }
 ctx.translate(-cameraX, 0);
 
-ctx.fillStyle = "#5c94fc";
+// Background gradient shifts slightly for Level 2
+ctx.fillStyle = currentLevel === 1 ? "#5c94fc" : "#1b4f72";
 ctx.fillRect(cameraX, 0, 5000, 500);
-ctx.fillStyle = "#e59400";
+ctx.fillStyle = currentLevel === 1 ? "#e59400" : "#5d6d7e";
 ctx.fillRect(0, 500, 5000, 50);
 
-ctx.fillStyle = "#00a800";
+ctx.fillStyle = currentLevel === 1 ? "#00a800" : "#27ae60";
 hills.forEach(h=>{
 ctx.beginPath();
 ctx.moveTo(h.x, 500);
@@ -584,7 +633,7 @@ ctx.closePath();
 ctx.fill();
 });
 
-ctx.fillStyle = "#00d800";
+ctx.fillStyle = currentLevel === 1 ? "#00d800" : "#2ecc71";
 bushes.forEach(b=>{
 ctx.beginPath();
 ctx.arc(b.x, 485, 25, 0, Math.PI * 2);
@@ -664,7 +713,6 @@ ctx.fillRect(m.x + 8, m.y + 4, 4, 4);
 ctx.fillRect(m.x + 20, m.y + 4, 4, 4);
 });
 
-// Authentic Goomba Sprite Rendering
 enemies.forEach(e=>{
 if(e.dead){
 if(e.squash < 40){
@@ -674,7 +722,7 @@ ctx.fillRect(e.x, e.y + 24, e.w, 12);
 return;
 }
 let frame = Math.floor(e.animTimer) % 2;
-ctx.fillStyle = "#9c4a22";
+ctx.fillStyle = currentLevel === 1 ? "#9c4a22" : "#7d3c98";
 ctx.fillRect(e.x + 4, e.y + 8, 28, 20);
 ctx.fillStyle = "#652b12";
 ctx.fillRect(e.x + 8, e.y + 4, 20, 6);
@@ -700,7 +748,7 @@ ctx.fillRect(finishFlag.x, finishFlag.y, finishFlag.w, finishFlag.h);
 ctx.fillStyle = "#00a800";
 ctx.beginPath();
 ctx.moveTo(finishFlag.x + 20, finishFlag.y);
-ctx.lineTo(finishFlag.x + 80, finishLevel = finishFlag.y + 25);
+ctx.lineTo(finishFlag.x + 80, finishFlag.y + 25);
 ctx.lineTo(finishFlag.x + 20, finishFlag.y + 50);
 ctx.closePath();
 ctx.fill();
@@ -713,25 +761,23 @@ ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
 ctx.fillStyle = "#000";
 ctx.fillRect(0, 495, 5000, 5);
 
-// Draw Official Pixel Mario
 if(player.invincibleTimer % 4 < 2) {
 drawPixelMario(player.x, player.y, player.facing, player.big, Math.floor(player.animFrame));
 }
 
-// HUD Interface
 ctx.font = "bold 20px 'Courier New'";
 ctx.fillStyle = "#fff";
-ctx.fillText("MARIO MUSTAFA", cameraX + 25, 35);
-ctx.fillText("SCORE: " + score, cameraX + 25, 65);
-ctx.fillText("COINS: " + coinsCollected, cameraX + 250, 65);
-ctx.fillText("LIVES: " + lives, cameraX + 450, 65);
+ctx.fillText("WORLD 1-" + currentLevel, cameraX + 25, 35);
+ctx.fillText("SCORE: " + score, cameraX + 200, 35);
+ctx.fillText("COINS: " + coinsCollected, cameraX + 400, 35);
+ctx.fillText("LIVES: " + lives, cameraX + 580, 35);
 
 if(levelComplete){
 ctx.fillStyle = "rgba(0,0,0,0.8)";
 ctx.fillRect(cameraX, 0, 1000, 550);
 ctx.fillStyle = "#f8b800";
 ctx.font = "bold 50px 'Courier New'";
-ctx.fillText("WORLD CLEAR!", cameraX + 310, 220);
+ctx.fillText("WORLD 1-" + currentLevel + " CLEAR!", cameraX + 250, 220);
 ctx.font = "26px 'Courier New'";
 ctx.fillStyle = "white";
 ctx.fillText("Total Score: " + score, cameraX + 380, 280);
@@ -739,12 +785,12 @@ ctx.fillText("Total Score: " + score, cameraX + 380, 280);
 ctx.fillStyle = "#e52521";
 ctx.fillRect(cameraX + 350, 320, 140, 50);
 ctx.fillStyle = "white"; ctx.font = "20px 'Courier New'";
-ctx.fillText("Restart", cameraX + 380, 352);
+ctx.fillText("Replay", cameraX + 385, 352);
 
 ctx.fillStyle = "#00a800";
 ctx.fillRect(cameraX + 530, 320, 160, 50);
 ctx.fillStyle = "white";
-ctx.fillText("Next Level", cameraX + 550, 352);
+ctx.fillText(currentLevel === 1 ? "Level 2" : "Finish", cameraX + 565, 352);
 }
 
 ctx.restore();
@@ -756,6 +802,7 @@ draw();
 requestAnimationFrame(game);
 }
 
+loadLevel(1);
 game();
 </script>
 </body>
