@@ -31,35 +31,34 @@ height:100vh;
 touch-action:none;
 } 
 
-/* Mobile Touch Buttons CSS Overlay */
+/* Always Visible Mobile Touch Buttons CSS */
 .ctrl-btn {
 position: absolute;
-background: rgba(255, 255, 255, 0.4);
-border: 2px solid white;
+background: rgba(0, 0, 0, 0.5);
+border: 3px solid white;
 color: white;
-font-size: 24px;
+font-size: 28px;
 font-weight: bold;
-border-radius: 12px;
-display: none;
-z-index: 10;
+border-radius: 15px;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 100;
 user-select: none;
 -webkit-user-select: none;
+box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-#btn-left { left: 20px; bottom: 20px; width: 70px; height: 70px; }
-#btn-right { left: 105px; bottom: 20px; width: 70px; height: 70px; }
-#btn-jump { right: 20px; bottom: 20px; width: 110px; height: 70px; background: rgba(0, 200, 0, 0.5); }
-
-@media(pointer: coarse) {
-.ctrl-btn { display: flex; align-items: center; justify-content: center; }
-}
+#btn-left { left: 20px; bottom: 20px; width: 80px; height: 80px; }
+#btn-right { left: 115px; bottom: 20px; width: 80px; height: 80px; }
+#btn-jump { right: 20px; bottom: 20px; width: 130px; height: 80px; background: rgba(0, 180, 0, 0.7); }
 </style>
 </head>
  
 <body>
 <canvas id="game" width="1000" height="550"></canvas>
 
-<!-- HTML Touch Controls for Mobile -->
+<!-- Permanent Touch Controls -->
 <button class="ctrl-btn" id="btn-left">←</button>
 <button class="ctrl-btn" id="btn-right">→</button>
 <button class="ctrl-btn" id="btn-jump">JUMP</button>
@@ -67,8 +66,6 @@ user-select: none;
 <script>
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
-
-const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
 let player={
 x:120,
@@ -89,27 +86,37 @@ let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
 
-// HTML Buttons Event Listeners (Works 100% on Mobile)
+// Direct Event Listeners for Touch & Mouse
 const bLeft = document.getElementById("btn-left");
 const bRight = document.getElementById("btn-right");
 const bJump = document.getElementById("btn-jump");
 
-if(isMobile){
+// Left Button Events
 bLeft.addEventListener("touchstart", (e)=>{ mobileLeft = true; e.preventDefault(); });
 bLeft.addEventListener("touchend", (e)=>{ mobileLeft = false; e.preventDefault(); });
+bLeft.addEventListener("mousedown", ()=>{ mobileLeft = true; });
+bLeft.addEventListener("mouseup", ()=>{ mobileLeft = false; });
 
+// Right Button Events
 bRight.addEventListener("touchstart", (e)=>{ mobileRight = true; e.preventDefault(); });
 bRight.addEventListener("touchend", (e)=>{ mobileRight = false; e.preventDefault(); });
+bRight.addEventListener("mousedown", ()=>{ mobileRight = true; });
+bRight.addEventListener("mouseup", ()=>{ mobileRight = false; });
 
+// Jump Button Events
 bJump.addEventListener("touchstart", (e)=>{
 if(player.ground){
-mobileJump = true;
 player.dy = player.jump;
 player.ground = false;
 }
 e.preventDefault();
 });
+bJump.addEventListener("mousedown", ()=>{
+if(player.ground){
+player.dy = player.jump;
+player.ground = false;
 }
+});
 
 canvas.addEventListener("click", function(e){
 if(!levelComplete) return;
