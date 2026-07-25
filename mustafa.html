@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Super Mustafa - Professional Mario Edition</title>
+<title>Super Mustafa - Authentic Mario Animations</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#000;overflow:hidden;font-family:'Courier New', monospace;width:100vw;height:100vh;touch-action:none;}
@@ -99,7 +99,7 @@ osc.start(now); osc.stop(now + 0.25);
 }
 }
 
-// Player Object (Supports Super Mario Big/Small states)
+// Player Object
 let player = {
 x: 100,
 y: 380,
@@ -119,7 +119,8 @@ big: false,
 invincibleTimer: 0,
 checkpointX: 100,
 checkpointY: 380,
-facing: 1
+facing: 1,
+animFrame: 0
 };
 
 const keys = {};
@@ -144,7 +145,6 @@ life: 25
 }
 }
 
-// Controls configuration
 let mobileLeft = false;
 let mobileRight = false;
 let mobileJump = false;
@@ -212,7 +212,7 @@ if(player.big){
 player.big = false;
 player.h = player.baseH;
 player.y += 16;
-player.invincibleTimer = 90; // Invincibility frames
+player.invincibleTimer = 90;
 playSound('hit');
 screenShakeTimer = 10;
 } else {
@@ -230,7 +230,6 @@ location.reload();
 }
 }
 
-// Map Elements: Question Blocks, Bricks, Mushrooms, Coins, Enemies
 const qBlocks = [
 {x:650, y:310, w:35, h:35, empty:false, type:'coin'},
 {x:730, y:310, w:35, h:35, empty:false, type:'mushroom'},
@@ -238,14 +237,7 @@ const qBlocks = [
 {x:2500, y:280, w:35, h:35, empty:false, type:'mushroom'}
 ];
 
-const floatingCoins = [
-{x:650, y:240, collected:false, popup:0},
-{x:730, y:240, collected:false, popup:0}
-];
-
-let mushrooms = [
-// Spawned from qBlocks dynamically
-];
+let mushrooms = [];
 
 const platforms = [
 {x:600,y:420,w:200,h:20},
@@ -273,16 +265,15 @@ const hills = [{x:0,h:160},{x:500,h:220},{x:1100,h:170},{x:1700,h:240},{x:2300,h
 const bushes = [{x:250},{x:850},{x:1500},{x:2100},{x:2700},{x:3400}];
 
 const enemies = [
-{x:850,startX:850,y:465,w:36,h:36,dir:1,dead:false, squash:0},
-{x:1600,startX:1600,y:465,w:36,h:36,dir:-1,dead:false, squash:0},
-{x:2750,startX:2750,y:465,w:36,h:36,dir:1,dead:false, squash:0},
-{x:3400,startX:3400,y:465,w:36,h:36,dir:-1,dead:false, squash:0}
+{x:850,startX:850,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:1600,startX:1600,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0},
+{x:2750,startX:2750,y:464,w:36,h:36,dir:1,dead:false, squash:0, animTimer:0},
+{x:3400,startX:3400,y:464,w:36,h:36,dir:-1,dead:false, squash:0, animTimer:0}
 ];
 
 const finishFlag = {x:4000, y:330, w:20, h:170};
 
 function update(){
-// Mario Momentum movement
 let moving = false;
 if(keys["ArrowLeft"] || keys["a"] || mobileLeft){
 player.dx -= player.acceleration;
@@ -300,6 +291,8 @@ moving = true;
 if(!moving){
 player.dx *= player.friction;
 if(Math.abs(player.dx) < 0.1) player.dx = 0;
+} else {
+player.animFrame += 0.2;
 }
 
 let jumpKeyHeld = keys["ArrowUp"] || keys["w"] || keys[" "] || mobileJump;
@@ -320,7 +313,6 @@ else player.dy += player.gravityFall;
 
 player.x += player.dx;
 
-// Horizontal Collisions
 platforms.forEach(p=>{
 if(
 player.x + player.w > p.x &&
@@ -334,7 +326,6 @@ player.dx = 0;
 }
 });
 
-// Q-Blocks Head Hit Collision
 qBlocks.forEach(qb=>{
 if(
 player.x + player.w > qb.x &&
@@ -343,8 +334,8 @@ player.y <= qb.y + qb.h &&
 player.y + player.h >= qb.y + qb.h &&
 player.dy < 0
 ){
-player.dy = 1; // Bounce back down
-qb.y -= 4; // Bump animation
+player.dy = 1;
+qb.y -= 4;
 setTimeout(()=> qb.y += 4, 100);
 if(!qb.empty){
 qb.empty = true;
@@ -402,14 +393,12 @@ player.x += mp.dir * mp.speed;
 }
 });
 
-// Mushrooms update
 mushrooms.forEach(m => {
 m.dy += 0.5;
 m.x += m.dx;
 m.y += m.dy;
 if(m.y + m.h >= 500) { m.y = 500 - m.h; m.dy = 0; m.ground = true; }
 
-// Player collect mushroom
 if(
 player.x < m.x + m.w &&
 player.x + player.w > m.x &&
@@ -453,7 +442,8 @@ if(e.dead) {
 e.squash++;
 return;
 }
-e.x += 1.6 * e.dir;
+e.x += 1.5 * e.dir;
+e.animTimer += 0.15;
 if(e.x < e.startX - 100) e.dir = 1;
 if(e.x > e.startX + 100) e.dir = -1;
 
@@ -502,13 +492,11 @@ ctx.translate((Math.random()-0.5)*8, (Math.random()-0.5)*8);
 }
 ctx.translate(-cameraX, 0);
 
-// Sky Background
 ctx.fillStyle = "#5c94fc";
 ctx.fillRect(cameraX, 0, 5000, 500);
 ctx.fillStyle = "#e59400";
 ctx.fillRect(0, 500, 5000, 50);
 
-// Hills
 ctx.fillStyle = "#00a800";
 hills.forEach(h=>{
 ctx.beginPath();
@@ -519,7 +507,6 @@ ctx.closePath();
 ctx.fill();
 });
 
-// Bushes
 ctx.fillStyle = "#00d800";
 bushes.forEach(b=>{
 ctx.beginPath();
@@ -529,7 +516,6 @@ ctx.arc(b.x + 45, 485, 25, 0, Math.PI * 2);
 ctx.fill();
 });
 
-// Clouds
 ctx.fillStyle = "#ffffff";
 clouds.forEach(c=>{
 let cx = c.x - cameraX * 0.2;
@@ -540,7 +526,6 @@ ctx.arc(cx + 42, c.y, 20, 0, Math.PI * 2);
 ctx.fill();
 });
 
-// Checkpoints
 checkpoints.forEach(cp=>{
 ctx.fillStyle = "#888";
 ctx.fillRect(cp.x, 380, 8, 120);
@@ -553,7 +538,6 @@ ctx.closePath();
 ctx.fill();
 });
 
-// Spikes
 ctx.fillStyle = "#c0392b";
 spikes.forEach(s=>{
 for(let i=0; i<s.w; i+=12){
@@ -566,7 +550,6 @@ ctx.fill();
 }
 });
 
-// Question Blocks (Mario Style)
 qBlocks.forEach(qb=>{
 ctx.fillStyle = qb.empty ? "#7a5230" : "#f8b800";
 ctx.fillRect(qb.x, qb.y, qb.w, qb.h);
@@ -580,7 +563,6 @@ ctx.fillText("?", qb.x + 11, qb.y + 26);
 }
 });
 
-// Platforms
 ctx.fillStyle = "#c84c0c";
 platforms.forEach(p=>{
 ctx.fillRect(p.x, p.y, p.w, p.h);
@@ -588,7 +570,6 @@ ctx.strokeStyle = "#000";
 ctx.strokeRect(p.x, p.y, p.w, p.h);
 });
 
-// Moving Platforms
 ctx.fillStyle = "#8E44AD";
 movingPlatforms.forEach(mp=>{
 ctx.fillRect(mp.x, mp.y, mp.w, mp.h);
@@ -596,7 +577,6 @@ ctx.strokeStyle = "#000";
 ctx.strokeRect(mp.x, mp.y, mp.w, mp.h);
 });
 
-// Mushrooms render
 mushrooms.forEach(m => {
 ctx.fillStyle = "#ff3333";
 ctx.fillRect(m.x, m.y + 12, m.w, m.h - 12);
@@ -607,30 +587,40 @@ ctx.fillRect(m.x + 8, m.y + 4, 4, 4);
 ctx.fillRect(m.x + 20, m.y + 4, 4, 4);
 });
 
-// Enemies (Goomba Style)
+// ===== AUTHENTIC GOOMBA ANIMATED SPRITES =====
 enemies.forEach(e=>{
 if(e.dead){
 if(e.squash < 40){
-ctx.fillStyle = "#a0522d";
-ctx.fillRect(e.x, e.y + 20, e.w, 16);
+ctx.fillStyle = "#8b4513";
+ctx.fillRect(e.x, e.y + 24, e.w, 12);
 }
 return;
 }
-let wobble = Math.sin(Date.now() * 0.015) * 2;
-ctx.fillStyle = "#a0522d"; // Brown Goomba body
-ctx.beginPath();
-ctx.arc(e.x + 18, e.y + 18 + wobble, 17, 0, Math.PI * 2);
-ctx.fill();
-// Eyes
+let frame = Math.floor(e.animTimer) % 2;
+ctx.fillStyle = "#9c4a22"; // Goomba brown body
+ctx.fillRect(e.x + 4, e.y + 8, 28, 20);
+// Head curve cap
+ctx.fillStyle = "#652b12";
+ctx.fillRect(e.x + 8, e.y + 4, 20, 6);
+// Angry Eyes
 ctx.fillStyle = "#fff";
-ctx.fillRect(e.x + 8, e.y + 10 + wobble, 4, 6);
-ctx.fillRect(e.x + 20, e.y + 10 + wobble, 4, 6);
+ctx.fillRect(e.x + 6, e.y + 12, 8, 8);
+ctx.fillRect(e.x + 22, e.y + 12, 8, 8);
 ctx.fillStyle = "#000";
-ctx.fillRect(e.x + 9, e.y + 12 + wobble, 2, 3);
-ctx.fillRect(e.x + 21, e.y + 12 + wobble, 2, 3);
+let eyeLook = e.dir > 0 ? 4 : 2;
+ctx.fillRect(e.x + eyeLook, e.y + 14, 4, 4);
+ctx.fillRect(e.x + 22 + (e.dir > 0 ? 2 : 0), e.y + 14, 4, 4);
+// Animated Walking Feet (Alternating steps)
+ctx.fillStyle = "#000";
+if(frame === 0) {
+ctx.fillRect(e.x + 2, e.y + 28, 12, 8);
+ctx.fillRect(e.x + 22, e.y + 28, 12, 8);
+} else {
+ctx.fillRect(e.x + 6, e.y + 28, 10, 8);
+ctx.fillRect(e.x + 20, e.y + 28, 10, 8);
+}
 });
 
-// Finish Flag
 ctx.fillStyle = "#fff";
 ctx.fillRect(finishFlag.x, finishFlag.y, finishFlag.w, finishFlag.h);
 ctx.fillStyle = "#00a800";
@@ -641,7 +631,6 @@ ctx.lineTo(finishFlag.x + 20, finishFlag.y + 50);
 ctx.closePath();
 ctx.fill();
 
-// Particles
 particles.forEach(p => {
 ctx.fillStyle = p.color;
 ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
@@ -650,34 +639,52 @@ ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
 ctx.fillStyle = "#000";
 ctx.fillRect(0, 495, 5000, 5);
 
-// ===== MUSTAFA PLAYER SPRITE (Classic Mario Colors: Red & Blue) =====
-if(player.invincibleTimer % 4 < 2) { // Blink effect when hit
-let walkAnim = Math.sin(Date.now() * 0.02) * 5;
+// ===== 8-BIT AUTHENTIC MUSTAFA (MARIO) ANIMATION SPRITE =====
+if(player.invincibleTimer % 4 < 2) {
+let fIndex = Math.floor(player.animFrame) % 3;
+let px = player.x;
+let py = player.y;
 
-// Cap / Hat
+// Cap & Hat
 ctx.fillStyle = "#e52521";
-ctx.fillRect(player.x + (player.facing > 0 ? 8 : 4), player.y, 22, 12);
+ctx.fillRect(px + (player.facing > 0 ? 8 : 4), py, 22, 10);
+ctx.fillStyle = "#ffccaa"; // Face
+ctx.fillRect(px + (player.facing > 0 ? 10 : 6), py + 10, 20, 12);
+ctx.fillStyle = "#5c2800"; // Mustache
+ctx.fillRect(px + (player.facing > 0 ? 14 : 10), py + 16, 12, 4);
 
-// Face
-ctx.fillStyle = "#ffccaa";
-ctx.fillRect(player.x + (player.facing > 0 ? 10 : 6), player.y + 10, 20, 14);
-
-// Outfit Overalls (Blue & Red)
+// Red Shirt & Blue Overalls
 ctx.fillStyle = "#e52521";
-ctx.fillRect(player.x + 6, player.y + 24, player.w - 12, player.big ? 24 : 16);
+ctx.fillRect(px + 6, py + 22, player.w - 12, player.big ? 26 : 14);
 ctx.fillStyle = "#0000ff"; // Blue Dungarees
-ctx.fillRect(player.x + 8, player.y + (player.big ? 36 : 28), player.w - 16, player.big ? 18 : 12);
+ctx.fillRect(px + 8, py + (player.big ? 34 : 26), player.w - 16, player.big ? 14 : 10);
+ctx.fillStyle = "#f8b800"; // Yellow buttons
+ctx.fillRect(px + 8, py + (player.big ? 36 : 28), 3, 3);
+ctx.fillRect(px + 22, py + (player.big ? 36 : 28), 3, 3);
 
-// Legs & Animation
-ctx.strokeStyle = "#0000ff"; ctx.lineWidth = 4;
-ctx.beginPath();
-ctx.moveTo(player.x + 10, player.y + player.h - 6);
-ctx.lineTo(player.x + 4, player.y + player.h + walkAnim);
-ctx.stroke();
-ctx.beginPath();
-ctx.moveTo(player.x + player.w - 10, player.y + player.h - 6);
-ctx.lineTo(player.x + player.w - 4, player.y + player.h - walkAnim);
-ctx.stroke();
+// Classic Animated Walking Boots / Legs
+ctx.fillStyle = "#8b4513";
+if(!player.ground) {
+// Jumping pose legs curled
+ctx.fillRect(px + 4, py + player.h - 10, 10, 10);
+ctx.fillRect(px + 22, py + player.h - 10, 10, 10);
+} else if(Math.abs(player.dx) > 0.5) {
+// Walking animation frames
+if(fIndex === 0) {
+ctx.fillRect(px + 2, py + player.h - 10, 12, 10);
+ctx.fillRect(px + 20, py + player.h - 8, 12, 8);
+} else if(fIndex === 1) {
+ctx.fillRect(px + 8, py + player.h - 10, 10, 10);
+ctx.fillRect(px + 18, py + player.h - 10, 10, 10);
+} else {
+ctx.fillRect(px + 4, py + player.h - 8, 12, 8);
+ctx.fillRect(px + 22, py + player.h - 10, 12, 10);
+}
+} else {
+// Standing still shoes
+ctx.fillRect(px + 4, py + player.h - 10, 10, 10);
+ctx.fillRect(px + 22, py + player.h - 10, 10, 10);
+}
 }
 
 // HUD Interface
